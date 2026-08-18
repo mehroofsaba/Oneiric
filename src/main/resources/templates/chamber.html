@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Oneiric — Your Chamber</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #0d0d0d;
+            color: #e8e0d0;
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chamber {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            text-align: center;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #c9a96e;
+            letter-spacing: 0.2rem;
+        }
+
+        p {
+            color: #9e9589;
+            font-size: 1rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        a.btn {
+            padding: 12px 28px;
+            background-color: #c9a96e;
+            color: #0d0d0d;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            letter-spacing: 0.05rem;
+        }
+
+        a.btn:hover { background-color: #b8935a; }
+
+        a.btn.secondary {
+            background-color: transparent;
+            border: 1px solid #2e2e2e;
+            color: #9e9589;
+        }
+
+        a.btn.secondary:hover {
+            border-color: #c9a96e;
+            color: #c9a96e;
+        }
+    </style>
+</head>
+<body>
+    <div class="chamber">
+        <h1>🌙 your chamber</h1>
+        <p>this is your private space. your thoughts live here.</p>
+
+        <div class="actions">
+            <a href="/entries/new" class="btn">write something</a>
+            <a href="/entries" class="btn secondary">browse entries</a>
+        </div>
+    </div>
+</body>
+</html>
