@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Oneiric — Write</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #0d0d0d;
+            color: #e8e0d0;
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            padding: 60px 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 48px;
+        }
+
+        h1 { color: #c9a96e; font-size: 1.8rem; letter-spacing: 0.15rem; }
+
+        a.back {
+            color: #9e9589;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        a.back:hover { color: #c9a96e; }
+
+        .editor {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #2e2e2e;
+            color: #e8e0d0;
+            font-family: 'Georgia', serif;
+            font-size: 1.4rem;
+            outline: none;
+        }
+
+        input[type="text"]::placeholder { color: #444; }
+        input[type="text"]:focus { border-bottom-color: #c9a96e; }
+
+        textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 20px 0;
+            background: transparent;
+            border: none;
+            color: #e8e0d0;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            outline: none;
+            resize: none;
+        }
+
+        textarea::placeholder { color: #444; }
+
+        button {
+            align-self: flex-end;
+            padding: 12px 32px;
+            background-color: #c9a96e;
+            color: #0d0d0d;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            letter-spacing: 0.05rem;
+        }
+
+        button:hover { background-color: #b8935a; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌙 write</h1>
+        <a href="/entries" class="back">← back to entries</a>
+    </div>
+
+    <form class="editor" method="post" action="/entries/new">
+        <input type="text" name="title" placeholder="give it a title..." required />
+        <textarea name="content" placeholder="what's on your mind..."></textarea>
+        <button type="submit">save to chamber</button>
+    </form>
+</body>
+</html>

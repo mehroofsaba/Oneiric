@@ -1,5 +1,87 @@
 package com.oneiric.oneiric.controller;
 
+import com.oneiric.oneiric.model.JournalEntry;
+import com.oneiric.oneiric.model.User;
+import com.oneiric.oneiric.service.JournalEntryService;
+import com.oneiric.oneiric.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpSession;
+import java.util.Optional;
+
+@Controller
+@RequestMapping("/entries")
 public class JournalEntryController {
 
+    @Autowired
+    private JournalEntryService journalEntryService;
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping
+    public String listEntries(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        User user = userService.findByUsername(username).get();
+        model.addAttribute("entries", journalEntryService.getEntriesForUser(user));
+        return "entries";
+    }
+
+    @GetMapping("/new")
+    public String newEntryPage(HttpSession session) {
+        if (session.getAttribute("username") == null) return "redirect:/login";
+        return "entry-new";
+    }
+
+    @PostMapping("/new")
+    public String createEntry(HttpSession session,
+                              @RequestParam String title,
+                              @RequestParam String content) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        User user = userService.findByUsername(username).get();
+        journalEntryService.createEntry(title, content, user);
+        return "redirect:/entries";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editEntryPage(@PathVariable Long id, HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        Optional<JournalEntry> entry = journalEntryService.getEntryById(id);
+        if (entry.isEmpty()) return "redirect:/entries";
+
+        model.addAttribute("entry", entry.get());
+        return "entry-edit";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updateEntry(@PathVariable Long id, HttpSession session,
+                              @RequestParam String title,
+                              @RequestParam String content) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        Optional<JournalEntry> entry = journalEntryService.getEntryById(id);
+        if (entry.isEmpty()) return "redirect:/entries";
+
+        journalEntryService.updateEntry(entry.get(), title, content);
+        return "redirect:/entries";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteEntry(@PathVariable Long id, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        Optional<JournalEntry> entry = journalEntryService.getEntryById(id);
+        entry.ifPresent(journalEntryService::deleteEntry);
+        return "redirect:/entries";
+    }
 }

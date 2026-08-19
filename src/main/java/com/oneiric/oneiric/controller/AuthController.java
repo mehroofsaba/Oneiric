@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
@@ -49,7 +50,8 @@ public class AuthController {
     public String handleLogin(
             @RequestParam String username,
             @RequestParam String password,
-            Model model) {
+            Model model,
+            HttpSession session) {
 
         var userOpt = userService.findByUsername(username);
 
@@ -65,6 +67,7 @@ public class AuthController {
             return "login";
         }
 
+        session.setAttribute("username", user.getUsername());
         return "redirect:/chamber";
     }
     @GetMapping("/chamber")

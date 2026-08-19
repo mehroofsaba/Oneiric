@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Oneiric — Your Entries</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #0d0d0d;
+            color: #e8e0d0;
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            padding: 60px 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 48px;
+        }
+
+        h1 { color: #c9a96e; font-size: 1.8rem; letter-spacing: 0.15rem; }
+
+        a.btn {
+            padding: 10px 24px;
+            background-color: #c9a96e;
+            color: #0d0d0d;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+        }
+
+        a.btn:hover { background-color: #b8935a; }
+
+        .empty {
+            text-align: center;
+            color: #9e9589;
+            margin-top: 80px;
+            font-size: 1rem;
+        }
+
+        .entry-card {
+            background-color: #111111;
+            border: 1px solid #1e1e1e;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .entry-card h2 {
+            color: #c9a96e;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .entry-card p.preview {
+            color: #9e9589;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .entry-card .date {
+            color: #555;
+            font-size: 0.8rem;
+            margin-bottom: 16px;
+        }
+
+        .entry-actions { display: flex; gap: 12px; }
+
+        a.edit {
+            color: #c9a96e;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        a.edit:hover { text-decoration: underline; }
+
+        form.delete-form { display: inline; }
+
+        button.delete {
+            background: none;
+            border: none;
+            color: #c97070;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 0.85rem;
+        }
+
+        button.delete:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌙 your entries</h1>
+        <a href="/entries/new" class="btn">write something</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(entries)}" class="empty">
+        <p>your chamber is quiet. write your first thought.</p>
+    </div>
+
+    <div th:each="entry : ${entries}" class="entry-card">
+        <h2 th:text="${entry.title}"></h2>
+        <p class="date" th:text="${#temporals.format(entry.createdAt, 'dd MMM yyyy, HH:mm')}"></p>
+        <p class="preview" th:text="${#strings.abbreviate(entry.content, 150)}"></p>
+        <div class="entry-actions">
+            <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="edit">edit</a>
+            <form class="delete-form" th:action="@{/entries/{id}/delete(id=${entry.id})}" method="post">
+                <button class="delete" type="submit">delete</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
