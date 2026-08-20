@@ -17,6 +17,9 @@ public class JournalEntry {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @Column(nullable = true)
+    private String mood;
+    
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -56,4 +59,7 @@ public class JournalEntry {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+    
+    public String getMood() { return mood; }
+    public void setMood(String mood) { this.mood = mood; }
 }

@@ -85,14 +85,19 @@
 </head>
 <body>
     <div class="header">
-        <h1>🌙 edit</h1>
-        <a href="/entries" class="back">← back to entries</a>
+        <h1>🌙 Edit</h1>
+                <div style="display:flex; gap:16px;">
+                        <a href="/chamber" style="padding:8px 20px; background-color:#1a1a1a; color:#9e9589; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">🌙 chamber</a>
+                        <a href="/entries" style="padding:8px 20px; background-color:#c9a96e; color:#0d0d0d; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">^_~ Entries</a>
+        </div>
     </div>
-
+    <p style="text-align:center; color:#555; font-size:0.8rem; margin-bottom:8px;">
+        last edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
+    </p>
     <form class="editor" th:action="@{/entries/{id}/edit(id=${entry.id})}" method="post">
         <input type="text" name="title" th:value="${entry.title}" required />
         <textarea name="content" th:text="${entry.content}"></textarea>
-        <button type="submit">save changes</button>
+        <button type="submit">Save Changes</button>
     </form>
 </body>
 </html>

@@ -18,10 +18,11 @@ public class JournalEntryService {
         return journalEntryRepository.findByUserOrderByCreatedAtDesc(user);
     }
 
-    public JournalEntry createEntry(String title, String content, User user) {
+    public JournalEntry createEntry(String title, String content, String mood, User user) {
         JournalEntry entry = new JournalEntry();
         entry.setTitle(title);
         entry.setContent(content);
+        entry.setMood(mood);
         entry.setUser(user);
         return journalEntryRepository.save(entry);
     }

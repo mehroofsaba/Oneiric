@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Oneiric — Write</title>
-    <style>
+        <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -11,10 +11,73 @@
             color: #e8e0d0;
             font-family: 'Georgia', serif;
             min-height: 100vh;
-            padding: 60px 40px;
+            padding: 40px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Corner decorations */
+        .corner {
+            position: fixed;
+            font-size: 1.2rem;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+            color: #c9a96e;
+            line-height: 1;
+        }
+
+        .corner-tl { top: 16px; left: 16px; }
+        .corner-tr { top: 16px; right: 16px; transform: scaleX(-1); }
+        .corner-bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
+        .corner-br { bottom: 16px; right: 16px; transform: scale(-1); }
+
+        /* Border lines */
+        .border-top, .border-bottom {
+            position: fixed;
+            left: 48px;
+            right: 48px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c9a96e44, #c9a96e88, #c9a96e44, transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .border-top { top: 48px; }
+        .border-bottom { bottom: 48px; }
+
+        .border-left, .border-right {
+            position: fixed;
+            top: 48px;
+            bottom: 48px;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, #c9a96e44, #c9a96e88, #c9a96e44, transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .border-left { left: 48px; }
+        .border-right { right: 48px; }
+
+        /* Floating stars at corners */
+        .deco-star {
+            position: fixed;
+            color: #c9a96e;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+            font-size: var(--sz);
+            animation: twinkle var(--dur) ease-in-out infinite var(--del);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.35; }
         }
 
         .header {
+            position: relative;
+            z-index: 1;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -32,6 +95,8 @@
         a.back:hover { color: #c9a96e; }
 
         .editor {
+            position: relative;
+            z-index: 1;
             max-width: 700px;
             margin: 0 auto;
             display: flex;
@@ -80,22 +145,77 @@
             font-family: 'Georgia', serif;
             font-size: 1rem;
             cursor: pointer;
-            letter-spacing: 0.05rem;
         }
 
         button:hover { background-color: #b8935a; }
+
+        .mood-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background-color: #1a1a1a;
+            border: 1px solid #2e2e2e;
+            border-radius: 20px;
+            color: #9e9589;
+            font-family: 'Georgia', serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mood-label:hover { border-color: #c9a96e; color: #c9a96e; }
+        .mood-label input[type="radio"] { display: none; }
+        .mood-label:has(input:checked) {
+            border-color: #c9a96e;
+            color: #c9a96e;
+            background-color: #1e1a0e;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Frame decoration -->
+    <div class="border-top"></div>
+    <div class="border-bottom"></div>
+    <div class="border-left"></div>
+    <div class="border-right"></div>
+
+    <div class="corner corner-tl">✦ · · ·<br>·<br>·</div>
+    <div class="corner corner-tr">✦ · · ·<br>·<br>·</div>
+    <div class="corner corner-bl">·<br>·<br>✦ · · ·</div>
+    <div class="corner corner-br">·<br>·<br>✦ · · ·</div>
+
+    <div class="deco-star" style="top:60px; left:80px; --sz:0.7rem; --dur:3s; --del:0s;">✧</div>
+    <div class="deco-star" style="top:60px; right:80px; --sz:0.6rem; --dur:4s; --del:1s;">✦</div>
+    <div class="deco-star" style="bottom:60px; left:80px; --sz:0.6rem; --dur:3.5s; --del:0.5s;">✧</div>
+    <div class="deco-star" style="bottom:60px; right:80px; --sz:0.7rem; --dur:4s; --del:2s;">✦</div>
+    <div class="deco-star" style="top:50%; left:52px; --sz:0.5rem; --dur:5s; --del:1s;">·</div>
+    <div class="deco-star" style="top:50%; right:52px; --sz:0.5rem; --dur:5s; --del:2s;">·</div>
     <div class="header">
-        <h1>🌙 write</h1>
-        <a href="/entries" class="back">← back to entries</a>
+        <h1>🌙 Write</h1>
+                <div style="display:flex; gap:16px;">
+                        <a href="/chamber" style="padding:8px 20px; background-color:#1a1a1a; color:#9e9589; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">🌙 Chamber</a>
+                       <a href="/entries" style="padding:8px 20px; background-color:#c9a96e; color:#0d0d0d; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">^_~ Entries</a>
+        </div>
     </div>
 
     <form class="editor" method="post" action="/entries/new">
         <input type="text" name="title" placeholder="give it a title..." required />
+                <div style="display:flex; flex-wrap:wrap; gap:10px; padding:8px 0;">
+            <span style="color:#555; font-size:0.85rem; align-self:center;">mood:</span>
+            <label class="mood-label"><input type="radio" name="mood" value="happy"> (❁´◡`❁) happy</label>
+            <label class="mood-label"><input type="radio" name="mood" value="calm"> ^_^ calm</label>
+            <label class="mood-label"><input type="radio" name="mood" value="sad"> ＞︿＜ sad</label>
+            <label class="mood-label"><input type="radio" name="mood" value="anxious"> ＞﹏＜ anxious</label>
+            <label class="mood-label"><input type="radio" name="mood" value="angry"> (╬▔皿▔)╯ angry</label>
+            <label class="mood-label"><input type="radio" name="mood" value="lonely"> (´。＿。｀) lonely</label>
+            <label class="mood-label"><input type="radio" name="mood" value="excited"> (≧∀≦)ゞ excited</label>
+            <label class="mood-label"><input type="radio" name="mood" value="confused"> *-* confused</label>
+            <label class="mood-label"><input type="radio" name="mood" value="neutral"> ^_____^ neutral</label>
+        </div>
         <textarea name="content" placeholder="what's on your mind..."></textarea>
-        <button type="submit">save to chamber</button>
+        <button type="submit">Save to Chamber</button>
     </form>
 </body>
 </html>

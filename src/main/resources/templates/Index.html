@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <title>Oneiric — Your Secret Chamber</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: #0d0d0d;
@@ -18,32 +14,180 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .stars {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: #c9a96e;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--duration) ease-in-out infinite var(--delay);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: var(--opacity); transform: scale(1.2); }
+        }
+
+        .moon-deco {
+            position: fixed;
+            font-size: var(--size);
+            opacity: 0.07;
+            pointer-events: none;
+            z-index: 1;
+            animation: float var(--fduration) ease-in-out infinite var(--fdelay);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(var(--rot)); }
+            50% { transform: translateY(-12px) rotate(var(--rot)); }
         }
 
         .chamber {
+            position: relative;
+            z-index: 2;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
+            text-align: center;
         }
 
-        h1 {
-            font-size: 3.5rem;
-            letter-spacing: 0.3rem;
-            color: #c9a96e;
+        h1 { font-size: 3.5rem; letter-spacing: 0.3rem; color: #c9a96e; }
+        p { font-size: 1.1rem; color: #9e9589; letter-spacing: 0.05rem; }
+
+        .actions { display: flex; gap: 16px; margin-top: 12px; }
+
+        a.btn {
+            padding: 10px 28px;
+            background-color: #c9a96e;
+            color: #0d0d0d;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
         }
 
-        p {
-            font-size: 1.1rem;
+        a.btn:hover { background-color: #b8935a; }
+
+        a.btn.secondary {
+            background-color: transparent;
+            border: 1px solid #2e2e2e;
             color: #9e9589;
-            letter-spacing: 0.05rem;
         }
+
+        a.btn.secondary:hover { border-color: #c9a96e; color: #c9a96e; }
     </style>
 </head>
 <body>
+
+    <canvas id="bg"></canvas>
+    <div class="stars" id="stars"></div>
+
+    <div class="moon-deco" style="top:8%; left:5%; --size:5rem; --fduration:7s; --fdelay:0s; --rot:-20deg;">🌙</div>
+    <div class="moon-deco" style="top:15%; right:6%; --size:3rem; --fduration:9s; --fdelay:2s; --rot:15deg;">🌙</div>
+    <div class="moon-deco" style="bottom:10%; left:8%; --size:4rem; --fduration:8s; --fdelay:1s; --rot:10deg;">🌙</div>
+    <div class="moon-deco" style="bottom:18%; right:5%; --size:2.5rem; --fduration:11s; --fdelay:3s; --rot:-10deg;">🌙</div>
+
     <div class="chamber">
         <h1>🌙 Oneiric</h1>
-        <p>the secret chamber awaits.</p>
+        <p>The Secret Chamber Awaits.</p>
+        <div class="actions">
+            <a href="/login" class="btn">→_→ Enter</a>
+            <a href="/register" class="btn secondary">←_← Create Chamber</a>
+        </div>
     </div>
+
+    <script>
+        // Golden clouds
+        const canvas = document.getElementById('bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const w = canvas.width;
+        const h = canvas.height;
+
+        function drawCloud(x, y, size, alpha) {
+            const circles = [
+                [0, 0, size],
+                [size*0.6, -size*0.2, size*0.75],
+                [-size*0.5, -size*0.1, size*0.7],
+                [size*0.2, -size*0.5, size*0.6],
+                [-size*0.2, -size*0.55, size*0.55],
+            ];
+            circles.forEach(([cx, cy, r]) => {
+                const g = ctx.createRadialGradient(x+cx, y+cy, 0, x+cx, y+cy, r);
+                g.addColorStop(0, `rgba(180,140,80,0.18)`);
+                g.addColorStop(1, `rgba(180,140,80,0)`);
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(x+cx, y+cy, r, 0, Math.PI*2);
+                ctx.fill();
+            });
+        }
+
+        function drawSparkle(x, y, size, alpha) {
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = `rgba(201,169,110,${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x, y-size); ctx.lineTo(x, y+size);
+            ctx.moveTo(x-size, y); ctx.lineTo(x+size, y);
+            ctx.moveTo(x-size*0.6, y-size*0.6); ctx.lineTo(x+size*0.6, y+size*0.6);
+            ctx.moveTo(x+size*0.6, y-size*0.6); ctx.lineTo(x-size*0.6, y+size*0.6);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        // Corner clouds
+        drawCloud(0, h, 180, 1);
+        drawCloud(w*0.15, h, 140, 1);
+        drawCloud(w, h, 180, 1);
+        drawCloud(w*0.85, h, 140, 1);
+        drawCloud(0, 0, 160, 1);
+        drawCloud(w*0.12, 0, 120, 1);
+        drawCloud(w, 0, 160, 1);
+        drawCloud(w*0.88, 0, 120, 1);
+
+        // Sparkles
+        [[w*0.1,h*0.2,5],[w*0.9,h*0.15,4],[w*0.05,h*0.7,6],
+         [w*0.95,h*0.75,5],[w*0.2,h*0.05,4],[w*0.8,h*0.08,6],
+         [w*0.15,h*0.92,5],[w*0.85,h*0.9,4],[w*0.5,h*0.03,3],
+         [w*0.3,h*0.97,4],[w*0.7,h*0.95,5],[w*0.02,h*0.45,4]
+        ].forEach(([x,y,s]) => drawSparkle(x, y, s, 0.6));
+
+        // Twinkling stars
+        const container = document.getElementById('stars');
+        for (let i = 0; i < 80; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 2.5 + 1;
+            star.style.cssText = `
+                width:${size}px; height:${size}px;
+                top:${Math.random()*100}%; left:${Math.random()*100}%;
+                --duration:${Math.random()*4+2}s;
+                --delay:${Math.random()*5}s;
+                --opacity:${Math.random()*0.5+0.1};
+            `;
+            container.appendChild(star);
+        }
+    </script>
 </body>
+</html>

@@ -14,9 +14,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .chamber {
+            position: relative;
+            z-index: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -26,21 +37,9 @@
             padding: 40px;
         }
 
-        h1 {
-            font-size: 2rem;
-            color: #c9a96e;
-            letter-spacing: 0.2rem;
-        }
-
-        p.subtitle {
-            color: #9e9589;
-            font-size: 0.9rem;
-        }
-
-        .error {
-            color: #c97070;
-            font-size: 0.9rem;
-        }
+        h1 { font-size: 2rem; color: #c9a96e; letter-spacing: 0.2rem; }
+        p.subtitle { color: #9e9589; font-size: 0.9rem; }
+        p.error { color: #c97070; font-size: 0.9rem; }
 
         input {
             width: 100%;
@@ -54,9 +53,7 @@
             outline: none;
         }
 
-        input:focus {
-            border-color: #c9a96e;
-        }
+        input:focus { border-color: #c9a96e; }
 
         button {
             width: 100%;
@@ -71,23 +68,17 @@
             letter-spacing: 0.1rem;
         }
 
-        button:hover {
-            background-color: #b8935a;
-        }
-
-        a {
-            color: #9e9589;
-            font-size: 0.9rem;
-            text-decoration: none;
-        }
-
+        button:hover { background-color: #b8935a; }
+        a { color: #9e9589; font-size: 0.9rem; text-decoration: none; }
         a:hover { color: #c9a96e; }
     </style>
 </head>
 <body>
+    <canvas id="bg"></canvas>
+
     <div class="chamber">
         <h1>🌙 Oneiric</h1>
-        <p class="subtitle">create your secret chamber</p>
+        <p class="subtitle">Create your Secret Chamber</p>
 
         <p class="error" th:if="${error}" th:text="${error}"></p>
 
@@ -95,10 +86,67 @@
             <input type="text" name="username" placeholder="choose a username" required />
             <input type="email" name="email" placeholder="your email" required />
             <input type="password" name="password" placeholder="create a password" required />
-            <button type="submit">enter the chamber</button>
+            <button type="submit">Enter Chamber</button>
         </form>
 
-        <a href="/login">already have an account? enter here</a>
+        <a href="/login">Already have an Account? Enter here</a>
     </div>
+
+    <script>
+        const canvas = document.getElementById('bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const w = canvas.width;
+        const h = canvas.height;
+
+        function drawCloud(x, y, size) {
+            const circles = [
+                [0, 0, size],
+                [size*0.6, -size*0.2, size*0.75],
+                [-size*0.5, -size*0.1, size*0.7],
+                [size*0.2, -size*0.5, size*0.6],
+                [-size*0.2, -size*0.55, size*0.55],
+            ];
+            circles.forEach(([cx, cy, r]) => {
+                const g = ctx.createRadialGradient(x+cx, y+cy, 0, x+cx, y+cy, r);
+                g.addColorStop(0, `rgba(180,140,80,0.18)`);
+                g.addColorStop(1, `rgba(180,140,80,0)`);
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(x+cx, y+cy, r, 0, Math.PI*2);
+                ctx.fill();
+            });
+        }
+
+        function drawSparkle(x, y, size, alpha) {
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = `rgba(201,169,110,${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x, y-size); ctx.lineTo(x, y+size);
+            ctx.moveTo(x-size, y); ctx.lineTo(x+size, y);
+            ctx.moveTo(x-size*0.6, y-size*0.6); ctx.lineTo(x+size*0.6, y+size*0.6);
+            ctx.moveTo(x+size*0.6, y-size*0.6); ctx.lineTo(x-size*0.6, y+size*0.6);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        drawCloud(0, h, 180);
+        drawCloud(w*0.15, h, 140);
+        drawCloud(w, h, 180);
+        drawCloud(w*0.85, h, 140);
+        drawCloud(0, 0, 160);
+        drawCloud(w*0.12, 0, 120);
+        drawCloud(w, 0, 160);
+        drawCloud(w*0.88, 0, 120);
+
+        [[w*0.1,h*0.2,5],[w*0.9,h*0.15,4],[w*0.05,h*0.7,6],
+         [w*0.95,h*0.75,5],[w*0.2,h*0.05,4],[w*0.8,h*0.08,6],
+         [w*0.15,h*0.92,5],[w*0.85,h*0.9,4],[w*0.5,h*0.03,3],
+         [w*0.3,h*0.97,4],[w*0.7,h*0.95,5],[w*0.02,h*0.45,4]
+        ].forEach(([x,y,s]) => drawSparkle(x, y, s, 0.6));
+    </script>
 </body>
 </html>

@@ -40,12 +40,13 @@ public class JournalEntryController {
     @PostMapping("/new")
     public String createEntry(HttpSession session,
                               @RequestParam String title,
-                              @RequestParam String content) {
+                              @RequestParam String content,
+                              @RequestParam(required = false) String mood) {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
         User user = userService.findByUsername(username).get();
-        journalEntryService.createEntry(title, content, user);
+        journalEntryService.createEntry(title, content, mood, user);
         return "redirect:/entries";
     }
 

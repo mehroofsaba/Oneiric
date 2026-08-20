@@ -93,23 +93,43 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🌙 your entries</h1>
-        <a href="/entries/new" class="btn">write something</a>
+     <div class="header">
+        <h1>🌙 Your Entries</h1>
+        <div style="display:flex; gap:12px;">
+                       <a href="/chamber" style="padding:8px 20px; background-color:#1a1a1a; color:#9e9589; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">🌙 chamber</a>
+            <a href="/entries/new" class="btn">✏️ Write something</a>
+        </div>
     </div>
 
     <div th:if="${#lists.isEmpty(entries)}" class="empty">
-        <p>your chamber is quiet. write your first thought.</p>
+        <p>Your Chamber is quiet. Write your first thought.</p>
     </div>
 
     <div th:each="entry : ${entries}" class="entry-card">
         <h2 th:text="${entry.title}"></h2>
-        <p class="date" th:text="${#temporals.format(entry.createdAt, 'dd MMM yyyy, HH:mm')}"></p>
+              <p class="date">
+            Created: <span th:text="${#temporals.format(entry.createdAt, 'dd MMM yyyy, HH:mm')}"></span>
+            &nbsp;·&nbsp;
+            Edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
+        </p>
+                <p th:if="${entry.mood != null}" style="font-size:0.8rem; color:#c9a96e; margin-bottom:8px;">
+            <span th:switch="${entry.mood}">
+                <span th:case="'happy'">(❁´◡`❁) Happy</span>
+                <span th:case="'calm'">^_^ Calm</span>
+                <span th:case="'sad'">＞︿＜ Sad</span>
+                <span th:case="'anxious'">＞﹏＜ Anxious</span>
+                <span th:case="'angry'">(╬▔皿▔)╯ Angry</span>
+                <span th:case="'lonely'">(´。＿。｀) Lonely</span>
+                <span th:case="'excited'">(≧∀≦)ゞ Excited</span>
+                <span th:case="'confused'">*-* Confused</span>
+                <span th:case="'neutral'">^_____^ Neutral</span>
+            </span>
+        </p>
         <p class="preview" th:text="${#strings.abbreviate(entry.content, 150)}"></p>
         <div class="entry-actions">
-            <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="edit">edit</a>
+            <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="edit">Edit</a>
             <form class="delete-form" th:action="@{/entries/{id}/delete(id=${entry.id})}" method="post">
-                <button class="delete" type="submit">delete</button>
+                <button class="delete" type="submit">Delete</button>
             </form>
         </div>
     </div>
