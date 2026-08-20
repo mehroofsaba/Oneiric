@@ -12,9 +12,74 @@
             font-family: 'Georgia', serif;
             min-height: 100vh;
             padding: 60px 40px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        canvas.bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Hanging stars */
+        .hang-star {
+            position: fixed;
+            top: 0;
+            color: #c9a96e;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            animation: sway var(--dur) ease-in-out infinite var(--del);
+        }
+
+        .hang-star .line {
+            width: 1px;
+            height: var(--len);
+            background: linear-gradient(180deg, transparent, #c9a96e55);
+        }
+
+        .hang-star .star {
+            font-size: var(--sz);
+            animation: twinkle var(--tdur) ease-in-out infinite var(--tdel);
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Corner star */
+        .corner-star {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            font-size: 2.5rem;
+            color: #c9a96e;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 1;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-10deg); }
+            50% { transform: translateY(-8px) rotate(5deg); }
         }
 
         .header {
+            position: relative;
+            z-index: 2;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -23,26 +88,28 @@
 
         h1 { color: #c9a96e; font-size: 1.8rem; letter-spacing: 0.15rem; }
 
-        a.btn {
-            padding: 10px 24px;
-            background-color: #c9a96e;
-            color: #0d0d0d;
-            border-radius: 6px;
-            text-decoration: none;
-            font-family: 'Georgia', serif;
-            font-size: 0.9rem;
-        }
-
+      a.btn {
+    padding: 10px 24px;
+    background-color: #c9a96e;
+    color: #0d0d0d;
+    border-radius: 20px;
+    text-decoration: none;
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+}
         a.btn:hover { background-color: #b8935a; }
 
         .empty {
+            position: relative;
+            z-index: 2;
             text-align: center;
             color: #9e9589;
             margin-top: 80px;
-            font-size: 1rem;
         }
 
         .entry-card {
+            position: relative;
+            z-index: 2;
             background-color: #111111;
             border: 1px solid #1e1e1e;
             border-radius: 8px;
@@ -50,9 +117,11 @@
             margin-bottom: 20px;
         }
 
-        .entry-card h2 {
-            color: #c9a96e;
-            font-size: 1.2rem;
+        .entry-card h2 { color: #c9a96e; font-size: 1.2rem; margin-bottom: 8px; }
+
+        .entry-card .date {
+            color: #555;
+            font-size: 0.8rem;
             margin-bottom: 8px;
         }
 
@@ -62,20 +131,9 @@
             margin-bottom: 16px;
         }
 
-        .entry-card .date {
-            color: #555;
-            font-size: 0.8rem;
-            margin-bottom: 16px;
-        }
-
         .entry-actions { display: flex; gap: 12px; }
 
-        a.edit {
-            color: #c9a96e;
-            text-decoration: none;
-            font-size: 0.85rem;
-        }
-
+        a.edit { color: #c9a96e; text-decoration: none; font-size: 0.85rem; }
         a.edit:hover { text-decoration: underline; }
 
         form.delete-form { display: inline; }
@@ -90,13 +148,41 @@
         }
 
         button.delete:hover { text-decoration: underline; }
+
+        .nav-links { display: flex; gap: 12px; }
     </style>
 </head>
 <body>
-     <div class="header">
+
+    <canvas class="bg" id="bg"></canvas>
+
+    <!-- Hanging stars from top -->
+    <div class="hang-star" style="left:8%; --dur:4s; --del:0s; --len:80px; --sz:1.2rem; --tdur:2s; --tdel:0s;">
+        <div class="line"></div><div class="star">✦</div>
+    </div>
+    <div class="hang-star" style="left:15%; --dur:5s; --del:0.5s; --len:120px; --sz:0.9rem; --tdur:3s; --tdel:0.5s;">
+        <div class="line"></div><div class="star">✧</div>
+    </div>
+    <div class="hang-star" style="left:22%; --dur:4.5s; --del:1s; --len:60px; --sz:1rem; --tdur:2.5s; --tdel:1s;">
+        <div class="line"></div><div class="star">★</div>
+    </div>
+    <div class="hang-star" style="right:8%; --dur:4s; --del:0.3s; --len:90px; --sz:1.2rem; --tdur:2s; --tdel:0.3s;">
+        <div class="line"></div><div class="star">✦</div>
+    </div>
+    <div class="hang-star" style="right:16%; --dur:5s; --del:0.8s; --len:110px; --sz:0.9rem; --tdur:3s; --tdel:0.8s;">
+        <div class="line"></div><div class="star">✧</div>
+    </div>
+    <div class="hang-star" style="right:24%; --dur:4.5s; --del:1.2s; --len:65px; --sz:1rem; --tdur:2.5s; --tdel:1.2s;">
+        <div class="line"></div><div class="star">★</div>
+    </div>
+
+    <!-- Corner star -->
+    <div class="corner-star">✦</div>
+
+    <div class="header">
         <h1>🌙 Your Entries</h1>
-        <div style="display:flex; gap:12px;">
-                       <a href="/chamber" style="padding:8px 20px; background-color:#1a1a1a; color:#9e9589; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">🌙 chamber</a>
+        <div class="nav-links">
+            <a href="/chamber" style="padding:8px 20px; background-color:#1a1a1a; color:#9e9589; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem;">🌙 Chamber</a>
             <a href="/entries/new" class="btn">✏️ Write something</a>
         </div>
     </div>
@@ -107,12 +193,12 @@
 
     <div th:each="entry : ${entries}" class="entry-card">
         <h2 th:text="${entry.title}"></h2>
-              <p class="date">
+        <p class="date">
             Created: <span th:text="${#temporals.format(entry.createdAt, 'dd MMM yyyy, HH:mm')}"></span>
             &nbsp;·&nbsp;
             Edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
         </p>
-                <p th:if="${entry.mood != null}" style="font-size:0.8rem; color:#c9a96e; margin-bottom:8px;">
+        <p th:if="${entry.mood != null}" style="font-size:0.8rem; color:#c9a96e; margin-bottom:8px;">
             <span th:switch="${entry.mood}">
                 <span th:case="'happy'">(❁´◡`❁) Happy</span>
                 <span th:case="'calm'">^_^ Calm</span>
@@ -127,11 +213,42 @@
         </p>
         <p class="preview" th:text="${#strings.abbreviate(entry.content, 150)}"></p>
         <div class="entry-actions">
-            <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="edit">Edit</a>
+            <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="edit">✨ Edit</a>
             <form class="delete-form" th:action="@{/entries/{id}/delete(id=${entry.id})}" method="post">
-                <button class="delete" type="submit">Delete</button>
+                <button class="delete" type="submit">:( Delete</button>
             </form>
         </div>
     </div>
+
+    <script>
+        const canvas = document.getElementById('bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const w = canvas.width, h = canvas.height;
+
+        function drawCloud(x, y, size) {
+            [[0,0,size],[size*.6,-size*.2,size*.75],[-size*.5,-size*.1,size*.7],
+             [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
+            ].forEach(([cx,cy,r]) => {
+                const g = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r);
+                g.addColorStop(0,'rgba(180,140,80,0.12)');
+                g.addColorStop(1,'rgba(180,140,80,0)');
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(x+cx, y+cy, r, 0, Math.PI*2);
+                ctx.fill();
+            });
+        }
+
+        // Clouds only at top corners
+        drawCloud(0, 0, 160);
+        drawCloud(w*0.12, 0, 120);
+        drawCloud(w, 0, 160);
+        drawCloud(w*0.88, 0, 120);
+        // Small cloud bottom right
+        drawCloud(w, h, 100);
+    </script>
+
 </body>
 </html>

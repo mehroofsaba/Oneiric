@@ -6,13 +6,135 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            background-color: #0d0d0d;
-            color: #e8e0d0;
-            font-family: 'Georgia', serif;
-            min-height: 100vh;
-            padding: 60px 40px;
-        }
+body {
+    background-color: #0d0d0d;
+    color: #e8e0d0;
+    font-family: 'Georgia', serif;
+    min-height: 100vh;
+    padding: 60px 40px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Layered starfield + glow, sits behind all content */
+.sky-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background-color: #0d0d0d;
+    background-image:
+        radial-gradient(circle at 8% 10%, rgba(201, 169, 110, 0.16) 0%, transparent 32%),
+        radial-gradient(circle at 92% 90%, rgba(201, 169, 110, 0.16) 0%, transparent 32%),
+        radial-gradient(1.5px 1.5px at 10% 15%, #c9a96e 50%, transparent 100%),
+        radial-gradient(1px 1px at 20% 8%, #9e9589 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 5% 30%, #e8e0d0 50%, transparent 100%),
+        radial-gradient(1px 1px at 15% 45%, #c9a96e 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 35% 60%, #9e9589 50%, transparent 100%),
+        radial-gradient(1px 1px at 45% 12%, #e8e0d0 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 60% 75%, #c9a96e 50%, transparent 100%),
+        radial-gradient(1px 1px at 55% 30%, #9e9589 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 90% 20%, #e8e0d0 50%, transparent 100%),
+        radial-gradient(1px 1px at 95% 35%, #c9a96e 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 88% 80%, #9e9589 50%, transparent 100%),
+        radial-gradient(1px 1px at 80% 92%, #e8e0d0 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 96% 65%, #c9a96e 50%, transparent 100%),
+        radial-gradient(1px 1px at 70% 50%, #e8e0d0 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 25% 85%, #c9a96e 50%, transparent 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    animation: twinkle 6s ease-in-out infinite alternate, glow-shift 12s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+    0%   { opacity: 0.6; }
+    50%  { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+@keyframes glow-shift {
+    0%   { filter: brightness(1); }
+    100% { filter: brightness(1.15); }
+}
+
+/* Drifting clouds — soft blurred ellipses moving slowly across */
+.cloud {
+    position: fixed;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(158, 149, 137, 0.10) 0%, transparent 70%);
+    filter: blur(8px);
+    pointer-events: none;
+}
+
+.cloud-1 {
+    width: 400px; height: 160px;
+    top: 12%;
+    left: -450px;
+    animation: drift-right 40s linear infinite;
+}
+
+.cloud-2 {
+    width: 300px; height: 120px;
+    bottom: 18%;
+    right: -350px;
+    animation: drift-left 55s linear infinite;
+}
+
+.cloud-3 {
+    width: 250px; height: 100px;
+    top: 55%;
+    left: -300px;
+    animation: drift-right 65s linear infinite;
+    animation-delay: -20s;
+}
+
+@keyframes drift-right {
+    from { transform: translateX(0); }
+    to   { transform: translateX(calc(100vw + 500px)); }
+}
+
+@keyframes drift-left {
+    from { transform: translateX(0); }
+    to   { transform: translateX(calc(-100vw - 500px)); }
+}
+
+/* Corner moons, gently bobbing */
+.corner-moon {
+    position: fixed;
+    font-size: 2.5rem;
+    opacity: 0.3;
+    pointer-events: none;
+    filter: sepia(1) saturate(2) hue-rotate(-10deg);
+    animation: bob 5s ease-in-out infinite;
+}
+
+.corner-moon.top-left {
+    top: 40px;
+    left: 40px;
+}
+
+.corner-moon.bottom-right {
+    bottom: 40px;
+    right: 40px;
+    transform: scaleX(-1);
+    animation-delay: -2.5s;
+}
+
+@keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+.corner-moon.bottom-right {
+    animation-name: bob-flip;
+}
+
+@keyframes bob-flip {
+    0%, 100% { transform: scaleX(-1) translateY(0); }
+    50%      { transform: scaleX(-1) translateY(-10px); }
+}
+
 
         .header {
             display: flex;
@@ -84,15 +206,22 @@
     </style>
 </head>
 <body>
+<div class="sky-layer"></div>
+<div class="cloud cloud-1"></div>
+<div class="cloud cloud-2"></div>
+<div class="cloud cloud-3"></div>
+<div class="corner-moon top-left">🌙</div>
+<div class="corner-moon bottom-right">🌙</div>
+
     <div class="header">
         <h1>🌙 Edit</h1>
                 <div style="display:flex; gap:16px;">
-                        <a href="/chamber" style="padding:8px 20px; background-color:#1a1a1a; color:#9e9589; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">🌙 chamber</a>
+                        <a href="/chamber" style="padding:8px 20px; background-color:#1a1a1a; color:#9e9589; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">🌙 Chamber</a>
                         <a href="/entries" style="padding:8px 20px; background-color:#c9a96e; color:#0d0d0d; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">^_~ Entries</a>
         </div>
     </div>
     <p style="text-align:center; color:#555; font-size:0.8rem; margin-bottom:8px;">
-        last edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
+        Last edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
     </p>
     <form class="editor" th:action="@{/entries/{id}/edit(id=${entry.id})}" method="post">
         <input type="text" name="title" th:value="${entry.title}" required />
