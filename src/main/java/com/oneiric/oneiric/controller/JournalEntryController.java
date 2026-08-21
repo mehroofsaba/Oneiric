@@ -22,12 +22,19 @@ public class JournalEntryController {
     private UserService userService;
 
     @GetMapping
-    public String listEntries(HttpSession session, Model model) {
+    public String listEntries(HttpSession session, Model model,
+            @RequestParam(required = false) String query) {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
         User user = userService.findByUsername(username).get();
-        model.addAttribute("entries", journalEntryService.getEntriesForUser(user));
+
+        if (query != null && !query.trim().isEmpty()) {
+            model.addAttribute("entries", journalEntryService.searchEntries(user, query));
+            model.addAttribute("query", query);
+        } else {
+            model.addAttribute("entries", journalEntryService.getEntriesForUser(user));
+        }
         return "entries";
     }
 

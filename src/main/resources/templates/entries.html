@@ -2,13 +2,96 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script>
+    // Apply saved theme immediately to prevent flash
+    (function() {
+        const t = localStorage.getItem('oneiric-theme');
+        if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
+    })();
+</script>
     <title>Oneiric — Your Entries</title>
     <style>
+    
+            :root {
+            --bg: #0d0d0d;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text: #e8e0d0;
+            --text-muted: #9e9589;
+            --text-subtle: #555;
+            --accent: #c9a96e;
+            --accent-hover: #b8935a;
+            --accent-dim: rgba(201,169,110,0.08);
+            --border: #2e2e2e;
+            --border-accent: rgba(201,169,110,0.2);
+            --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
+        }
+
+        [data-theme="sakura"] {
+            --bg: #fdf6f0;
+            --bg-secondary: #fff0f3;
+            --bg-tertiary: #ffe4ec;
+            --text: #4a3040;
+            --text-muted: #9e7080;
+            --text-subtle: #c4a0b0;
+            --accent: #e8829a;
+            --accent-hover: #d4607a;
+            --accent-dim: rgba(232,130,154,0.08);
+            --border: #f0c0d0;
+            --border-accent: rgba(232,130,154,0.3);
+            --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
+        }
+
+        [data-theme="abyss"] {
+            --bg: #050d1a;
+            --bg-secondary: #0a1628;
+            --bg-tertiary: #0f1e35;
+            --text: #c8d8f0;
+            --text-muted: #7090b8;
+            --text-subtle: #3a5070;
+            --accent: #7eb8e8;
+            --accent-hover: #5a9fd4;
+            --accent-dim: rgba(126,184,232,0.08);
+            --border: #1a2e48;
+            --border-accent: rgba(126,184,232,0.2);
+            --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
+        }
+
+        [data-theme="sage"] {
+            --bg: #f4f6f0;
+            --bg-secondary: #eaefe4;
+            --bg-tertiary: #dde5d4;
+            --text: #2d3828;
+            --text-muted: #6e8060;
+            --text-subtle: #a0b090;
+            --accent: #7a9e6e;
+            --accent-hover: #5e8050;
+            --accent-dim: rgba(122,158,110,0.08);
+            --border: #c8d8b8;
+            --border-accent: rgba(122,158,110,0.3);
+            --cloud-r: 122; --cloud-g: 158; --cloud-b: 110;
+        }
+
+        [data-theme="noir"] {
+            --bg: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #141414;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --text-subtle: #444444;
+            --accent: #ffffff;
+            --accent-hover: #cccccc;
+            --accent-dim: rgba(255,255,255,0.05);
+            --border: #222222;
+            --border-accent: rgba(255,255,255,0.15);
+            --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
+        }
+    
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            background-color: #0d0d0d;
-            color: #e8e0d0;
+              body {
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Georgia', serif;
             min-height: 100vh;
             padding: 60px 40px;
@@ -22,6 +105,8 @@
             z-index: 0;
             pointer-events: none;
         }
+        
+        
 
         /* Hanging stars */
         .hang-star {
@@ -86,7 +171,7 @@
             margin-bottom: 48px;
         }
 
-        h1 { color: #c9a96e; font-size: 1.8rem; letter-spacing: 0.15rem; }
+                h1 { color: var(--accent); font-size: 1.8rem; letter-spacing: 0.15rem; }
 
       a.btn {
     padding: 10px 24px;
@@ -107,33 +192,37 @@
             margin-top: 80px;
         }
 
-        .entry-card {
+            .entry-card {
             position: relative;
             z-index: 2;
-            background-color: #111111;
-            border: 1px solid #1e1e1e;
+            background-color: color-mix(in srgb, var(--bg-secondary) 30%, transparent);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid var(--border-accent);
             border-radius: 8px;
             padding: 24px;
             margin-bottom: 20px;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .entry-card h2 { color: #c9a96e; font-size: 1.2rem; margin-bottom: 8px; }
-
-        .entry-card .date {
-            color: #555;
-            font-size: 0.8rem;
-            margin-bottom: 8px;
+        .entry-card:hover {
+            border-color: var(--border-accent);
+            box-shadow: 0 0 20px var(--accent-dim);
         }
 
-        .entry-card p.preview {
-            color: #9e9589;
-            font-size: 0.9rem;
-            margin-bottom: 16px;
+        .entry-card:hover {
+            border-color: rgba(201, 169, 110, 0.2);
+            box-shadow: 0 0 20px rgba(201, 169, 110, 0.06);
         }
+                .entry-card h2 { color: var(--accent); font-size: 1.2rem; margin-bottom: 8px; }
+
+              .entry-card .date { color: var(--text-subtle); font-size: 0.8rem; margin-bottom: 8px; }
+
+              .entry-card p.preview { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
 
         .entry-actions { display: flex; gap: 12px; }
 
-        a.edit { color: #c9a96e; text-decoration: none; font-size: 0.85rem; }
+               a.edit { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
         a.edit:hover { text-decoration: underline; }
 
         form.delete-form { display: inline; }
@@ -166,30 +255,19 @@
     display: flex;
 }
 
-.modal-box {
-    background-color: #111111;
-    border: 1px solid #2e2e2e;
-    border-radius: 10px;
-    padding: 32px;
-    max-width: 380px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 0 40px rgba(201, 169, 110, 0.08);
-}
+        .modal-box {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 32px;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 40px var(--accent-dim);
+        }
 
-.modal-box h3 {
-    color: #c9a96e;
-    font-size: 1.2rem;
-    margin-bottom: 12px;
-    letter-spacing: 0.05rem;
-}
-
-.modal-box p {
-    color: #9e9589;
-    font-size: 0.9rem;
-    margin-bottom: 24px;
-    line-height: 1.6;
-}
+        .modal-box h3 { color: var(--accent); font-size: 1.2rem; margin-bottom: 12px; }
+        .modal-box p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; line-height: 1.6; }
 
 .modal-actions {
     display: flex;
@@ -206,13 +284,18 @@
     cursor: pointer;
 }
 
-.modal-btn.cancel {
-    background-color: #1a1a1a;
-    color: #9e9589;
-}
+        .modal-btn.cancel {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
 
-.modal-btn.cancel:hover { background-color: #222; }
-
+        .modal-btn.cancel:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
 .modal-btn.confirm {
     background-color: #c97070;
     color: #0d0d0d;
@@ -251,35 +334,86 @@
     text-align: center;
 }
 
-.nav-links a.chamber-link {
-    background-color: #1a1a1a;
-    color: #8a8175;
-    font-size: 0.95rem;
-}
+        .nav-links a.chamber-link {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
 
-.nav-links a.chamber-link:hover {
-    color: #c9a96e;
-    border-color: #c9a96e;
-    box-shadow: 0 0 12px rgba(201, 169, 110, 0.25);
-}
+        .nav-links a.chamber-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px var(--accent-dim);
+        }
 
 
-.nav-links a.btn {
-    background-color: #c9a96e;
-    color: #0d0d0d;
-}
+        .nav-links a.btn {
+            background-color: var(--accent);
+            color: var(--bg);
+        }
 
-.nav-links a.btn:hover {
-    background-color: #b8935a;
-    border-color: #c9a96e;
-    box-shadow: 0 0 12px rgba(201, 169, 110, 0.35);
-}
+        .nav-links a.btn:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 0 12px var(--accent-dim);
+        }
         
     </style>
 </head>
 <body>
 
     <canvas class="bg" id="bg"></canvas>
+    
+        <canvas class="bg" id="bg"></canvas>
+
+    <!-- Bottom left botanical decoration -->
+    <div style="position:fixed; bottom:0; left:0; z-index:1; pointer-events:none; width:280px; height:320px; opacity:0.15;">
+        <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg" width="280" height="320">
+            <path d="M60 320 C65 280 55 240 70 200 C80 170 75 140 85 110" stroke="#c9a96e" stroke-width="1.5" fill="none" opacity="0.8"/>
+            <path d="M60 320 C45 285 30 260 25 230 C20 205 15 185 20 165" stroke="#c9a96e" stroke-width="1.2" fill="none" opacity="0.6"/>
+            <path d="M60 320 C75 295 90 275 100 250 C110 228 108 205 115 185" stroke="#c9a96e" stroke-width="1" fill="none" opacity="0.5"/>
+            <g transform="translate(80,108) rotate(-15)">
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7" transform="rotate(60)"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7" transform="rotate(120)"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7" transform="rotate(180)"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7" transform="rotate(240)"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7" transform="rotate(300)"/>
+                <circle cx="0" cy="0" r="5" fill="#e8d5ae" opacity="0.9"/>
+                <line x1="0" y1="-5" x2="0" y2="-9" stroke="#c9a96e" stroke-width="0.8"/>
+                <line x1="4" y1="-3" x2="7" y2="-6" stroke="#c9a96e" stroke-width="0.8"/>
+                <line x1="-4" y1="-3" x2="-7" y2="-6" stroke="#c9a96e" stroke-width="0.8"/>
+            </g>
+            <g transform="translate(18,163) rotate(10)">
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65" transform="rotate(60)"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65" transform="rotate(120)"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65" transform="rotate(180)"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65" transform="rotate(240)"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65" transform="rotate(300)"/>
+                <circle cx="0" cy="0" r="4" fill="#e8d5ae" opacity="0.9"/>
+            </g>
+            <g transform="translate(112,183) rotate(-5)">
+                <ellipse cx="0" cy="-9" rx="4" ry="9" fill="#c9a96e" opacity="0.55"/>
+                <ellipse cx="0" cy="-9" rx="4" ry="9" fill="#c9a96e" opacity="0.55" transform="rotate(72)"/>
+                <ellipse cx="0" cy="-9" rx="4" ry="9" fill="#c9a96e" opacity="0.55" transform="rotate(144)"/>
+                <ellipse cx="0" cy="-9" rx="4" ry="9" fill="#c9a96e" opacity="0.55" transform="rotate(216)"/>
+                <ellipse cx="0" cy="-9" rx="4" ry="9" fill="#c9a96e" opacity="0.55" transform="rotate(288)"/>
+                <circle cx="0" cy="0" r="3" fill="#e8d5ae" opacity="0.8"/>
+            </g>
+            <path d="M70 200 C85 190 100 192 105 180 C95 178 80 182 70 200Z" fill="#c9a96e" opacity="0.5"/>
+            <path d="M72 240 C55 228 42 232 38 218 C52 215 66 220 72 240Z" fill="#c9a96e" opacity="0.45"/>
+            <path d="M78 165 C95 158 108 162 112 150 C98 148 84 153 78 165Z" fill="#c9a96e" opacity="0.4"/>
+            <path d="M20 165 C8 150 5 135 12 125 C18 138 18 152 20 165Z" fill="#c9a96e" opacity="0.4"/>
+            <path d="M115 185 C128 175 138 178 142 168 C130 165 118 170 115 185Z" fill="#c9a96e" opacity="0.35"/>
+            <ellipse cx="55" cy="278" rx="4" ry="7" fill="#c9a96e" opacity="0.5" transform="rotate(-20,55,278)"/>
+            <ellipse cx="90" cy="255" rx="3" ry="6" fill="#c9a96e" opacity="0.45" transform="rotate(15,90,255)"/>
+            <circle cx="30" cy="245" r="1.5" fill="#e8d5ae" opacity="0.6"/>
+            <circle cx="95" cy="230" r="1" fill="#e8d5ae" opacity="0.5"/>
+            <circle cx="45" cy="195" r="1.5" fill="#e8d5ae" opacity="0.55"/>
+            <circle cx="125" cy="165" r="1" fill="#e8d5ae" opacity="0.5"/>
+            <circle cx="70" cy="150" r="1.5" fill="#e8d5ae" opacity="0.45"/>
+        </svg>
+    </div>
 
     <!-- Hanging stars from top -->
     <div class="hang-star" style="left:8%; --dur:4s; --del:0s; --len:80px; --sz:1.2rem; --tdur:2s; --tdel:0s;">
@@ -304,16 +438,35 @@
     <!-- Corner star -->
     <div class="corner-star">✦</div>
 
-    <div class="header">
-        <h1>🌙 Your Entries</h1>
+       <div class="header">
+                <h1><svg viewBox="0 0 24 24" width="0.85em" height="0.85em" fill="var(--accent)" style="vertical-align:middle; margin-right:8px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Your Entries</h1>
         <div class="nav-links">
-             <a href="/chamber" class="chamber-link">🌙 Chamber</a>
-             <a href="/entries/new" class="btn">✏️ Write something</a>
+                         <a href="/chamber" class="chamber-link"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="var(--accent)" style="vertical-align:middle; margin-right:4px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> Chamber</a>
+                         <a href="/entries/new" class="btn">✦ Write something</a>
         </div>
     </div>
 
+    <!-- Search bar -->
+    <form method="get" action="/entries" style="position:relative; z-index:2; max-width:500px; margin: -24px auto 36px; display:flex; gap:10px;">
+                <input type="text" name="query" th:value="${query}"
+               placeholder="search your thoughts..."
+               style="flex:1; padding:10px 18px; background:var(--bg-secondary); border:1px solid var(--border); border-radius:20px; color:var(--text); font-family:'Georgia',serif; font-size:0.9rem; outline:none; transition: border-color 0.2s;"
+               onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"/>
+               <button type="submit"
+                style="padding:10px 22px; background:var(--accent); color:var(--bg); border:none; border-radius:20px; font-family:'Georgia',serif; font-size:0.9rem; cursor:pointer; transition: background 0.2s;"
+                onmouseover="this.style.background='var(--accent-hover)'" onmouseout="this.style.background='var(--accent)'">◉_◉ Search</button>
+    </form>
+
+    <!-- Search result info -->
+    <p th:if="${query != null}" style="position:relative; z-index:2; text-align:center; color:#9e9589; font-size:0.85rem; margin-bottom:24px; margin-top:-16px;">
+        results for "<span th:text="${query}" style="color:#c9a96e;"></span>"
+        &nbsp;—&nbsp;
+                <a href="/entries" style="color:#9e9589; text-decoration:none; font-size:0.85rem; padding:4px 12px; border:1px solid #2e2e2e; border-radius:20px; transition: all 0.2s;"
+           onmouseover="this.style.color='#c9a96e'; this.style.borderColor='#c9a96e'; this.style.boxShadow='0 0 10px rgba(201,169,110,0.3)'"
+           onmouseout="this.style.color='#9e9589'; this.style.borderColor='#2e2e2e'; this.style.boxShadow='none'">🧹 clear</a>
+    </p>
     <div th:if="${#lists.isEmpty(entries)}" class="empty">
-        <p>Your Chamber is quiet. Write your first thought.</p>
+        <p>Can't find your thoughts. Write your first thought.</p>
     </div>
 
     <div th:each="entry : ${entries}" class="entry-card">
@@ -354,15 +507,19 @@
         const w = canvas.width, h = canvas.height;
 
         function drawCloud(x, y, size) {
+            const style = getComputedStyle(document.documentElement);
+            const r = style.getPropertyValue('--cloud-r').trim() || '180';
+            const g = style.getPropertyValue('--cloud-g').trim() || '140';
+            const b = style.getPropertyValue('--cloud-b').trim() || '80';
             [[0,0,size],[size*.6,-size*.2,size*.75],[-size*.5,-size*.1,size*.7],
              [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
-            ].forEach(([cx,cy,r]) => {
-                const g = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r);
-                g.addColorStop(0,'rgba(180,140,80,0.12)');
-                g.addColorStop(1,'rgba(180,140,80,0)');
-                ctx.fillStyle = g;
+            ].forEach(([cx,cy,r2]) => {
+                const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
+                grad.addColorStop(0,`rgba(${r},${g},${b},0.12)`);
+                grad.addColorStop(1,`rgba(${r},${g},${b},0)`);
+                ctx.fillStyle = grad;
                 ctx.beginPath();
-                ctx.arc(x+cx, y+cy, r, 0, Math.PI*2);
+                ctx.arc(x+cx, y+cy, r2, 0, Math.PI*2);
                 ctx.fill();
             });
         }

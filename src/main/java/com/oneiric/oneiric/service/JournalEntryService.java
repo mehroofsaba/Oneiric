@@ -40,4 +40,12 @@ public class JournalEntryService {
     public void deleteEntry(JournalEntry entry) {
         journalEntryRepository.delete(entry);
     }
+    
+    public List<JournalEntry> searchEntries(User user, String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return journalEntryRepository.findByUserOrderByCreatedAtDesc(user);
+        }
+        return journalEntryRepository.searchByUser(user, query.trim());
+    }
+    
 }

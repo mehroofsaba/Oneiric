@@ -4,18 +4,102 @@
     <meta charset="UTF-8">
     <title>Oneiric — Your Chamber</title>
     <style>
+    
+            /* ===== THEME SYSTEM ===== */
+        :root {
+            --bg: #0d0d0d;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text: #e8e0d0;
+            --text-muted: #9e9589;
+            --text-subtle: #555;
+            --accent: #c9a96e;
+            --accent-hover: #b8935a;
+            --accent-dim: rgba(201,169,110,0.08);
+            --border: #2e2e2e;
+            --border-accent: rgba(201,169,110,0.2);
+            --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
+            --star-color: #c9a96e;
+        }
+
+        [data-theme="sakura"] {
+            --bg: #fdf6f0;
+            --bg-secondary: #fff0f3;
+            --bg-tertiary: #ffe4ec;
+            --text: #4a3040;
+            --text-muted: #9e7080;
+            --text-subtle: #c4a0b0;
+            --accent: #e8829a;
+            --accent-hover: #d4607a;
+            --accent-dim: rgba(232,130,154,0.08);
+            --border: #f0c0d0;
+            --border-accent: rgba(232,130,154,0.3);
+            --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
+            --star-color: #e8829a;
+        }
+
+        [data-theme="abyss"] {
+            --bg: #050d1a;
+            --bg-secondary: #0a1628;
+            --bg-tertiary: #0f1e35;
+            --text: #c8d8f0;
+            --text-muted: #7090b8;
+            --text-subtle: #3a5070;
+            --accent: #7eb8e8;
+            --accent-hover: #5a9fd4;
+            --accent-dim: rgba(126,184,232,0.08);
+            --border: #1a2e48;
+            --border-accent: rgba(126,184,232,0.2);
+            --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
+            --star-color: #7eb8e8;
+        }
+
+        [data-theme="sage"] {
+            --bg: #f4f6f0;
+            --bg-secondary: #eaefe4;
+            --bg-tertiary: #dde5d4;
+            --text: #2d3828;
+            --text-muted: #6e8060;
+            --text-subtle: #a0b090;
+            --accent: #7a9e6e;
+            --accent-hover: #5e8050;
+            --accent-dim: rgba(122,158,110,0.08);
+            --border: #c8d8b8;
+            --border-accent: rgba(122,158,110,0.3);
+            --cloud-r: 122; --cloud-g: 158; --cloud-b: 110;
+            --star-color: #7a9e6e;
+        }
+
+        [data-theme="noir"] {
+            --bg: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #141414;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --text-subtle: #444444;
+            --accent: #ffffff;
+            --accent-hover: #cccccc;
+            --accent-dim: rgba(255,255,255,0.05);
+            --border: #222222;
+            --border-accent: rgba(255,255,255,0.15);
+            --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
+            --star-color: #ffffff;
+        }
+    
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-          body {
-            background-color: #0d0d0d;
-            color: #e8e0d0;
+                body {
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Georgia', serif;
             height: 100vh;
+            height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
             position: relative;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         canvas {
@@ -78,23 +162,30 @@
 
         .menu-btn:hover { color: #c9a96e; }
 
-        /* Slide-out drawer */
-                .drawer {
+        /* Slide-out drawer*/
+              .drawer {
             position: fixed;
             top: 0;
             left: -280px;
             width: 260px;
             height: 100vh;
-            background: linear-gradient(180deg, #0a0a0a 0%, #111008 50%, #0a0a0a 100%);
-            border-right: 1px solid #1e1a0e;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             padding: 60px 32px 40px;
             gap: 28px;
-            transition: left 0.3s ease;
+            transition: left 0.3s ease, background 0.4s ease;
             z-index: 99;
             overflow: hidden;
         }
+
+        .drawer h2 { color: var(--accent); font-size: 0.85rem; letter-spacing: 0.35rem; text-transform: uppercase; text-align: center; }
+        .drawer a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; transition: color 0.2s, padding-left 0.2s; display: flex; align-items: center; gap: 10px; }
+        .drawer a:hover { color: var(--accent); padding-left: 6px; }
+        .drawer .divider { border: none; border-top: 1px solid var(--border); }
+        .drawer a.danger { color: #a05050; }
+        .drawer a.danger:hover { color: #c97070; }
 
         .drawer.open { left: 0; }
 
@@ -183,18 +274,9 @@
             text-align: center;
         }
 
-        h1 {
-            font-size: 3rem;
-            color: #c9a96e;
-            letter-spacing: 0.3rem;
-        }
-
-        p {
-            color: #9e9589;
-            font-size: 0.95rem;
-        }
-
-        p span { color: #c9a96e; }
+        h1 { font-size: 3rem; color: var(--accent); letter-spacing: 0.3rem; }
+        p { color: var(--text-muted); font-size: 0.95rem; }
+        p span { color: var(--accent); }
 
         .actions {
             display: flex;
@@ -221,6 +303,62 @@
         }
 
         a.btn.secondary:hover { border-color: #c9a96e; color: #c9a96e; }
+        
+                .theme-btn {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.2s;
+        }
+
+        .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+        .theme-panel {
+            position: fixed;
+            top: 68px;
+            right: 24px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .theme-panel.open { display: block; }
+
+        .theme-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-option {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--bg-tertiary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-option:hover { border-color: var(--accent); transform: scale(1.15); }
+        .theme-option.active { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-dim); }
+        
     </style>
 </head>
 <body>
@@ -239,6 +377,20 @@
     <!-- Hamburger -->
     <button class="menu-btn" onclick="toggleMenu()">≡</button>
     
+        <!-- Theme picker button -->
+    <button class="theme-btn" onclick="toggleThemePicker()" title="Change theme">◑</button>
+
+    <!-- Theme picker panel -->
+    <div class="theme-panel" id="themePanel">
+        <p style="color:var(--text-muted); font-size:0.75rem; letter-spacing:0.15rem; text-transform:uppercase; margin-bottom:12px;">theme</p>
+        <div class="theme-options">
+            <button class="theme-option" data-theme="default" onclick="setTheme('default')" title="Oneiric">🌙</button>
+            <button class="theme-option" data-theme="sakura" onclick="setTheme('sakura')" title="Sakura">🌸</button>
+            <button class="theme-option" data-theme="abyss" onclick="setTheme('abyss')" title="Abyss">🌊</button>
+            <button class="theme-option" data-theme="sage" onclick="setTheme('sage')" title="Sage">🌿</button>
+            <button class="theme-option" data-theme="noir" onclick="setTheme('noir')" title="Noir">🖤</button>
+        </div>
+    </div>
 
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
@@ -246,9 +398,9 @@
     <!-- Drawer -->
        <!-- Drawer -->
     <div class="drawer" id="drawer">
-        <h2>🌙 Oneiric</h2>
+                <h2><svg viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="var(--accent)" style="vertical-align:middle; margin-right:6px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Oneiric</h2>
         <div class="stars-divider">✦ ✧ ✦ ✧ ✦</div>
-        <a href="/chamber"> &nbsp;🌙 Your Chamber</a>
+                <a href="/chamber"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="var(--accent)" style="vertical-align:middle;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> &nbsp;Your chamber</a>
         <a href="/entries"> &nbsp;🎀 Browse Entries</a>
         <a href="/entries/new"> &nbsp;✏️ Write Something</a>
         <hr class="divider"/>
@@ -258,7 +410,7 @@
     </div>
     <!-- Main -->
     <div class="chamber">
-        <h1>🌙 Oneiric</h1>
+                <h1><svg viewBox="0 0 24 24" width="0.85em" height="0.85em" fill="var(--accent)" style="vertical-align:middle; margin-right:8px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Oneiric</h1>
         <p>Welcome Back, <span th:text="${username}"></span>.</p>
             <p>This is your Private Space. Your thoughts live here!</p>
         <p style="color:#555; font-size:0.85rem; margin-top:4px;">
@@ -287,23 +439,31 @@
         const h = canvas.height;
 
         function drawCloud(x, y, size) {
-            const circles = [
-                [0, 0, size],
-                [size*0.6, -size*0.2, size*0.75],
-                [-size*0.5, -size*0.1, size*0.7],
-                [size*0.2, -size*0.5, size*0.6],
-                [-size*0.2, -size*0.55, size*0.55],
-            ];
-            circles.forEach(([cx, cy, r]) => {
-                const g = ctx.createRadialGradient(x+cx, y+cy, 0, x+cx, y+cy, r);
-                g.addColorStop(0, `rgba(180,140,80,0.18)`);
-                g.addColorStop(1, `rgba(180,140,80,0)`);
-                ctx.fillStyle = g;
+            const r = getComputedStyle(document.documentElement).getPropertyValue('--cloud-r').trim() || '180';
+            const g = getComputedStyle(document.documentElement).getPropertyValue('--cloud-g').trim() || '140';
+            const b = getComputedStyle(document.documentElement).getPropertyValue('--cloud-b').trim() || '80';
+            [[0,0,size],[size*.6,-size*.2,size*.75],[-size*.5,-size*.1,size*.7],
+             [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
+            ].forEach(([cx,cy,r2]) => {
+                const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
+                grad.addColorStop(0,`rgba(${r},${g},${b},0.18)`);
+                grad.addColorStop(1,`rgba(${r},${g},${b},0)`);
+                ctx.fillStyle = grad;
                 ctx.beginPath();
-                ctx.arc(x+cx, y+cy, r, 0, Math.PI*2);
+                ctx.arc(x+cx, y+cy, r2, 0, Math.PI*2);
                 ctx.fill();
             });
         }
+
+        function drawScene() {
+            ctx.clearRect(0, 0, w, h);
+            drawCloud(0, h, 180); drawCloud(w*0.15, h, 140);
+            drawCloud(w, h, 180); drawCloud(w*0.85, h, 140);
+            drawCloud(0, 0, 160); drawCloud(w*0.12, 0, 120);
+            drawCloud(w, 0, 160); drawCloud(w*0.88, 0, 120);
+        }
+
+        drawScene();
 
         function drawSparkle(x, y, size, alpha) {
             ctx.save();
@@ -349,6 +509,39 @@
             `;
             container.appendChild(star);
         }
+        
+        // Theme system
+        function setTheme(theme) {
+            if (theme === 'default') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+            localStorage.setItem('oneiric-theme', theme);
+            document.querySelectorAll('.theme-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.theme === theme);
+            });
+            // Redraw clouds with theme color
+            drawScene();
+        }
+
+        function toggleThemePicker() {
+            document.getElementById('themePanel').classList.toggle('open');
+        }
+
+        // Close theme panel when clicking outside
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('themePanel');
+            const btn = document.querySelector('.theme-btn');
+            if (!panel.contains(e.target) && e.target !== btn) {
+                panel.classList.remove('open');
+            }
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('oneiric-theme') || 'default';
+        setTheme(savedTheme);
+        
     </script>
 
 </body>

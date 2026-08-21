@@ -1,12 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta charset="UTF-8">
+    <script>
+    // Apply saved theme immediately to prevent flash
+    (function() {
+        const t = localStorage.getItem('oneiric-theme');
+        if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
+    })();
+</script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Oneiric — a private space for your thoughts, feelings, memories, and dreams.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23c9a96e%22><path d=%22M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z%22/></svg>">
     <title>Oneiric — Your Secret Chamber</title>
     <style>
+    
+            :root {
+            --bg: #0d0d0d;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text: #e8e0d0;
+            --text-muted: #9e9589;
+            --text-subtle: #555;
+            --accent: #c9a96e;
+            --accent-hover: #b8935a;
+            --accent-dim: rgba(201,169,110,0.08);
+            --border: #2e2e2e;
+            --border-accent: rgba(201,169,110,0.2);
+            --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
+        }
+
+        [data-theme="sakura"] {
+            --bg: #fdf6f0;
+            --bg-secondary: #fff0f3;
+            --bg-tertiary: #ffe4ec;
+            --text: #4a3040;
+            --text-muted: #9e7080;
+            --text-subtle: #c4a0b0;
+            --accent: #e8829a;
+            --accent-hover: #d4607a;
+            --accent-dim: rgba(232,130,154,0.08);
+            --border: #f0c0d0;
+            --border-accent: rgba(232,130,154,0.3);
+            --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
+        }
+
+        [data-theme="abyss"] {
+            --bg: #050d1a;
+            --bg-secondary: #0a1628;
+            --bg-tertiary: #0f1e35;
+            --text: #c8d8f0;
+            --text-muted: #7090b8;
+            --text-subtle: #3a5070;
+            --accent: #7eb8e8;
+            --accent-hover: #5a9fd4;
+            --accent-dim: rgba(126,184,232,0.08);
+            --border: #1a2e48;
+            --border-accent: rgba(126,184,232,0.2);
+            --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
+        }
+
+        [data-theme="sage"] {
+            --bg: #f4f6f0;
+            --bg-secondary: #eaefe4;
+            --bg-tertiary: #dde5d4;
+            --text: #2d3828;
+            --text-muted: #6e8060;
+            --text-subtle: #a0b090;
+            --accent: #7a9e6e;
+            --accent-hover: #5e8050;
+            --accent-dim: rgba(122,158,110,0.08);
+            --border: #c8d8b8;
+            --border-accent: rgba(122,158,110,0.3);
+            --cloud-r: 122; --cloud-g: 158; --cloud-b: 110;
+        }
+
+        [data-theme="noir"] {
+            --bg: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #141414;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --text-subtle: #444444;
+            --accent: #ffffff;
+            --accent-hover: #cccccc;
+            --accent-dim: rgba(255,255,255,0.05);
+            --border: #222222;
+            --border-accent: rgba(255,255,255,0.15);
+            --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
+        }
+    
         :root {
             --gold: #c9a96e;
             --gold-hover: #b8935a;
