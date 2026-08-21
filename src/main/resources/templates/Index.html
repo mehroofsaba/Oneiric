@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Oneiric — a private space for your thoughts, feelings, memories, and dreams.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23c9a96e%22><path d=%22M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z%22/></svg>">
     <title>Oneiric — Your Secret Chamber</title>
     <style>
+        :root {
+            --gold: #c9a96e;
+            --gold-hover: #b8935a;
+            --gold-active: #a8824c;
+            --gold-light: #e8d5ae;
+            --bg: #0d0d0d;
+            --text: #e8e0d0;
+            --text-muted: #9e9589;
+            --text-subtle: #b3a894;
+            --border-muted: #4a4438;
+            --btn-secondary-text: #c9bfae;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         ::selection {
@@ -14,10 +28,11 @@
         }
 
         body {
-            background-color: #0d0d0d;
-            color: #e8e0d0;
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Georgia', serif;
             height: 100vh;
+            height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -30,6 +45,7 @@
             inset: 0;
             z-index: 0;
             pointer-events: none;
+            transition: transform 0.3s ease-out;
         }
 
         .stars {
@@ -37,11 +53,11 @@
             inset: 0;
             pointer-events: none;
             z-index: 1;
+            transition: transform 0.3s ease-out;
         }
 
         .star {
             position: absolute;
-            background: #c9a96e;
             border-radius: 50%;
             opacity: 0;
             animation: twinkle var(--duration) ease-in-out infinite var(--delay);
@@ -49,20 +65,27 @@
 
         @keyframes twinkle {
             0%, 100% { opacity: 0; transform: scale(0.8); }
-            50% { opacity: var(--opacity); transform: scale(1.2); }
+            50% { opacity: var(--opacity); transform: scale(1.15); }
+        }
+
+        .moon-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            transition: transform 0.3s ease-out;
         }
 
         .moon-deco {
-            position: fixed;
+            position: absolute;
             font-size: var(--size);
             opacity: 0.12;
             pointer-events: none;
-            z-index: 1;
             animation: float var(--fduration) ease-in-out infinite var(--fdelay);
         }
 
         .moon-deco.symbol {
-            color: #c9a96e;
+            color: var(--gold);
             font-family: Georgia, serif;
             line-height: 1;
         }
@@ -70,6 +93,12 @@
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(var(--rot)); }
             50% { transform: translateY(-12px) rotate(var(--rot)); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .star { animation: none; opacity: var(--opacity, 0.3); }
+            .moon-deco { animation: none; }
+            canvas, .stars, .moon-layer { transition: none !important; transform: none !important; }
         }
 
         .chamber {
@@ -81,7 +110,9 @@
             gap: 20px;
             text-align: center;
             padding: 0 24px;
+            margin-top: 32px;
             animation: riseIn 0.7s ease-out;
+            transition: transform 0.3s ease-out;
         }
 
         @keyframes riseIn {
@@ -94,6 +125,7 @@
             align-items: center;
             justify-content: center;
             gap: 18px;
+            margin-bottom: 10px;
         }
 
         .logo svg {
@@ -102,63 +134,81 @@
             flex-shrink: 0;
         }
 
-        h1 { font-size: 3.5rem; letter-spacing: 0.15rem; color: #c9a96e; font-weight: 600; }
-        p { font-size: 1.1rem; color: #9e9589; letter-spacing: 0.05rem; }
+        h1 { font-size: 3.5rem; letter-spacing: 0.15rem; color: var(--gold); font-weight: 600; }
+        p { font-size: 1.05rem; color: var(--text-muted); letter-spacing: 0.05rem; }
 
         .subtext {
             font-size: 0.9rem;
-            color: #948a7b;
+            color: var(--text-subtle);
             letter-spacing: 0.02rem;
             margin-top: -12px;
-            max-width: 420px;
+            max-width: 520px;
         }
 
         .actions { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
 
         a.btn {
             padding: 10px 28px;
-            background-color: #c9a96e;
-            color: #0d0d0d;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--gold);
+            color: var(--bg);
             border-radius: 6px;
             text-decoration: none;
             font-family: 'Georgia', serif;
             font-size: 0.95rem;
             border: 1px solid transparent;
             transition: all 0.2s ease;
-            display: inline-block;
         }
 
-        a.btn:hover {
-            background-color: #b8935a;
-            transform: translateY(-1px);
+        @media (hover: hover) {
+            a.btn:hover {
+                background-color: var(--gold-hover);
+                transform: translateY(-1px);
+            }
+            a.btn.secondary:hover {
+                border-color: var(--gold);
+                color: var(--gold);
+                background-color: rgba(201, 169, 110, 0.06);
+                transform: translateY(-1px);
+            }
         }
 
         a.btn:active {
             transform: translateY(0px) scale(0.97);
-            background-color: #a8824c;
+            background-color: var(--gold-active);
         }
 
         a.btn:focus-visible {
-            outline: 2px solid #e8d5ae;
+            outline: 2px solid var(--gold-light);
             outline-offset: 3px;
         }
 
         a.btn.secondary {
             background-color: transparent;
-            border: 1px solid #4a4438;
-            color: #c9bfae;
-        }
-
-        a.btn.secondary:hover {
-            border-color: #c9a96e;
-            color: #c9a96e;
-            background-color: rgba(201, 169, 110, 0.06);
-            transform: translateY(-1px);
+            border: 1px solid var(--border-muted);
+            color: var(--btn-secondary-text);
         }
 
         a.btn.secondary:active {
             transform: translateY(0px) scale(0.97);
             background-color: rgba(201, 169, 110, 0.12);
+        }
+
+        .footer-note {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-subtle);
+            opacity: 0.6;
+            letter-spacing: 0.03rem;
+            z-index: 2;
+            pointer-events: none;
         }
 
         @media (max-width: 600px) {
@@ -176,23 +226,18 @@
     <canvas id="bg"></canvas>
     <div class="stars" id="stars"></div>
 
-    <!-- Crescent moon, top-left -->
-    <div class="moon-deco" style="top:8%; left:5%; --size:5rem; --fduration:7s; --fdelay:0s; --rot:-20deg;">
-        <svg viewBox="0 0 24 24" width="1em" height="1em" fill="#c9a96e">
-            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-        </svg>
+    <div class="moon-layer" id="moonLayer">
+        <div class="moon-deco" style="top:8%; left:5%; --size:5rem; --fduration:7s; --fdelay:0s; --rot:-20deg;">
+            <svg viewBox="0 0 24 24" width="1em" height="1em" fill="#c9a96e">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+            </svg>
+        </div>
+        <div class="moon-deco symbol" style="top:15%; right:6%; --size:2.2rem; --fduration:9s; --fdelay:2s; --rot:15deg;">✦</div>
+        <div class="moon-deco symbol" style="bottom:10%; left:8%; --size:3.6rem; --fduration:8s; --fdelay:1s; --rot:10deg;">◐</div>
+        <div class="moon-deco symbol" style="bottom:18%; right:5%; --size:1.8rem; --fduration:11s; --fdelay:3s; --rot:-10deg;">✧</div>
     </div>
 
-    <!-- Star accent, top-right -->
-    <div class="moon-deco symbol" style="top:15%; right:6%; --size:2.2rem; --fduration:9s; --fdelay:2s; --rot:15deg;">✦</div>
-
-    <!-- Half-moon, bottom-left -->
-    <div class="moon-deco symbol" style="bottom:10%; left:8%; --size:3.6rem; --fduration:8s; --fdelay:1s; --rot:10deg;">◐</div>
-
-    <!-- Small star, bottom-right -->
-    <div class="moon-deco symbol" style="bottom:18%; right:5%; --size:1.8rem; --fduration:11s; --fdelay:3s; --rot:-10deg;">✧</div>
-
-    <div class="chamber">
+    <div class="chamber" id="chamber">
         <div class="logo">
             <svg viewBox="0 0 24 24" fill="#c9a96e">
                 <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
@@ -207,14 +252,25 @@
         </div>
     </div>
 
+    <div class="footer-note">A space that belongs to you.</div>
+
     <script>
-        // Golden clouds
         const canvas = document.getElementById('bg');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const w = canvas.width;
-        const h = canvas.height;
+
+        // ---------- Randomness helpers ----------
+        function rand(min, max) { return Math.random() * (max - min) + min; }
+
+        // Sum of uniforms -> soft bell curve, used to bias values toward center of a range
+        function softRand(min, max, samples = 3) {
+            let sum = 0;
+            for (let i = 0; i < samples; i++) sum += Math.random();
+            return min + (sum / samples) * (max - min);
+        }
+
+        // A palette of gold tones so not every star is identical
+        const GOLD_TONES = ['#c9a96e', '#d4b483', '#b8935a', '#e2c99a', '#c2a878'];
+        const BRIGHT_TONES = ['#f5efe3', '#fff8e7', '#eadfc4'];
 
         function drawCloud(x, y, size, alpha) {
             const circles = [
@@ -235,10 +291,10 @@
             });
         }
 
-        function drawSparkle(x, y, size, alpha) {
+        function drawSparkle(x, y, size, alpha, color = '201,169,110') {
             ctx.save();
             ctx.globalAlpha = alpha;
-            ctx.strokeStyle = `rgba(201,169,110,${alpha})`;
+            ctx.strokeStyle = `rgba(${color},${alpha})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(x, y-size); ctx.lineTo(x, y+size);
@@ -249,37 +305,129 @@
             ctx.restore();
         }
 
-        // Corner clouds — sizes and alpha reduced ~25% for a subtler glow
-        drawCloud(0, h, 135, 0.13);
-        drawCloud(w*0.15, h, 105, 0.13);
-        drawCloud(w, h, 135, 0.13);
-        drawCloud(w*0.85, h, 105, 0.13);
-        drawCloud(0, 0, 120, 0.13);
-        drawCloud(w*0.12, 0, 90, 0.13);
-        drawCloud(w, 0, 120, 0.13);
-        drawCloud(w*0.88, 0, 90, 0.13);
+        function drawScene() {
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
 
-        // Sparkles
-        [[w*0.1,h*0.2,5],[w*0.9,h*0.15,4],[w*0.05,h*0.7,6],
-         [w*0.95,h*0.75,5],[w*0.2,h*0.05,4],[w*0.8,h*0.08,6],
-         [w*0.15,h*0.92,5],[w*0.85,h*0.9,4],[w*0.5,h*0.03,3],
-         [w*0.3,h*0.97,4],[w*0.7,h*0.95,5],[w*0.02,h*0.45,4]
-        ].forEach(([x,y,s]) => drawSparkle(x, y, s, 0.6));
+            drawCloud(0, h, 135, 0.13);
+            drawCloud(w*0.15, h, 105, 0.13);
+            drawCloud(w, h, 135, 0.13);
+            drawCloud(w*0.85, h, 105, 0.13);
+            drawCloud(0, 0, 120, 0.13);
+            drawCloud(w*0.12, 0, 90, 0.13);
+            drawCloud(w, 0, 120, 0.13);
+            drawCloud(w*0.88, 0, 90, 0.13);
 
-        // Twinkling stars
-        const container = document.getElementById('stars');
-        for (let i = 0; i < 45; i++) {
+            // Sparkles: randomized count, position, size, alpha, and a touch of color variance
+            const sparkleCount = Math.floor(rand(11, 15));
+            for (let i = 0; i < sparkleCount; i++) {
+                const x = rand(0, w);
+                const y = rand(0, h);
+                const size = softRand(2.5, 6.5);
+                const alpha = softRand(0.35, 0.75);
+                drawSparkle(x, y, size, alpha);
+            }
+        }
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drawScene();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // ---------- Twinkling stars (Layer 1) — organic distribution ----------
+        const starsContainer = document.getElementById('stars');
+        const STAR_COUNT = 55;
+
+        // A handful of loose "cluster centers" so stars clump unevenly
+        // instead of scattering in a perfectly uniform grid-like way.
+        const clusterCount = Math.floor(rand(4, 7));
+        const clusters = Array.from({ length: clusterCount }, () => ({
+            top: rand(5, 95),
+            left: rand(5, 95),
+            spread: rand(10, 26),
+        }));
+
+        for (let i = 0; i < STAR_COUNT; i++) {
             const star = document.createElement('div');
             star.classList.add('star');
-            const size = Math.random() * 2.5 + 1;
-            star.style.cssText = `
+
+            // ~65% of stars are pulled loosely toward a cluster center,
+            // ~35% scatter fully at random for background fill.
+            let top, left;
+            if (Math.random() < 0.65) {
+                const c = clusters[Math.floor(Math.random() * clusters.length)];
+                top = Math.min(98, Math.max(1, c.top + (softRand(-1, 1, 3) * c.spread)));
+                left = Math.min(98, Math.max(1, c.left + (softRand(-1, 1, 3) * c.spread)));
+            } else {
+                top = rand(0, 100);
+                left = rand(0, 100);
+            }
+
+            // Size distribution weighted toward small stars, with rare larger ones
+            const sizeRoll = Math.random();
+            let size, isHero = false;
+            if (sizeRoll > 0.94) {
+                // ~6% hero stars: noticeably bigger and brighter
+                size = rand(3, 4.2);
+                isHero = true;
+            } else if (sizeRoll > 0.75) {
+                size = rand(2, 2.8);
+            } else {
+                size = rand(0.8, 1.8);
+            }
+
+            const opacity = isHero ? rand(0.75, 1) : softRand(0.08, 0.55);
+            const color = isHero
+                ? BRIGHT_TONES[Math.floor(Math.random() * BRIGHT_TONES.length)]
+                : GOLD_TONES[Math.floor(Math.random() * GOLD_TONES.length)];
+
+            star.style.background = color;
+            if (isHero) {
+                star.style.boxShadow = `0 0 ${size * 2}px rgba(245, 239, 227, 0.5)`;
+            }
+
+            star.style.cssText += `
                 width:${size}px; height:${size}px;
-                top:${Math.random()*100}%; left:${Math.random()*100}%;
-                --duration:${Math.random()*4+2}s;
-                --delay:${Math.random()*5}s;
-                --opacity:${Math.random()*0.5+0.1};
+                top:${top}%; left:${left}%;
+                --duration:${rand(2, 6)}s;
+                --delay:${rand(0, 6)}s;
+                --opacity:${opacity};
             `;
-            container.appendChild(star);
+            starsContainer.appendChild(star);
+        }
+
+        // ---------- Parallax depth on mouse move ----------
+        const moonLayer = document.getElementById('moonLayer');
+        const chamber = document.getElementById('chamber');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (!prefersReducedMotion) {
+            let targetX = 0, targetY = 0;
+            let currentX = 0, currentY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+                targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+            });
+
+            function animateParallax() {
+                currentX += (targetX - currentX) * 0.05;
+                currentY += (targetY - currentY) * 0.05;
+
+                canvas.style.transform = `translate(${currentX * 4}px, ${currentY * 4}px)`;
+                document.getElementById('stars').style.transform = `translate(${currentX * 4}px, ${currentY * 4}px)`;
+                moonLayer.style.transform = `translate(${currentX * 14}px, ${currentY * 14}px)`;
+                chamber.style.transform = `translate(${currentX * -3}px, ${currentY * -3}px)`;
+
+                requestAnimationFrame(animateParallax);
+            }
+
+            requestAnimationFrame(animateParallax);
         }
     </script>
 </body>
