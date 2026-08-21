@@ -2,9 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23c9a96e%22><path d=%22M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z%22/></svg>">
     <title>Oneiric — Your Secret Chamber</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        ::selection {
+            background: rgba(201, 169, 110, 0.35);
+            color: #f5efe3;
+        }
 
         body {
             background-color: #0d0d0d;
@@ -48,10 +55,16 @@
         .moon-deco {
             position: fixed;
             font-size: var(--size);
-            opacity: 0.07;
+            opacity: 0.12;
             pointer-events: none;
             z-index: 1;
             animation: float var(--fduration) ease-in-out infinite var(--fdelay);
+        }
+
+        .moon-deco.symbol {
+            color: #c9a96e;
+            font-family: Georgia, serif;
+            line-height: 1;
         }
 
         @keyframes float {
@@ -67,12 +80,40 @@
             align-items: center;
             gap: 20px;
             text-align: center;
+            padding: 0 24px;
+            animation: riseIn 0.7s ease-out;
         }
 
-        h1 { font-size: 3.5rem; letter-spacing: 0.3rem; color: #c9a96e; }
+        @keyframes riseIn {
+            0% { opacity: 0; transform: translateY(16px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .logo svg {
+            width: 3rem;
+            height: 3rem;
+            flex-shrink: 0;
+        }
+
+        h1 { font-size: 3.5rem; letter-spacing: 0.15rem; color: #c9a96e; font-weight: 600; }
         p { font-size: 1.1rem; color: #9e9589; letter-spacing: 0.05rem; }
 
-        .actions { display: flex; gap: 16px; margin-top: 12px; }
+        .subtext {
+            font-size: 0.9rem;
+            color: #948a7b;
+            letter-spacing: 0.02rem;
+            margin-top: -12px;
+            max-width: 420px;
+        }
+
+        .actions { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
 
         a.btn {
             padding: 10px 28px;
@@ -82,17 +123,52 @@
             text-decoration: none;
             font-family: 'Georgia', serif;
             font-size: 0.95rem;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            display: inline-block;
         }
 
-        a.btn:hover { background-color: #b8935a; }
+        a.btn:hover {
+            background-color: #b8935a;
+            transform: translateY(-1px);
+        }
+
+        a.btn:active {
+            transform: translateY(0px) scale(0.97);
+            background-color: #a8824c;
+        }
+
+        a.btn:focus-visible {
+            outline: 2px solid #e8d5ae;
+            outline-offset: 3px;
+        }
 
         a.btn.secondary {
             background-color: transparent;
-            border: 1px solid #2e2e2e;
-            color: #9e9589;
+            border: 1px solid #4a4438;
+            color: #c9bfae;
         }
 
-        a.btn.secondary:hover { border-color: #c9a96e; color: #c9a96e; }
+        a.btn.secondary:hover {
+            border-color: #c9a96e;
+            color: #c9a96e;
+            background-color: rgba(201, 169, 110, 0.06);
+            transform: translateY(-1px);
+        }
+
+        a.btn.secondary:active {
+            transform: translateY(0px) scale(0.97);
+            background-color: rgba(201, 169, 110, 0.12);
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.4rem; }
+            .logo svg { width: 2.2rem; height: 2.2rem; }
+            p { font-size: 0.95rem; }
+            .subtext { font-size: 0.82rem; max-width: 300px; }
+            .actions { flex-direction: column; width: 100%; max-width: 280px; }
+            a.btn { width: 100%; text-align: center; padding: 12px 20px; }
+        }
     </style>
 </head>
 <body>
@@ -100,17 +176,34 @@
     <canvas id="bg"></canvas>
     <div class="stars" id="stars"></div>
 
-    <div class="moon-deco" style="top:8%; left:5%; --size:5rem; --fduration:7s; --fdelay:0s; --rot:-20deg;">🌙</div>
-    <div class="moon-deco" style="top:15%; right:6%; --size:3rem; --fduration:9s; --fdelay:2s; --rot:15deg;">🌙</div>
-    <div class="moon-deco" style="bottom:10%; left:8%; --size:4rem; --fduration:8s; --fdelay:1s; --rot:10deg;">🌙</div>
-    <div class="moon-deco" style="bottom:18%; right:5%; --size:2.5rem; --fduration:11s; --fdelay:3s; --rot:-10deg;">🌙</div>
+    <!-- Crescent moon, top-left -->
+    <div class="moon-deco" style="top:8%; left:5%; --size:5rem; --fduration:7s; --fdelay:0s; --rot:-20deg;">
+        <svg viewBox="0 0 24 24" width="1em" height="1em" fill="#c9a96e">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+        </svg>
+    </div>
+
+    <!-- Star accent, top-right -->
+    <div class="moon-deco symbol" style="top:15%; right:6%; --size:2.2rem; --fduration:9s; --fdelay:2s; --rot:15deg;">✦</div>
+
+    <!-- Half-moon, bottom-left -->
+    <div class="moon-deco symbol" style="bottom:10%; left:8%; --size:3.6rem; --fduration:8s; --fdelay:1s; --rot:10deg;">◐</div>
+
+    <!-- Small star, bottom-right -->
+    <div class="moon-deco symbol" style="bottom:18%; right:5%; --size:1.8rem; --fduration:11s; --fdelay:3s; --rot:-10deg;">✧</div>
 
     <div class="chamber">
-        <h1>🌙 Oneiric</h1>
+        <div class="logo">
+            <svg viewBox="0 0 24 24" fill="#c9a96e">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+            </svg>
+            <h1>Oneiric</h1>
+        </div>
         <p>The Secret Chamber Awaits.</p>
+        <p class="subtext">A private space for your thoughts, feelings, memories, and dreams.</p>
         <div class="actions">
-            <a href="/login" class="btn">→_→ Enter Oneiric</a>
-            <a href="/register" class="btn secondary">←_← Create Chamber</a>
+            <a href="/login" class="btn">Enter the Chamber</a>
+            <a href="/register" class="btn secondary">Create Your Chamber</a>
         </div>
     </div>
 
@@ -133,7 +226,7 @@
             ];
             circles.forEach(([cx, cy, r]) => {
                 const g = ctx.createRadialGradient(x+cx, y+cy, 0, x+cx, y+cy, r);
-                g.addColorStop(0, `rgba(180,140,80,0.18)`);
+                g.addColorStop(0, `rgba(180,140,80,${alpha})`);
                 g.addColorStop(1, `rgba(180,140,80,0)`);
                 ctx.fillStyle = g;
                 ctx.beginPath();
@@ -156,15 +249,15 @@
             ctx.restore();
         }
 
-        // Corner clouds
-        drawCloud(0, h, 180, 1);
-        drawCloud(w*0.15, h, 140, 1);
-        drawCloud(w, h, 180, 1);
-        drawCloud(w*0.85, h, 140, 1);
-        drawCloud(0, 0, 160, 1);
-        drawCloud(w*0.12, 0, 120, 1);
-        drawCloud(w, 0, 160, 1);
-        drawCloud(w*0.88, 0, 120, 1);
+        // Corner clouds — sizes and alpha reduced ~25% for a subtler glow
+        drawCloud(0, h, 135, 0.13);
+        drawCloud(w*0.15, h, 105, 0.13);
+        drawCloud(w, h, 135, 0.13);
+        drawCloud(w*0.85, h, 105, 0.13);
+        drawCloud(0, 0, 120, 0.13);
+        drawCloud(w*0.12, 0, 90, 0.13);
+        drawCloud(w, 0, 120, 0.13);
+        drawCloud(w*0.88, 0, 90, 0.13);
 
         // Sparkles
         [[w*0.1,h*0.2,5],[w*0.9,h*0.15,4],[w*0.05,h*0.7,6],
@@ -175,7 +268,7 @@
 
         // Twinkling stars
         const container = document.getElementById('stars');
-        for (let i = 0; i < 80; i++) {
+        for (let i = 0; i < 45; i++) {
             const star = document.createElement('div');
             star.classList.add('star');
             const size = Math.random() * 2.5 + 1;
