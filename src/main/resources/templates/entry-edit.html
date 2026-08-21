@@ -203,6 +203,52 @@ body {
         }
 
         button:hover { background-color: #b8935a; }
+        
+        .nav-links {
+    display: flex;
+    gap: 16px;
+}
+
+.nav-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    min-width: 140px;
+    box-sizing: border-box;
+    text-align: center;
+    letter-spacing: 0.05rem;
+}
+
+.nav-links a.chamber-link {
+    background-color: #1a1a1a;
+    color: #8a8175;
+    font-size: 0.95rem;
+}
+
+.nav-links a.chamber-link:hover {
+    color: #c9a96e;
+    border-color: #c9a96e;
+    box-shadow: 0 0 12px rgba(201, 169, 110, 0.25);
+}
+
+.nav-links a.btn {
+    background-color: #c9a96e;
+    color: #0d0d0d;
+}
+
+.nav-links a.btn:hover {
+    background-color: #b8935a;
+    border-color: #c9a96e;
+    box-shadow: 0 0 12px rgba(201, 169, 110, 0.35);
+}
+        
     </style>
 </head>
 <body>
@@ -213,13 +259,13 @@ body {
 <div class="corner-moon top-left">🌙</div>
 <div class="corner-moon bottom-right">🌙</div>
 
-    <div class="header">
-        <h1>🌙 Edit</h1>
-                <div style="display:flex; gap:16px;">
-                        <a href="/chamber" style="padding:8px 20px; background-color:#1a1a1a; color:#9e9589; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">🌙 Chamber</a>
-                        <a href="/entries" style="padding:8px 20px; background-color:#c9a96e; color:#0d0d0d; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">^_~ Entries</a>
-        </div>
+  <div class="header">
+    <h1>🌙 Edit</h1>
+    <div class="nav-links">
+        <a href="/chamber" class="chamber-link">🌙 Chamber</a>
+        <a href="/entries" class="btn">💖 Entries</a>
     </div>
+</div>
     <p style="text-align:center; color:#555; font-size:0.8rem; margin-bottom:8px;">
         Last edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
     </p>

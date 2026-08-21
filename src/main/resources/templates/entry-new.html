@@ -149,28 +149,95 @@
 
         button:hover { background-color: #b8935a; }
 
-        .mood-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            background-color: #1a1a1a;
-            border: 1px solid #2e2e2e;
-            border-radius: 20px;
-            color: #9e9589;
-            font-family: 'Georgia', serif;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+      .mood-group-label {
+    color: #9e9589;
+    font-size: 1rem;
+    align-self: center;
+    letter-spacing: 0.03rem;
+}
 
-        .mood-label:hover { border-color: #c9a96e; color: #c9a96e; }
-        .mood-label input[type="radio"] { display: none; }
-        .mood-label:has(input:checked) {
-            border-color: #c9a96e;
-            color: #c9a96e;
-            background-color: #1e1a0e;
-        }
+.mood-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 12px;
+    background-color: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 18px;
+    font-family: 'Georgia', serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.mood-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+    padding: 8px 0;
+    width: 100%;
+}
+
+.mood-label:hover { border-color: #c9a96e; }
+.mood-label input[type="radio"] { display: none; }
+.mood-label:has(input:checked) {
+    border-color: #c9a96e;
+    background-color: #1e1a0e;
+}
+
+.mood-label.happy .face,    .mood-label.happy .mood-text    { color: #ffd9a0; }
+.mood-label.calm .face,     .mood-label.calm .mood-text     { color: #a8e0d0; }
+.mood-label.sad .face,      .mood-label.sad .mood-text      { color: #a8c8f0; }
+.mood-label.anxious .face,  .mood-label.anxious .mood-text  { color: #d8b0e8; }
+.mood-label.angry .face,    .mood-label.angry .mood-text    { color: #f0a8a8; }
+.mood-label.lonely .face,   .mood-label.lonely .mood-text   { color: #b0b8d8; }
+.mood-label.excited .face,  .mood-label.excited .mood-text  { color: #ffcfa0; }
+.mood-label.confused .face, .mood-label.confused .mood-text { color: #d0d0a0; }
+.mood-label.neutral .face,  .mood-label.neutral .mood-text  { color: #c0c0c0; }
+.mood-label.bored .face, .mood-label.bored .mood-text { color: #b8a8c8; }
+        
+        .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    min-width: 140px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.nav-links a.chamber-link {
+    background-color: #1a1a1a;
+    color: #8a8175;
+    font-size: 0.95rem;
+}
+
+.nav-links a.chamber-link:hover {
+    color: #c9a96e;
+    border-color: #c9a96e;
+    box-shadow: 0 0 12px rgba(201, 169, 110, 0.25);
+}
+
+
+.nav-links a.btn {
+    background-color: #c9a96e;
+    color: #0d0d0d;
+}
+
+.nav-links a.btn:hover {
+    background-color: #b8935a;
+    border-color: #c9a96e;
+    box-shadow: 0 0 12px rgba(201, 169, 110, 0.35);
+}
+        
     </style>
 </head>
 <body>
@@ -192,29 +259,32 @@
     <div class="deco-star" style="bottom:60px; right:80px; --sz:0.7rem; --dur:4s; --del:2s;">✦</div>
     <div class="deco-star" style="top:50%; left:52px; --sz:0.5rem; --dur:5s; --del:1s;">·</div>
     <div class="deco-star" style="top:50%; right:52px; --sz:0.5rem; --dur:5s; --del:2s;">·</div>
-    <div class="header">
-        <h1>🌙 Write</h1>
-                <div style="display:flex; gap:16px;">
-                        <a href="/chamber" style="padding:8px 20px; background-color:#1a1a1a; color:#9e9589; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">🌙 Chamber</a>
-                       <a href="/entries" style="padding:8px 20px; background-color:#c9a96e; color:#0d0d0d; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem; letter-spacing:0.05rem;">^_~ Entries</a>
-        </div>
+ <div class="header">
+    <h1>🌙 Write</h1>
+    <div class="nav-links">
+        <a href="/chamber" class="chamber-link">🌙 Chamber</a>
+        <a href="/entries" class="btn">💖 Entries</a>
     </div>
+</div>
 
     <form class="editor" method="post" action="/entries/new">
-        <input type="text" name="title" placeholder="give it a title..." required />
-                <div style="display:flex; flex-wrap:wrap; gap:10px; padding:8px 0;">
-            <span style="color:#555; font-size:0.85rem; align-self:center;">mood:</span>
-            <label class="mood-label"><input type="radio" name="mood" value="happy"> (❁´◡`❁) happy</label>
-            <label class="mood-label"><input type="radio" name="mood" value="calm"> ^_^ calm</label>
-            <label class="mood-label"><input type="radio" name="mood" value="sad"> ＞︿＜ sad</label>
-            <label class="mood-label"><input type="radio" name="mood" value="anxious"> ＞﹏＜ anxious</label>
-            <label class="mood-label"><input type="radio" name="mood" value="angry"> (╬▔皿▔)╯ angry</label>
-            <label class="mood-label"><input type="radio" name="mood" value="lonely"> (´。＿。｀) lonely</label>
-            <label class="mood-label"><input type="radio" name="mood" value="excited"> (≧∀≦)ゞ excited</label>
-            <label class="mood-label"><input type="radio" name="mood" value="confused"> *-* confused</label>
-            <label class="mood-label"><input type="radio" name="mood" value="neutral"> ^_____^ neutral</label>
-        </div>
-        <textarea name="content" placeholder="what's on your mind..."></textarea>
+        <input type="text" name="title" placeholder="Give it a Title..." required />
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+    <span class="mood-group-label">Mood:</span>
+</div>
+<div class="mood-row">
+    <label class="mood-label happy"><input type="radio" name="mood" value="happy"><span class="face">(❁´◡`❁)</span> <span class="mood-text">Happy</span></label>
+    <label class="mood-label calm"><input type="radio" name="mood" value="calm"><span class="face">^_^</span> <span class="mood-text">Calm</span></label>
+    <label class="mood-label sad"><input type="radio" name="mood" value="sad"><span class="face">＞︿＜</span> <span class="mood-text">Sad</span></label>
+    <label class="mood-label anxious"><input type="radio" name="mood" value="anxious"><span class="face">＞﹏＜</span> <span class="mood-text">Anxious</span></label>
+    <label class="mood-label angry"><input type="radio" name="mood" value="angry"><span class="face">(╬▔皿▔)╯</span> <span class="mood-text">Angry</span></label>
+    <label class="mood-label lonely"><input type="radio" name="mood" value="lonely"><span class="face">(´。＿。｀)</span> <span class="mood-text">Lonely</span></label>
+    <label class="mood-label excited"><input type="radio" name="mood" value="excited"><span class="face">(≧∀≦)ゞ</span> <span class="mood-text">Excited</span></label>
+    <label class="mood-label confused"><input type="radio" name="mood" value="confused"><span class="face">*-*</span> <span class="mood-text">Confused</span></label>
+    <label class="mood-label neutral"><input type="radio" name="mood" value="neutral"><span class="face">^_____^</span> <span class="mood-text">Neutral</span></label>
+    <label class="mood-label bored"><input type="radio" name="mood" value="bored"><span class="face">–_–</span> <span class="mood-text">Bored</span></label>
+</div>
+        <textarea name="content" placeholder="What's on your mind..."></textarea>
         <button type="submit">Save to Chamber</button>
     </form>
 </body>

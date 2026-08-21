@@ -150,6 +150,131 @@
         button.delete:hover { text-decoration: underline; }
 
         .nav-links { display: flex; gap: 12px; }
+        
+        /* Delete confirmation modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background-color: #111111;
+    border: 1px solid #2e2e2e;
+    border-radius: 10px;
+    padding: 32px;
+    max-width: 380px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(201, 169, 110, 0.08);
+}
+
+.modal-box h3 {
+    color: #c9a96e;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    letter-spacing: 0.05rem;
+}
+
+.modal-box p {
+    color: #9e9589;
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 10px 24px;
+    border-radius: 20px;
+    border: none;
+    font-family: 'Georgia', serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.modal-btn.cancel {
+    background-color: #1a1a1a;
+    color: #9e9589;
+}
+
+.modal-btn.cancel:hover { background-color: #222; }
+
+.modal-btn.confirm {
+    background-color: #c97070;
+    color: #0d0d0d;
+}
+
+.modal-btn.confirm:hover { background-color: #b85f5f; }
+        
+        .modal-btn.cancel {
+    background-color: #1a1a1a;
+    color: #9e9589;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.modal-btn.cancel:hover,
+.modal-btn.cancel:focus,
+.modal-btn.cancel:active {
+    background-color: #1a1a1a;
+    color: #c9a96e;
+    border: 1px solid #c9a96e;
+}
+
+.nav-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    min-width: 140px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.nav-links a.chamber-link {
+    background-color: #1a1a1a;
+    color: #8a8175;
+    font-size: 0.95rem;
+}
+
+.nav-links a.chamber-link:hover {
+    color: #c9a96e;
+    border-color: #c9a96e;
+    box-shadow: 0 0 12px rgba(201, 169, 110, 0.25);
+}
+
+
+.nav-links a.btn {
+    background-color: #c9a96e;
+    color: #0d0d0d;
+}
+
+.nav-links a.btn:hover {
+    background-color: #b8935a;
+    border-color: #c9a96e;
+    box-shadow: 0 0 12px rgba(201, 169, 110, 0.35);
+}
+        
     </style>
 </head>
 <body>
@@ -182,8 +307,8 @@
     <div class="header">
         <h1>🌙 Your Entries</h1>
         <div class="nav-links">
-            <a href="/chamber" style="padding:8px 20px; background-color:#1a1a1a; color:#9e9589; border-radius:20px; text-decoration:none; font-family:'Georgia',serif; font-size:0.85rem;">🌙 Chamber</a>
-            <a href="/entries/new" class="btn">✏️ Write something</a>
+             <a href="/chamber" class="chamber-link">🌙 Chamber</a>
+             <a href="/entries/new" class="btn">✏️ Write something</a>
         </div>
     </div>
 
@@ -209,14 +334,15 @@
                 <span th:case="'excited'">(≧∀≦)ゞ Excited</span>
                 <span th:case="'confused'">*-* Confused</span>
                 <span th:case="'neutral'">^_____^ Neutral</span>
+                <span th:case="'bored'">–_– Bored</span>
             </span>
         </p>
         <p class="preview" th:text="${#strings.abbreviate(entry.content, 150)}"></p>
         <div class="entry-actions">
             <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="edit">✨ Edit</a>
-            <form class="delete-form" th:action="@{/entries/{id}/delete(id=${entry.id})}" method="post">
-                <button class="delete" type="submit">:( Delete</button>
-            </form>
+             <form class="delete-form" th:action="@{/entries/{id}/delete(id=${entry.id})}" method="post" onsubmit="return false;" th:attr="data-entry-id=${entry.id}">
+             <button class="delete" type="button" th:onclick="'confirmDelete(this)'">:( Delete</button>
+             </form>
         </div>
     </div>
 
@@ -249,6 +375,42 @@
         // Small cloud bottom right
         drawCloud(w, h, 100);
     </script>
+    
+    <script>
+    let formToDelete = null;
+
+    function confirmDelete(button) {
+        formToDelete = button.closest('form');
+        document.getElementById('deleteModal').classList.add('active');
+    }
+
+    function closeDeleteModal() {
+        formToDelete = null;
+        document.getElementById('deleteModal').classList.remove('active');
+    }
+
+    function submitDelete() {
+        if (formToDelete) {
+            formToDelete.submit();
+        }
+    }
+
+    // Close modal on overlay click (outside the box)
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+        if (e.target === this) closeDeleteModal();
+    });
+</script>
+
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal-box">
+        <h3>🌙 Let this thought go?</h3>
+        <p>This entry will be deleted permanently and cannot be recovered.</p>
+        <div class="modal-actions">
+            <button class="modal-btn cancel" onclick="closeDeleteModal()">Keep it</button>
+            <button class="modal-btn confirm" onclick="submitDelete()">Delete</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
