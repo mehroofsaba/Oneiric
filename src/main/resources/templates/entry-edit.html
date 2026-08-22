@@ -3,16 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <script>
-    // Apply saved theme immediately to prevent flash
-    (function() {
-        const t = localStorage.getItem('oneiric-theme');
-        if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
-    })();
-</script>
+        (function() {
+            const t = localStorage.getItem('oneiric-theme');
+            if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
     <title>Oneiric — Edit</title>
     <style>
+    .border-deco {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.border-moon {
+    position: fixed;
+    font-size: 2.2rem;
+    opacity: 0.12;
+    color: var(--accent);
+    pointer-events: none;
+    z-index: 0;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-8deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.border-star {
+    position: fixed;
+    color: var(--accent);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+    animation: twinkle 4s ease-in-out infinite;
+}
     
-            :root {
+        :root {
             --bg: #0d0d0d;
             --bg-secondary: #111111;
             --bg-tertiary: #1a1a1a;
@@ -28,215 +57,120 @@
         }
 
         [data-theme="sakura"] {
-            --bg: #fdf6f0;
-            --bg-secondary: #fff0f3;
-            --bg-tertiary: #ffe4ec;
-            --text: #4a3040;
-            --text-muted: #9e7080;
-            --text-subtle: #c4a0b0;
-            --accent: #e8829a;
-            --accent-hover: #d4607a;
+            --bg: #fdf6f0; --bg-secondary: #fff0f3; --bg-tertiary: #ffe4ec;
+            --text: #4a3040; --text-muted: #9e7080; --text-subtle: #c4a0b0;
+            --accent: #e8829a; --accent-hover: #d4607a;
             --accent-dim: rgba(232,130,154,0.08);
-            --border: #f0c0d0;
-            --border-accent: rgba(232,130,154,0.3);
-            --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
+            --border: #f0c0d0; --border-accent: rgba(232,130,154,0.3);
+                        --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
         }
 
         [data-theme="abyss"] {
-            --bg: #050d1a;
-            --bg-secondary: #0a1628;
-            --bg-tertiary: #0f1e35;
-            --text: #c8d8f0;
-            --text-muted: #7090b8;
-            --text-subtle: #3a5070;
-            --accent: #7eb8e8;
-            --accent-hover: #5a9fd4;
-            --accent-dim: rgba(126,184,232,0.08);
-            --border: #1a2e48;
-            --border-accent: rgba(126,184,232,0.2);
-            --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
+            --bg: #050d1a; --bg-secondary: #0a1628; --bg-tertiary: #0f1e35;
+            --text: #c8d8f0; --text-muted: #7090b8; --text-subtle: #3a5070;
+            --accent: #c9a96e; --accent-hover: #b8935a;
+            --accent-dim: rgba(201,169,110,0.12);
+            --border: #1a2e48; --border-accent: rgba(201,169,110,0.25);
+                        --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
         }
 
         [data-theme="sage"] {
-            --bg: #f4f6f0;
-            --bg-secondary: #eaefe4;
-            --bg-tertiary: #dde5d4;
-            --text: #2d3828;
-            --text-muted: #6e8060;
-            --text-subtle: #a0b090;
-            --accent: #7a9e6e;
-            --accent-hover: #5e8050;
+            --bg: #f4f6f0; --bg-secondary: #eaefe4; --bg-tertiary: #dde5d4;
+            --text: #2d3828; --text-muted: #6e8060; --text-subtle: #a0b090;
+            --accent: #7a9e6e; --accent-hover: #5e8050;
             --accent-dim: rgba(122,158,110,0.08);
-            --border: #c8d8b8;
-            --border-accent: rgba(122,158,110,0.3);
-            --cloud-r: 122; --cloud-g: 158; --cloud-b: 110;
+            --border: #c8d8b8; --border-accent: rgba(122,158,110,0.3);
+                        --cloud-r: 122; --cloud-g: 158; --cloud-b: 110;
         }
 
         [data-theme="noir"] {
-            --bg: #000000;
-            --bg-secondary: #0a0a0a;
-            --bg-tertiary: #141414;
-            --text: #ffffff;
-            --text-muted: #888888;
-            --text-subtle: #444444;
-            --accent: #ffffff;
-            --accent-hover: #cccccc;
+            --bg: #000000; --bg-secondary: #0a0a0a; --bg-tertiary: #141414;
+            --text: #ffffff; --text-muted: #888888; --text-subtle: #444444;
+            --accent: #ffffff; --accent-hover: #cccccc;
             --accent-dim: rgba(255,255,255,0.05);
-            --border: #222222;
-            --border-accent: rgba(255,255,255,0.15);
-            --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
+            --border: #222222; --border-accent: rgba(255,255,255,0.15);
+                        --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
         }
-    
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-    background-color: #0d0d0d;
-    color: #e8e0d0;
-    font-family: 'Georgia', serif;
-    min-height: 100vh;
-    padding: 60px 40px;
-    position: relative;
-    overflow-x: hidden;
-}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            padding: 60px 40px;
+            position: relative;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
 
-/*Layered starfield + glow, sits behind all content */
-.sky-layer {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    pointer-events: none;
-    background-color: #0d0d0d;
-    background-image:
-        radial-gradient(circle at 8% 10%, rgba(201, 169, 110, 0.16) 0%, transparent 32%),
-        radial-gradient(circle at 92% 90%, rgba(201, 169, 110, 0.16) 0%, transparent 32%),
-        radial-gradient(1.5px 1.5px at 10% 15%, #c9a96e 50%, transparent 100%),
-        radial-gradient(1px 1px at 20% 8%, #9e9589 50%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 5% 30%, #e8e0d0 50%, transparent 100%),
-        radial-gradient(1px 1px at 15% 45%, #c9a96e 50%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 35% 60%, #9e9589 50%, transparent 100%),
-        radial-gradient(1px 1px at 45% 12%, #e8e0d0 50%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 60% 75%, #c9a96e 50%, transparent 100%),
-        radial-gradient(1px 1px at 55% 30%, #9e9589 50%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 90% 20%, #e8e0d0 50%, transparent 100%),
-        radial-gradient(1px 1px at 95% 35%, #c9a96e 50%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 88% 80%, #9e9589 50%, transparent 100%),
-        radial-gradient(1px 1px at 80% 92%, #e8e0d0 50%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 96% 65%, #c9a96e 50%, transparent 100%),
-        radial-gradient(1px 1px at 70% 50%, #e8e0d0 50%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 25% 85%, #c9a96e 50%, transparent 100%);
-    background-repeat: no-repeat;
-    background-size: cover;
-    animation: twinkle 6s ease-in-out infinite alternate, glow-shift 12s ease-in-out infinite alternate;
-}
+        /* Corner decorations */
+        .corner {
+            position: fixed;
+            color: var(--accent);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+            line-height: 1;
+        }
 
-@keyframes twinkle {
-    0%   { opacity: 0.6; }
-    50%  { opacity: 1; }
-    100% { opacity: 0.7; }
-}
+        .corner-tl { top: 16px; left: 16px; }
+        .corner-tr { top: 16px; right: 16px; transform: scaleX(-1); }
+        .corner-bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
+        .corner-br { bottom: 16px; right: 16px; transform: scale(-1); }
 
-@keyframes glow-shift {
-    0%   { filter: brightness(1); }
-    100% { filter: brightness(1.15); }
-}
+        .border-top, .border-bottom {
+            position: fixed;
+            left: 48px; right: 48px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+            pointer-events: none; z-index: 0;
+        }
 
-/* Drifting clouds — soft blurred ellipses moving slowly across */
-.cloud {
-    position: fixed;
-    z-index: -1;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(158, 149, 137, 0.10) 0%, transparent 70%);
-    filter: blur(8px);
-    pointer-events: none;
-}
+        .border-top { top: 48px; }
+        .border-bottom { bottom: 48px; }
 
-.cloud-1 {
-    width: 400px; height: 160px;
-    top: 12%;
-    left: -450px;
-    animation: drift-right 40s linear infinite;
-}
+        .border-left, .border-right {
+            position: fixed;
+            top: 48px; bottom: 48px;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, var(--border-accent), transparent);
+            pointer-events: none; z-index: 0;
+        }
 
-.cloud-2 {
-    width: 300px; height: 120px;
-    bottom: 18%;
-    right: -350px;
-    animation: drift-left 55s linear infinite;
-}
+        .border-left { left: 48px; }
+        .border-right { right: 48px; }
 
-.cloud-3 {
-    width: 250px; height: 100px;
-    top: 55%;
-    left: -300px;
-    animation: drift-right 65s linear infinite;
-    animation-delay: -20s;
-}
+        .deco-star {
+            position: fixed;
+            color: var(--accent);
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+            font-size: var(--sz);
+            animation: twinkle var(--dur) ease-in-out infinite var(--del);
+        }
 
-@keyframes drift-right {
-    from { transform: translateX(0); }
-    to   { transform: translateX(calc(100vw + 500px)); }
-}
-
-@keyframes drift-left {
-    from { transform: translateX(0); }
-    to   { transform: translateX(calc(-100vw - 500px)); }
-}
-
-/* Corner moons, gently bobbing */
-.corner-moon {
-    position: fixed;
-    font-size: 2.5rem;
-    opacity: 0.3;
-    pointer-events: none;
-    filter: sepia(1) saturate(2) hue-rotate(-10deg);
-    animation: bob 5s ease-in-out infinite;
-}
-
-.corner-moon.top-left {
-    top: 40px;
-    left: 40px;
-}
-
-.corner-moon.bottom-right {
-    bottom: 40px;
-    right: 40px;
-    transform: scaleX(-1);
-    animation-delay: -2.5s;
-}
-
-@keyframes bob {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-10px); }
-}
-
-.corner-moon.bottom-right {
-    animation-name: bob-flip;
-}
-
-@keyframes bob-flip {
-    0%, 100% { transform: scaleX(-1) translateY(0); }
-    50%      { transform: scaleX(-1) translateY(-10px); }
-}
-
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.35; }
+        }
 
         .header {
+            position: relative;
+            z-index: 1;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 48px;
         }
 
-        h1 { color: #c9a96e; font-size: 1.8rem; letter-spacing: 0.15rem; }
-
-        a.back {
-            color: #9e9589;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        a.back:hover { color: #c9a96e; }
+        h1 { color: var(--accent); font-size: 1.8rem; letter-spacing: 0.15rem; }
 
         .editor {
+            position: relative;
+            z-index: 1;
             max-width: 700px;
             margin: 0 auto;
             display: flex;
@@ -244,19 +178,29 @@ body {
             gap: 20px;
         }
 
+        .last-edited {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: var(--text-subtle);
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
         input[type="text"] {
             width: 100%;
             padding: 14px 0;
             background: transparent;
             border: none;
-            border-bottom: 1px solid #2e2e2e;
-            color: #e8e0d0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
             font-family: 'Georgia', serif;
             font-size: 1.4rem;
             outline: none;
+            transition: border-color 0.2s;
         }
 
-        input[type="text"]:focus { border-bottom-color: #c9a96e; }
+        input[type="text"]:focus { border-bottom-color: var(--accent); }
 
         textarea {
             width: 100%;
@@ -264,7 +208,7 @@ body {
             padding: 20px 0;
             background: transparent;
             border: none;
-            color: #e8e0d0;
+            color: var(--text);
             font-family: 'Georgia', serif;
             font-size: 1rem;
             line-height: 1.8;
@@ -275,87 +219,262 @@ body {
         button {
             align-self: flex-end;
             padding: 12px 32px;
-            background-color: #c9a96e;
-            color: #0d0d0d;
+            background-color: var(--accent);
+            color: var(--bg);
             border: none;
             border-radius: 6px;
             font-family: 'Georgia', serif;
             font-size: 1rem;
             cursor: pointer;
             letter-spacing: 0.05rem;
+            transition: background-color 0.2s;
         }
 
-        button:hover { background-color: #b8935a; }
-        
-        .nav-links {
-    display: flex;
-    gap: 16px;
-}
+        button:hover { background-color: var(--accent-hover); }
 
-.nav-links a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 24px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-family: 'Georgia', serif;
-    font-size: 0.9rem;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-    min-width: 140px;
-    box-sizing: border-box;
-    text-align: center;
-    letter-spacing: 0.05rem;
-}
+        .nav-links { display: flex; gap: 16px; }
 
-.nav-links a.chamber-link {
-    background-color: #1a1a1a;
-    color: #8a8175;
-    font-size: 0.95rem;
-}
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            min-width: 140px;
+        }
 
-.nav-links a.chamber-link:hover {
-    color: #c9a96e;
-    border-color: #c9a96e;
-    box-shadow: 0 0 12px rgba(201, 169, 110, 0.25);
-}
+        .nav-links a.chamber-link {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+        }
 
-.nav-links a.btn {
-    background-color: #c9a96e;
-    color: #0d0d0d;
-}
+        .nav-links a.chamber-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px var(--accent-dim);
+        }
 
-.nav-links a.btn:hover {
-    background-color: #b8935a;
-    border-color: #c9a96e;
-    box-shadow: 0 0 12px rgba(201, 169, 110, 0.35);
-}
-        
+        .nav-links a.btn {
+            background-color: var(--accent);
+            color: var(--bg);
+        }
+
+        .nav-links a.btn:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 0 12px var(--accent-dim);
+        }
     </style>
 </head>
 <body>
-<div class="sky-layer"></div>
-<div class="cloud cloud-1"></div>
-<div class="cloud cloud-2"></div>
-<div class="cloud cloud-3"></div>
-<div class="corner-moon top-left">🌙</div>
-<div class="corner-moon bottom-right">🌙</div>
 
-  <div class="header">
-    <h1>🌙 Edit</h1>
-    <div class="nav-links">
-        <a href="/chamber" class="chamber-link">🌙 Chamber</a>
-        <a href="/entries" class="btn">💖 Entries</a>
+    <!-- Celestial background -->
+    <canvas id="bg" style="position:fixed; inset:0; z-index:0; pointer-events:none;"></canvas>
+
+    <!-- Floating stars -->
+    <div id="floatStars" style="position:fixed; inset:0; z-index:0; pointer-events:none;"></div>
+
+    <!-- Swirl decorations -->
+       <svg style="position:fixed; bottom:0; left:0; width:220px; height:220px; z-index:0; pointer-events:none; opacity:0.1;" viewBox="0 0 220 220">
+        <!-- Swirl -->
+        <path d="M20 180 C40 140, 80 160, 60 120 C40 80, 80 60, 100 80 C120 100, 100 130, 130 110 C160 90, 170 50, 150 30" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
+        <path d="M10 160 C30 130, 50 145, 40 110 C30 75, 60 55, 80 70" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.6"/>
+        <!-- Book -->
+        <rect x="60" y="170" width="80" height="50" rx="3" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+        <line x1="100" y1="170" x2="100" y2="220" stroke="var(--accent)" stroke-width="1"/>
+        <line x1="70" y1="178" x2="95" y2="178" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
+        <line x1="70" y1="185" x2="95" y2="185" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
+        <line x1="70" y1="192" x2="95" y2="192" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
+        <line x1="105" y1="178" x2="130" y2="178" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
+        <line x1="105" y1="185" x2="130" y2="185" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
+        <line x1="105" y1="192" x2="130" y2="192" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
+        <!-- Pen -->
+        <line x1="135" y1="215" x2="155" y2="195" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <polygon points="155,195 160,190 158,198" fill="var(--accent)" opacity="0.8"/>
+    </svg>
+        <svg style="position:fixed; top:0; right:0; width:220px; height:220px; z-index:0; pointer-events:none; opacity:0.1; transform:rotate(180deg);" viewBox="0 0 220 220">
+        <path d="M20 180 C40 140, 80 160, 60 120 C40 80, 80 60, 100 80 C120 100, 100 130, 130 110 C160 90, 170 50, 150 30" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
+        <path d="M10 160 C30 130, 50 145, 40 110 C30 75, 60 55, 80 70" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.6"/>
+        <!-- Stars bottom left (appears top right due to rotation) -->
+        <text x="30" y="50" font-size="18" fill="var(--accent)" opacity="0.9">✦</text>
+        <text x="55" y="30" font-size="12" fill="var(--accent)" opacity="0.7">✧</text>
+        <text x="15" y="75" font-size="10" fill="var(--accent)" opacity="0.6">★</text>
+        <text x="70" y="55" font-size="8" fill="var(--accent)" opacity="0.5">✦</text>
+    </svg>
+
+    <!-- Crescent moon top left -->
+    <svg style="position:fixed; top:20px; left:20px; width:120px; height:120px; z-index:0; pointer-events:none; opacity:0.1;" viewBox="0 0 120 120">
+        <path d="M60 20 A35 35 0 1 0 60 90 A25 25 0 1 1 60 20Z" fill="var(--accent)"/>
+        <!-- Stars around moon -->
+        <text x="85" y="30" font-size="14" fill="var(--accent)">✦</text>
+        <text x="95" y="55" font-size="9" fill="var(--accent)" opacity="0.8">✧</text>
+        <text x="78" y="75" font-size="11" fill="var(--accent)" opacity="0.7">★</text>
+        <text x="20" y="25" font-size="10" fill="var(--accent)" opacity="0.6">✧</text>
+        <text x="10" y="50" font-size="8" fill="var(--accent)" opacity="0.5">✦</text>
+    </svg>
+
+    <!-- Extra stars bottom left -->
+    <svg style="position:fixed; bottom:20px; left:20px; width:100px; height:100px; z-index:0; pointer-events:none; opacity:0.12;" viewBox="0 0 100 100">
+        <text x="10" y="40" font-size="20" fill="var(--accent)">✦</text>
+        <text x="40" y="25" font-size="14" fill="var(--accent)" opacity="0.8">✧</text>
+        <text x="60" y="50" font-size="10" fill="var(--accent)" opacity="0.6">★</text>
+        <text x="25" y="65" font-size="12" fill="var(--accent)" opacity="0.7">✦</text>
+        <text x="5" y="75" font-size="8" fill="var(--accent)" opacity="0.5">✧</text>
+    </svg>
+
+    <!-- Extra stars top right -->
+    <svg style="position:fixed; top:20px; right:20px; width:100px; height:100px; z-index:0; pointer-events:none; opacity:0.12;" viewBox="0 0 100 100">
+        <text x="60" y="40" font-size="20" fill="var(--accent)">✦</text>
+        <text x="30" y="25" font-size="14" fill="var(--accent)" opacity="0.8">✧</text>
+        <text x="10" y="50" font-size="10" fill="var(--accent)" opacity="0.6">★</text>
+        <text x="50" y="65" font-size="12" fill="var(--accent)" opacity="0.7">✦</text>
+        <text x="80" y="75" font-size="8" fill="var(--accent)" opacity="0.5">✧</text>
+    </svg>
+
+    <!-- Frame decoration -->
+    <div class="border-top"></div>
+    <div class="border-bottom"></div>
+    <div class="border-left"></div>
+    <div class="border-right"></div>
+
+    <div class="corner corner-tl">✦ · · ·<br>·<br>·</div>
+    <div class="corner corner-tr">✦ · · ·<br>·<br>·</div>
+    <div class="corner corner-bl">·<br>·<br>✦ · · ·</div>
+    <div class="corner corner-br">·<br>·<br>✦ · · ·</div>
+
+    <div class="deco-star" style="top:60px; left:80px; --sz:0.7rem; --dur:3s; --del:0s;">✧</div>
+    <div class="deco-star" style="top:60px; right:80px; --sz:0.6rem; --dur:4s; --del:1s;">✦</div>
+    <div class="deco-star" style="bottom:60px; left:80px; --sz:0.6rem; --dur:3.5s; --del:0.5s;">✧</div>
+    <div class="deco-star" style="bottom:60px; right:80px; --sz:0.7rem; --dur:4s; --del:2s;">✦</div>
+
+    <div class="header">
+        <h1>
+            <svg viewBox="0 0 24 24" width="0.85em" height="0.85em" fill="var(--accent)" style="vertical-align:middle; margin-right:8px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Edit
+        </h1>
+        <div class="nav-links">
+            <a href="/chamber" class="chamber-link">
+                <svg viewBox="0 0 24 24" width="1em" height="1em" fill="var(--accent)" style="vertical-align:middle; margin-right:4px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> Chamber
+            </a>
+            <a href="/entries" class="btn">✦ Entries</a>
+        </div>
     </div>
-</div>
-    <p style="text-align:center; color:#555; font-size:0.8rem; margin-bottom:8px;">
+
+    <p class="last-edited">
         Last edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
     </p>
+
     <form class="editor" th:action="@{/entries/{id}/edit(id=${entry.id})}" method="post">
         <input type="text" name="title" th:value="${entry.title}" required />
         <textarea name="content" th:text="${entry.content}"></textarea>
         <button type="submit">Save Changes</button>
     </form>
+
+    <script>
+        const canvas = document.getElementById('bg');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drawBg();
+        }
+
+        function getCSSVar(name) {
+            return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        }
+
+        function drawBg() {
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            const r = getCSSVar('--cloud-r') || '180';
+            const g = getCSSVar('--cloud-g') || '140';
+            const b = getCSSVar('--cloud-b') || '80';
+
+            function drawCloud(x, y, size) {
+                [[0,0,size],[size*.6,-size*.2,size*.75],[-size*.5,-size*.1,size*.7],
+                 [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
+                ].forEach(([cx,cy,r2]) => {
+                    const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
+                    grad.addColorStop(0,`rgba(${r},${g},${b},0.15)`);
+                    grad.addColorStop(1,`rgba(${r},${g},${b},0)`);
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(x+cx,y+cy,r2,0,Math.PI*2);
+                    ctx.fill();
+                });
+            }
+
+            // Corners only
+            drawCloud(0, 0, 140);
+            drawCloud(w, 0, 140);
+            drawCloud(0, h, 140);
+            drawCloud(w, h, 140);
+
+            // Sparkles
+            const accent = getCSSVar('--accent') || '#c9a96e';
+            function drawSparkle(x, y, size, alpha) {
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.strokeStyle = accent;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(x, y-size); ctx.lineTo(x, y+size);
+                ctx.moveTo(x-size, y); ctx.lineTo(x+size, y);
+                ctx.moveTo(x-size*.6, y-size*.6); ctx.lineTo(x+size*.6, y+size*.6);
+                ctx.moveTo(x+size*.6, y-size*.6); ctx.lineTo(x-size*.6, y+size*.6);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            [[w*.08,h*.08,4],[w*.92,h*.08,4],[w*.08,h*.92,4],[w*.92,h*.92,4],
+             [w*.15,h*.2,3],[w*.85,h*.18,3],[w*.12,h*.75,3],[w*.88,h*.8,3]
+            ].forEach(([x,y,s]) => drawSparkle(x, y, s, 0.5));
+        }
+
+        // Floating twinkling stars
+        const floatContainer = document.getElementById('floatStars');
+        for (let i = 0; i < 40; i++) {
+            const star = document.createElement('div');
+            const size = Math.random() * 2 + 1;
+            const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#c9a96e';
+            star.style.cssText = `
+                position:absolute;
+                width:${size}px; height:${size}px;
+                border-radius:50%;
+                background:${accent};
+                top:${Math.random()*100}%; left:${Math.random()*100}%;
+                opacity:0;
+                animation: twinkleEdit ${Math.random()*4+2}s ease-in-out infinite ${Math.random()*5}s;
+            `;
+            floatContainer.appendChild(star);
+        }
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes twinkleEdit {
+                0%, 100% { opacity: 0; transform: scale(0.8); }
+                50% { opacity: 0.4; transform: scale(1.2); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Also add --cloud-r/g/b to themes that are missing it
+        const themeCloudColors = {
+            'default': '180,140,80',
+            'sakura': '232,130,154',
+            'abyss': '60,100,180',
+            'sage': '122,158,110',
+            'noir': '200,200,200'
+        };
+    </script>
+
 </body>
 </html>

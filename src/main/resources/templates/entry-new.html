@@ -12,6 +12,37 @@
     <title>Oneiric — Write</title>
         <style>
         
+        .border-deco {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.border-moon {
+    position: fixed;
+    font-size: 2.2rem;
+    opacity: 0.12;
+    color: var(--accent);
+    pointer-events: none;
+    z-index: 0;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-8deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.border-star {
+    position: fixed;
+    color: var(--accent);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+    animation: twinkle 4s ease-in-out infinite;
+}
+        
                 :root {
             --bg: #0d0d0d;
             --bg-secondary: #111111;

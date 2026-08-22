@@ -8,11 +8,11 @@
         const t = localStorage.getItem('oneiric-theme');
         if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
     })();
-</script>
+    </script>
     <title>Oneiric — Your Entries</title>
     <style>
-    
-            :root {
+
+        :root {
             --bg: #0d0d0d;
             --bg-secondary: #111111;
             --bg-tertiary: #1a1a1a;
@@ -25,6 +25,7 @@
             --border: #2e2e2e;
             --border-accent: rgba(201,169,110,0.2);
             --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
+            --star-color: #c9a96e;
         }
 
         [data-theme="sakura"] {
@@ -40,6 +41,7 @@
             --border: #f0c0d0;
             --border-accent: rgba(232,130,154,0.3);
             --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
+            --star-color: #e8829a;
         }
 
         [data-theme="abyss"] {
@@ -49,12 +51,13 @@
             --text: #c8d8f0;
             --text-muted: #7090b8;
             --text-subtle: #3a5070;
-            --accent: #7eb8e8;
-            --accent-hover: #5a9fd4;
-            --accent-dim: rgba(126,184,232,0.08);
+            --accent: #c9a96e;
+            --accent-hover: #b8935a;
+            --accent-dim: rgba(201,169,110,0.12);
             --border: #1a2e48;
-            --border-accent: rgba(126,184,232,0.2);
+            --border-accent: rgba(201,169,110,0.25);
             --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
+            --star-color: #c9a96e;
         }
 
         [data-theme="sage"] {
@@ -70,6 +73,7 @@
             --border: #c8d8b8;
             --border-accent: rgba(122,158,110,0.3);
             --cloud-r: 122; --cloud-g: 158; --cloud-b: 110;
+            --star-color: #7a9e6e;
         }
 
         [data-theme="noir"] {
@@ -85,11 +89,12 @@
             --border: #222222;
             --border-accent: rgba(255,255,255,0.15);
             --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
+            --star-color: #ffffff;
         }
-    
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-              body {
+        body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Georgia', serif;
@@ -97,6 +102,7 @@
             padding: 60px 40px;
             position: relative;
             overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         canvas.bg {
@@ -105,14 +111,29 @@
             z-index: 0;
             pointer-events: none;
         }
-        
-        
+
+        /* Faded crescent moon + star border corners (SVG, theme-aware) */
+        .corner-deco {
+            position: fixed;
+            width: 160px;
+            height: 160px;
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .corner-deco svg { width: 100%; height: 100%; fill: var(--accent); }
+
+        .corner-deco.tl { top: 0; left: 0; }
+        .corner-deco.tr { top: 0; right: 0; transform: scaleX(-1); }
+        .corner-deco.bl { bottom: 0; left: 0; transform: scaleY(-1); }
+        .corner-deco.br { bottom: 0; right: 0; transform: scale(-1); }
 
         /* Hanging stars */
         .hang-star {
             position: fixed;
             top: 0;
-            color: #c9a96e;
+            color: var(--accent);
             opacity: 0.5;
             pointer-events: none;
             z-index: 1;
@@ -126,7 +147,8 @@
         .hang-star .line {
             width: 1px;
             height: var(--len);
-            background: linear-gradient(180deg, transparent, #c9a96e55);
+            background: linear-gradient(180deg, transparent, var(--accent) 200%);
+            opacity: 0.4;
         }
 
         .hang-star .star {
@@ -150,7 +172,7 @@
             bottom: 30px;
             right: 30px;
             font-size: 2.5rem;
-            color: #c9a96e;
+            color: var(--accent);
             opacity: 0.2;
             pointer-events: none;
             z-index: 1;
@@ -171,58 +193,53 @@
             margin-bottom: 48px;
         }
 
-                h1 { color: var(--accent); font-size: 1.8rem; letter-spacing: 0.15rem; }
+        h1 { color: var(--accent); font-size: 1.8rem; letter-spacing: 0.15rem; }
 
-      a.btn {
-    padding: 10px 24px;
-    background-color: #c9a96e;
-    color: #0d0d0d;
-    border-radius: 20px;
-    text-decoration: none;
-    font-family: 'Georgia', serif;
-    font-size: 0.9rem;
-}
-        a.btn:hover { background-color: #b8935a; }
+        a.btn {
+            padding: 10px 24px;
+            background-color: var(--accent);
+            color: var(--bg);
+            border-radius: 20px;
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+        }
+        a.btn:hover { background-color: var(--accent-hover); }
 
         .empty {
             position: relative;
             z-index: 2;
             text-align: center;
-            color: #9e9589;
+            color: var(--text-muted);
             margin-top: 80px;
         }
 
-            .entry-card {
+        .entry-card {
             position: relative;
             z-index: 2;
-            background-color: color-mix(in srgb, var(--bg-secondary) 30%, transparent);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            background-color: color-mix(in srgb, var(--bg-secondary) 45%, transparent);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             border: 1px solid var(--border-accent);
             border-radius: 8px;
             padding: 24px;
             margin-bottom: 20px;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
         }
 
         .entry-card:hover {
-            border-color: var(--border-accent);
-            box-shadow: 0 0 20px var(--accent-dim);
+            border-color: var(--accent);
+            box-shadow: 0 0 24px var(--accent-dim);
+            transform: translateY(-2px);
         }
 
-        .entry-card:hover {
-            border-color: rgba(201, 169, 110, 0.2);
-            box-shadow: 0 0 20px rgba(201, 169, 110, 0.06);
-        }
-                .entry-card h2 { color: var(--accent); font-size: 1.2rem; margin-bottom: 8px; }
-
-              .entry-card .date { color: var(--text-subtle); font-size: 0.8rem; margin-bottom: 8px; }
-
-              .entry-card p.preview { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
+        .entry-card h2 { color: var(--accent); font-size: 1.2rem; margin-bottom: 8px; }
+        .entry-card .date { color: var(--text-subtle); font-size: 0.8rem; margin-bottom: 8px; }
+        .entry-card p.preview { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
 
         .entry-actions { display: flex; gap: 12px; }
 
-               a.edit { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+        a.edit { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
         a.edit:hover { text-decoration: underline; }
 
         form.delete-form { display: inline; }
@@ -239,21 +256,19 @@
         button.delete:hover { text-decoration: underline; }
 
         .nav-links { display: flex; gap: 12px; }
-        
-        /* Delete confirmation modal */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-}
 
-.modal-overlay.active {
-    display: flex;
-}
+        /* Delete confirmation modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active { display: flex; }
 
         .modal-box {
             background-color: var(--bg-secondary);
@@ -269,20 +284,16 @@
         .modal-box h3 { color: var(--accent); font-size: 1.2rem; margin-bottom: 12px; }
         .modal-box p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; line-height: 1.6; }
 
-.modal-actions {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-}
+        .modal-actions { display: flex; gap: 12px; justify-content: center; }
 
-.modal-btn {
-    padding: 10px 24px;
-    border-radius: 20px;
-    border: none;
-    font-family: 'Georgia', serif;
-    font-size: 0.85rem;
-    cursor: pointer;
-}
+        .modal-btn {
+            padding: 10px 24px;
+            border-radius: 20px;
+            border: none;
+            font-family: 'Georgia', serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
 
         .modal-btn.cancel {
             background-color: var(--bg-tertiary);
@@ -291,48 +302,35 @@
             transition: all 0.2s ease;
         }
 
-        .modal-btn.cancel:hover {
+        .modal-btn.cancel:hover,
+        .modal-btn.cancel:focus,
+        .modal-btn.cancel:active {
             color: var(--accent);
-            border-color: var(--accent);
+            border: 1px solid var(--accent);
         }
-        
-.modal-btn.confirm {
-    background-color: #c97070;
-    color: #0d0d0d;
-}
 
-.modal-btn.confirm:hover { background-color: #b85f5f; }
-        
-        .modal-btn.cancel {
-    background-color: #1a1a1a;
-    color: #9e9589;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-}
+        .modal-btn.confirm {
+            background-color: #c97070;
+            color: #0d0d0d;
+        }
 
-.modal-btn.cancel:hover,
-.modal-btn.cancel:focus,
-.modal-btn.cancel:active {
-    background-color: #1a1a1a;
-    color: #c9a96e;
-    border: 1px solid #c9a96e;
-}
+        .modal-btn.confirm:hover { background-color: #b85f5f; }
 
-.nav-links a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 24px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-family: 'Georgia', serif;
-    font-size: 0.9rem;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-    min-width: 140px;
-    box-sizing: border-box;
-    text-align: center;
-}
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            min-width: 140px;
+            box-sizing: border-box;
+            text-align: center;
+        }
 
         .nav-links a.chamber-link {
             background-color: var(--bg-tertiary);
@@ -346,7 +344,6 @@
             box-shadow: 0 0 12px var(--accent-dim);
         }
 
-
         .nav-links a.btn {
             background-color: var(--accent);
             color: var(--bg);
@@ -356,62 +353,68 @@
             background-color: var(--accent-hover);
             box-shadow: 0 0 12px var(--accent-dim);
         }
-        
     </style>
 </head>
 <body>
 
     <canvas class="bg" id="bg"></canvas>
-    
-        <canvas class="bg" id="bg"></canvas>
+
+    <!-- Faded crescent moon + star corner decorations -->
+    <div class="corner-deco tl">
+        <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <path d="M40 10 A30 30 0 1 0 40 70 A24 24 0 1 1 40 10Z"/>
+            <path d="M90 25 L93 33 L101 36 L93 39 L90 47 L87 39 L79 36 L87 33Z"/>
+            <path d="M115 55 L117 60 L122 62 L117 64 L115 69 L113 64 L108 62 L113 60Z"/>
+        </svg>
+    </div>
+    <div class="corner-deco tr">
+        <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <path d="M40 10 A30 30 0 1 0 40 70 A24 24 0 1 1 40 10Z"/>
+            <path d="M90 25 L93 33 L101 36 L93 39 L90 47 L87 39 L79 36 L87 33Z"/>
+            <path d="M115 55 L117 60 L122 62 L117 64 L115 69 L113 64 L108 62 L113 60Z"/>
+        </svg>
+    </div>
+    <div class="corner-deco bl">
+        <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <path d="M40 10 A30 30 0 1 0 40 70 A24 24 0 1 1 40 10Z"/>
+            <path d="M90 25 L93 33 L101 36 L93 39 L90 47 L87 39 L79 36 L87 33Z"/>
+            <path d="M115 55 L117 60 L122 62 L117 64 L115 69 L113 64 L108 62 L113 60Z"/>
+        </svg>
+    </div>
+    <div class="corner-deco br">
+        <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <path d="M40 10 A30 30 0 1 0 40 70 A24 24 0 1 1 40 10Z"/>
+            <path d="M90 25 L93 33 L101 36 L93 39 L90 47 L87 39 L79 36 L87 33Z"/>
+            <path d="M115 55 L117 60 L122 62 L117 64 L115 69 L113 64 L108 62 L113 60Z"/>
+        </svg>
+    </div>
 
     <!-- Bottom left botanical decoration -->
     <div style="position:fixed; bottom:0; left:0; z-index:1; pointer-events:none; width:280px; height:320px; opacity:0.15;">
         <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg" width="280" height="320">
-            <path d="M60 320 C65 280 55 240 70 200 C80 170 75 140 85 110" stroke="#c9a96e" stroke-width="1.5" fill="none" opacity="0.8"/>
-            <path d="M60 320 C45 285 30 260 25 230 C20 205 15 185 20 165" stroke="#c9a96e" stroke-width="1.2" fill="none" opacity="0.6"/>
-            <path d="M60 320 C75 295 90 275 100 250 C110 228 108 205 115 185" stroke="#c9a96e" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M60 320 C65 280 55 240 70 200 C80 170 75 140 85 110" stroke="var(--accent)" stroke-width="1.5" fill="none" opacity="0.8"/>
+            <path d="M60 320 C45 285 30 260 25 230 C20 205 15 185 20 165" stroke="var(--accent)" stroke-width="1.2" fill="none" opacity="0.6"/>
+            <path d="M60 320 C75 295 90 275 100 250 C110 228 108 205 115 185" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.5"/>
             <g transform="translate(80,108) rotate(-15)">
-                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7"/>
-                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7" transform="rotate(60)"/>
-                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7" transform="rotate(120)"/>
-                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7" transform="rotate(180)"/>
-                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7" transform="rotate(240)"/>
-                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="#c9a96e" opacity="0.7" transform="rotate(300)"/>
-                <circle cx="0" cy="0" r="5" fill="#e8d5ae" opacity="0.9"/>
-                <line x1="0" y1="-5" x2="0" y2="-9" stroke="#c9a96e" stroke-width="0.8"/>
-                <line x1="4" y1="-3" x2="7" y2="-6" stroke="#c9a96e" stroke-width="0.8"/>
-                <line x1="-4" y1="-3" x2="-7" y2="-6" stroke="#c9a96e" stroke-width="0.8"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="var(--accent)" opacity="0.7"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="var(--accent)" opacity="0.7" transform="rotate(60)"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="var(--accent)" opacity="0.7" transform="rotate(120)"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="var(--accent)" opacity="0.7" transform="rotate(180)"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="var(--accent)" opacity="0.7" transform="rotate(240)"/>
+                <ellipse cx="0" cy="-14" rx="6" ry="14" fill="var(--accent)" opacity="0.7" transform="rotate(300)"/>
+                <circle cx="0" cy="0" r="5" fill="var(--accent)" opacity="0.9"/>
             </g>
             <g transform="translate(18,163) rotate(10)">
-                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65"/>
-                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65" transform="rotate(60)"/>
-                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65" transform="rotate(120)"/>
-                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65" transform="rotate(180)"/>
-                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65" transform="rotate(240)"/>
-                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="#c9a96e" opacity="0.65" transform="rotate(300)"/>
-                <circle cx="0" cy="0" r="4" fill="#e8d5ae" opacity="0.9"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="var(--accent)" opacity="0.65"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="var(--accent)" opacity="0.65" transform="rotate(60)"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="var(--accent)" opacity="0.65" transform="rotate(120)"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="var(--accent)" opacity="0.65" transform="rotate(180)"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="var(--accent)" opacity="0.65" transform="rotate(240)"/>
+                <ellipse cx="0" cy="-12" rx="5" ry="12" fill="var(--accent)" opacity="0.65" transform="rotate(300)"/>
+                <circle cx="0" cy="0" r="4" fill="var(--accent)" opacity="0.9"/>
             </g>
-            <g transform="translate(112,183) rotate(-5)">
-                <ellipse cx="0" cy="-9" rx="4" ry="9" fill="#c9a96e" opacity="0.55"/>
-                <ellipse cx="0" cy="-9" rx="4" ry="9" fill="#c9a96e" opacity="0.55" transform="rotate(72)"/>
-                <ellipse cx="0" cy="-9" rx="4" ry="9" fill="#c9a96e" opacity="0.55" transform="rotate(144)"/>
-                <ellipse cx="0" cy="-9" rx="4" ry="9" fill="#c9a96e" opacity="0.55" transform="rotate(216)"/>
-                <ellipse cx="0" cy="-9" rx="4" ry="9" fill="#c9a96e" opacity="0.55" transform="rotate(288)"/>
-                <circle cx="0" cy="0" r="3" fill="#e8d5ae" opacity="0.8"/>
-            </g>
-            <path d="M70 200 C85 190 100 192 105 180 C95 178 80 182 70 200Z" fill="#c9a96e" opacity="0.5"/>
-            <path d="M72 240 C55 228 42 232 38 218 C52 215 66 220 72 240Z" fill="#c9a96e" opacity="0.45"/>
-            <path d="M78 165 C95 158 108 162 112 150 C98 148 84 153 78 165Z" fill="#c9a96e" opacity="0.4"/>
-            <path d="M20 165 C8 150 5 135 12 125 C18 138 18 152 20 165Z" fill="#c9a96e" opacity="0.4"/>
-            <path d="M115 185 C128 175 138 178 142 168 C130 165 118 170 115 185Z" fill="#c9a96e" opacity="0.35"/>
-            <ellipse cx="55" cy="278" rx="4" ry="7" fill="#c9a96e" opacity="0.5" transform="rotate(-20,55,278)"/>
-            <ellipse cx="90" cy="255" rx="3" ry="6" fill="#c9a96e" opacity="0.45" transform="rotate(15,90,255)"/>
-            <circle cx="30" cy="245" r="1.5" fill="#e8d5ae" opacity="0.6"/>
-            <circle cx="95" cy="230" r="1" fill="#e8d5ae" opacity="0.5"/>
-            <circle cx="45" cy="195" r="1.5" fill="#e8d5ae" opacity="0.55"/>
-            <circle cx="125" cy="165" r="1" fill="#e8d5ae" opacity="0.5"/>
-            <circle cx="70" cy="150" r="1.5" fill="#e8d5ae" opacity="0.45"/>
+            <path d="M70 200 C85 190 100 192 105 180 C95 178 80 182 70 200Z" fill="var(--accent)" opacity="0.5"/>
+            <path d="M72 240 C55 228 42 232 38 218 C52 215 66 220 72 240Z" fill="var(--accent)" opacity="0.45"/>
         </svg>
     </div>
 
@@ -438,33 +441,34 @@
     <!-- Corner star -->
     <div class="corner-star">✦</div>
 
-       <div class="header">
-                <h1><svg viewBox="0 0 24 24" width="0.85em" height="0.85em" fill="var(--accent)" style="vertical-align:middle; margin-right:8px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Your Entries</h1>
+    <div class="header">
+        <h1><svg viewBox="0 0 24 24" width="0.85em" height="0.85em" fill="var(--accent)" style="vertical-align:middle; margin-right:8px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Your Entries</h1>
         <div class="nav-links">
-                         <a href="/chamber" class="chamber-link"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="var(--accent)" style="vertical-align:middle; margin-right:4px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> Chamber</a>
-                         <a href="/entries/new" class="btn">✦ Write something</a>
+            <a href="/chamber" class="chamber-link"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="var(--accent)" style="vertical-align:middle; margin-right:4px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> Chamber</a>
+            <a href="/entries/new" class="btn">✦ Write something</a>
         </div>
     </div>
 
     <!-- Search bar -->
     <form method="get" action="/entries" style="position:relative; z-index:2; max-width:500px; margin: -24px auto 36px; display:flex; gap:10px;">
-                <input type="text" name="query" th:value="${query}"
+        <input type="text" name="query" th:value="${query}"
                placeholder="search your thoughts..."
                style="flex:1; padding:10px 18px; background:var(--bg-secondary); border:1px solid var(--border); border-radius:20px; color:var(--text); font-family:'Georgia',serif; font-size:0.9rem; outline:none; transition: border-color 0.2s;"
                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"/>
-               <button type="submit"
+        <button type="submit"
                 style="padding:10px 22px; background:var(--accent); color:var(--bg); border:none; border-radius:20px; font-family:'Georgia',serif; font-size:0.9rem; cursor:pointer; transition: background 0.2s;"
                 onmouseover="this.style.background='var(--accent-hover)'" onmouseout="this.style.background='var(--accent)'">◉_◉ Search</button>
     </form>
 
     <!-- Search result info -->
-    <p th:if="${query != null}" style="position:relative; z-index:2; text-align:center; color:#9e9589; font-size:0.85rem; margin-bottom:24px; margin-top:-16px;">
-        results for "<span th:text="${query}" style="color:#c9a96e;"></span>"
+    <p th:if="${query != null}" style="position:relative; z-index:2; text-align:center; color:var(--text-muted); font-size:0.85rem; margin-bottom:24px; margin-top:-16px;">
+        results for "<span th:text="${query}" style="color:var(--accent);"></span>"
         &nbsp;—&nbsp;
-                <a href="/entries" style="color:#9e9589; text-decoration:none; font-size:0.85rem; padding:4px 12px; border:1px solid #2e2e2e; border-radius:20px; transition: all 0.2s;"
-           onmouseover="this.style.color='#c9a96e'; this.style.borderColor='#c9a96e'; this.style.boxShadow='0 0 10px rgba(201,169,110,0.3)'"
-           onmouseout="this.style.color='#9e9589'; this.style.borderColor='#2e2e2e'; this.style.boxShadow='none'">🧹 clear</a>
+        <a href="/entries" style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; padding:4px 12px; border:1px solid var(--border); border-radius:20px; transition: all 0.2s;"
+           onmouseover="this.style.color='var(--accent)'; this.style.borderColor='var(--accent)'; this.style.boxShadow='0 0 10px var(--accent-dim)'"
+           onmouseout="this.style.color='var(--text-muted)'; this.style.borderColor='var(--border)'; this.style.boxShadow='none'">🧹 clear</a>
     </p>
+
     <div th:if="${#lists.isEmpty(entries)}" class="empty">
         <p>Can't find your thoughts. Write your first thought.</p>
     </div>
@@ -476,7 +480,7 @@
             &nbsp;·&nbsp;
             Edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
         </p>
-        <p th:if="${entry.mood != null}" style="font-size:0.8rem; color:#c9a96e; margin-bottom:8px;">
+        <p th:if="${entry.mood != null}" style="font-size:0.8rem; color:var(--accent); margin-bottom:8px;">
             <span th:switch="${entry.mood}">
                 <span th:case="'happy'">(❁´◡`❁) Happy</span>
                 <span th:case="'calm'">^_^ Calm</span>
@@ -493,9 +497,20 @@
         <p class="preview" th:text="${#strings.abbreviate(entry.content, 150)}"></p>
         <div class="entry-actions">
             <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="edit">✨ Edit</a>
-             <form class="delete-form" th:action="@{/entries/{id}/delete(id=${entry.id})}" method="post" onsubmit="return false;" th:attr="data-entry-id=${entry.id}">
-             <button class="delete" type="button" th:onclick="'confirmDelete(this)'">:( Delete</button>
-             </form>
+            <form class="delete-form" th:action="@{/entries/{id}/delete(id=${entry.id})}" method="post" onsubmit="return false;" th:attr="data-entry-id=${entry.id}">
+                <button class="delete" type="button" th:onclick="'confirmDelete(this)'">:( Delete</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <h3>🌙 Let this thought go?</h3>
+            <p>This entry will be deleted permanently and cannot be recovered.</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeDeleteModal()">Keep it</button>
+                <button class="modal-btn confirm" onclick="submitDelete()">Delete</button>
+            </div>
         </div>
     </div>
 
@@ -506,17 +521,23 @@
         canvas.height = window.innerHeight;
         const w = canvas.width, h = canvas.height;
 
-        function drawCloud(x, y, size) {
+        function themeVals() {
             const style = getComputedStyle(document.documentElement);
-            const r = style.getPropertyValue('--cloud-r').trim() || '180';
-            const g = style.getPropertyValue('--cloud-g').trim() || '140';
-            const b = style.getPropertyValue('--cloud-b').trim() || '80';
+            return {
+                r: style.getPropertyValue('--cloud-r').trim() || '180',
+                g: style.getPropertyValue('--cloud-g').trim() || '140',
+                b: style.getPropertyValue('--cloud-b').trim() || '80',
+            };
+        }
+
+        function drawCloud(x, y, size) {
+            const { r, g, b } = themeVals();
             [[0,0,size],[size*.6,-size*.2,size*.75],[-size*.5,-size*.1,size*.7],
              [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
             ].forEach(([cx,cy,r2]) => {
                 const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
-                grad.addColorStop(0,`rgba(${r},${g},${b},0.12)`);
-                grad.addColorStop(1,`rgba(${r},${g},${b},0)`);
+                grad.addColorStop(0, `rgba(${r},${g},${b},0.22)`);
+                grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
                 ctx.fillStyle = grad;
                 ctx.beginPath();
                 ctx.arc(x+cx, y+cy, r2, 0, Math.PI*2);
@@ -524,50 +545,107 @@
             });
         }
 
-        // Clouds only at top corners
-        drawCloud(0, 0, 160);
-        drawCloud(w*0.12, 0, 120);
-        drawCloud(w, 0, 160);
-        drawCloud(w*0.88, 0, 120);
-        // Small cloud bottom right
-        drawCloud(w, h, 100);
-    </script>
-    
-    <script>
-    let formToDelete = null;
-
-    function confirmDelete(button) {
-        formToDelete = button.closest('form');
-        document.getElementById('deleteModal').classList.add('active');
-    }
-
-    function closeDeleteModal() {
-        formToDelete = null;
-        document.getElementById('deleteModal').classList.remove('active');
-    }
-
-    function submitDelete() {
-        if (formToDelete) {
-            formToDelete.submit();
+        function drawClouds() {
+            ctx.clearRect(0, 0, w, h);
+            drawCloud(0, 0, 200);
+            drawCloud(w*0.12, 0, 150);
+            drawCloud(w, 0, 200);
+            drawCloud(w*0.88, 0, 150);
+            drawCloud(w, h, 140);
+            drawCloud(0, h, 140);
         }
-    }
 
-    // Close modal on overlay click (outside the box)
-    document.getElementById('deleteModal').addEventListener('click', function(e) {
-        if (e.target === this) closeDeleteModal();
-    });
-</script>
+        // Falling petals / motes — themed, echoes chamber.html's sakura animation
+        const particles = [];
+        const PARTICLE_COUNT = 28;
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                size: Math.random() * 6 + 2,
+                speedX: Math.random() * 0.4 - 0.2,
+                speedY: Math.random() * 0.5 + 0.2,
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.02,
+                opacity: Math.random() * 0.4 + 0.15,
+                sway: Math.random() * Math.PI * 2,
+            });
+        }
 
-<div class="modal-overlay" id="deleteModal">
-    <div class="modal-box">
-        <h3>🌙 Let this thought go?</h3>
-        <p>This entry will be deleted permanently and cannot be recovered.</p>
-        <div class="modal-actions">
-            <button class="modal-btn cancel" onclick="closeDeleteModal()">Keep it</button>
-            <button class="modal-btn confirm" onclick="submitDelete()">Delete</button>
-        </div>
-    </div>
-</div>
+        function drawParticles() {
+            const theme = document.documentElement.getAttribute('data-theme');
+            const isSakura = theme === 'sakura';
+
+            particles.forEach(p => {
+                p.sway += 0.007;
+                p.x += p.speedX * 0.4 + Math.sin(p.sway) * 0.25;
+                p.y += p.speedY * 0.35;
+                p.rotation += p.rotationSpeed * 0.5;
+                if (p.y > h + 15) { p.y = -15; p.x = Math.random() * w; }
+                if (p.x > w + 15) p.x = -15;
+                if (p.x < -15) p.x = w + 15;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation);
+                ctx.globalAlpha = p.opacity;
+
+                if (isSakura) {
+                    ctx.fillStyle = 'rgba(240,140,170,0.9)';
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, p.size * 0.5, p.size * 0.9, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.strokeStyle = `rgba(201,169,110,${p.opacity})`;
+                    ctx.lineWidth = 1;
+                    const s = p.size * 0.6;
+                    ctx.beginPath();
+                    ctx.moveTo(0, -s); ctx.lineTo(0, s);
+                    ctx.moveTo(-s, 0); ctx.lineTo(s, 0);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            });
+        }
+
+        let rafId = null;
+        function loop() {
+            drawClouds();
+            drawParticles();
+            rafId = requestAnimationFrame(loop);
+        }
+        loop();
+
+        // Redraw immediately on theme change (called by theme picker if present on this page)
+        window.addEventListener('storage', () => {
+            // no-op placeholder in case theme changes via another tab
+        });
+    </script>
+
+    <script>
+        let formToDelete = null;
+
+        function confirmDelete(button) {
+            formToDelete = button.closest('form');
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            formToDelete = null;
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+
+        function submitDelete() {
+            if (formToDelete) {
+                formToDelete.submit();
+            }
+        }
+
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
+        });
+    </script>
 
 </body>
 </html>

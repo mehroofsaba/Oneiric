@@ -11,171 +11,399 @@
     <meta charset="UTF-8">
     <title>Oneiric — Register</title>
     <style>
-    
-            :root {
-            --bg: #0d0d0d;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --text: #e8e0d0;
-            --text-muted: #9e9589;
-            --text-subtle: #555;
-            --accent: #c9a96e;
-            --accent-hover: #b8935a;
-            --accent-dim: rgba(201,169,110,0.08);
-            --border: #2e2e2e;
-            --border-accent: rgba(201,169,110,0.2);
-            --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
-        }
 
-        [data-theme="sakura"] {
-            --bg: #fdf6f0;
-            --bg-secondary: #fff0f3;
-            --bg-tertiary: #ffe4ec;
-            --text: #4a3040;
-            --text-muted: #9e7080;
-            --text-subtle: #c4a0b0;
-            --accent: #e8829a;
-            --accent-hover: #d4607a;
-            --accent-dim: rgba(232,130,154,0.08);
-            --border: #f0c0d0;
-            --border-accent: rgba(232,130,154,0.3);
-            --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
-        }
+    /* ===== THEME SYSTEM ===== */
+    :root {
+        --bg: #0d0d0d;
+        --bg-secondary: #111111;
+        --bg-tertiary: #1a1a1a;
+        --text: #e8e0d0;
+        --text-muted: #9e9589;
+        --text-subtle: #555;
+        --accent: #c9a96e;
+        --accent-hover: #b8935a;
+        --accent-dim: rgba(201,169,110,0.08);
+        --border: #2e2e2e;
+        --border-accent: rgba(201,169,110,0.2);
+        --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
+        --star-color: #c9a96e;
+    }
 
-        [data-theme="abyss"] {
-            --bg: #050d1a;
-            --bg-secondary: #0a1628;
-            --bg-tertiary: #0f1e35;
-            --text: #c8d8f0;
-            --text-muted: #7090b8;
-            --text-subtle: #3a5070;
-            --accent: #7eb8e8;
-            --accent-hover: #5a9fd4;
-            --accent-dim: rgba(126,184,232,0.08);
-            --border: #1a2e48;
-            --border-accent: rgba(126,184,232,0.2);
-            --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
-        }
+    [data-theme="sakura"] {
+        --bg: #fdf6f0;
+        --bg-secondary: #fff0f3;
+        --bg-tertiary: #ffe4ec;
+        --text: #4a3040;
+        --text-muted: #9e7080;
+        --text-subtle: #c4a0b0;
+        --accent: #e8829a;
+        --accent-hover: #d4607a;
+        --accent-dim: rgba(232,130,154,0.08);
+        --border: #f0c0d0;
+        --border-accent: rgba(232,130,154,0.3);
+        --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
+        --star-color: #e8829a;
+    }
 
-        [data-theme="sage"] {
-            --bg: #f4f6f0;
-            --bg-secondary: #eaefe4;
-            --bg-tertiary: #dde5d4;
-            --text: #2d3828;
-            --text-muted: #6e8060;
-            --text-subtle: #a0b090;
-            --accent: #7a9e6e;
-            --accent-hover: #5e8050;
-            --accent-dim: rgba(122,158,110,0.08);
-            --border: #c8d8b8;
-            --border-accent: rgba(122,158,110,0.3);
-            --cloud-r: 122; --cloud-g: 158; --cloud-b: 110;
-        }
+    [data-theme="abyss"] {
+        --bg: #050d1a;
+        --bg-secondary: #0a1628;
+        --bg-tertiary: #0f1e35;
+        --text: #c8d8f0;
+        --text-muted: #7090b8;
+        --text-subtle: #3a5070;
+        --accent: #c9a96e;
+        --accent-hover: #b8935a;
+        --accent-dim: rgba(201,169,110,0.12);
+        --border: #1a2e48;
+        --border-accent: rgba(201,169,110,0.25);
+        --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
+        --star-color: #c9a96e;
+    }
 
-        [data-theme="noir"] {
-            --bg: #000000;
-            --bg-secondary: #0a0a0a;
-            --bg-tertiary: #141414;
-            --text: #ffffff;
-            --text-muted: #888888;
-            --text-subtle: #444444;
-            --accent: #ffffff;
-            --accent-hover: #cccccc;
-            --accent-dim: rgba(255,255,255,0.05);
-            --border: #222222;
-            --border-accent: rgba(255,255,255,0.15);
-            --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
-        }
-    
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    [data-theme="sage"] {
+        --bg: #f4f6f0;
+        --bg-secondary: #eaefe4;
+        --bg-tertiary: #dde5d4;
+        --text: #2d3828;
+        --text-muted: #6e8060;
+        --text-subtle: #a0b090;
+        --accent: #7a9e6e;
+        --accent-hover: #5e8050;
+        --accent-dim: rgba(122,158,110,0.08);
+        --border: #c8d8b8;
+        --border-accent: rgba(122,158,110,0.3);
+        --cloud-r: 122; --cloud-g: 158; --cloud-b: 110;
+        --star-color: #7a9e6e;
+    }
 
-               body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Georgia', serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
+    [data-theme="noir"] {
+        --bg: #000000;
+        --bg-secondary: #0a0a0a;
+        --bg-tertiary: #141414;
+        --text: #ffffff;
+        --text-muted: #888888;
+        --text-subtle: #444444;
+        --accent: #ffffff;
+        --accent-hover: #cccccc;
+        --accent-dim: rgba(255,255,255,0.05);
+        --border: #222222;
+        --border-accent: rgba(255,255,255,0.15);
+        --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
+        --star-color: #ffffff;
+    }
 
-        canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .chamber {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-            width: 100%;
-            max-width: 400px;
-            padding: 40px;
-        }
+    body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Georgia', serif;
+        height: 100vh;
+        height: 100dvh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+        transition: background-color 0.4s ease, color 0.4s ease;
+    }
 
-        h1 { font-size: 2rem; color: #c9a96e; letter-spacing: 0.2rem; }
-        p.subtitle { color: #9e9589; font-size: 0.9rem; }
-        p.error { color: #c97070; font-size: 0.9rem; }
+    canvas {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+    }
 
-        input {
-            width: 100%;
-            padding: 12px 16px;
-            background-color: #1a1a1a;
-            border: 1px solid #2e2e2e;
-            border-radius: 6px;
-            color: #e8e0d0;
-            font-family: 'Georgia', serif;
-            font-size: 1rem;
-            outline: none;
-        }
+    .stars {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
 
-        input:focus { border-color: #c9a96e; }
+    .star {
+        position: absolute;
+        background: var(--star-color);
+        border-radius: 50%;
+        opacity: 0;
+        animation: twinkle var(--duration) ease-in-out infinite var(--delay);
+    }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #c9a96e;
-            color: #0d0d0d;
-            border: none;
-            border-radius: 6px;
-            font-family: 'Georgia', serif;
-            font-size: 1rem;
-            cursor: pointer;
-            letter-spacing: 0.1rem;
-        }
+    @keyframes twinkle {
+        0%, 100% { opacity: 0; transform: scale(0.8); }
+        50% { opacity: var(--opacity); transform: scale(1.2); }
+    }
 
-        button:hover { background-color: #b8935a; }
-        a { color: #9e9589; font-size: 0.9rem; text-decoration: none; }
-        a:hover { color: #c9a96e; }
+    .chamber {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        width: 100%;
+        max-width: 360px;
+        padding: 40px;
+        transform: translateY(-40px);
+        animation: settle 0.9s ease-out;
+    }
+
+    @keyframes settle {
+        0% { opacity: 0; transform: translateY(-56px); }
+        100% { opacity: 1; transform: translateY(-40px); }
+    }
+
+   h1 {
+    font-size: 2.75rem;
+    color: var(--accent);
+    letter-spacing: 0.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+  h1 svg { width: 0.85em; height: 0.85em; fill: var(--accent); }
+
+p.subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+    p.error { color: #c97070; font-size: 0.85rem; text-align: center; }
+
+    form.register-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+    }
+
+    .field label {
+        font-size: 0.7rem;
+        letter-spacing: 0.07rem;
+        text-transform: uppercase;
+        color: var(--text-subtle);
+    }
+
+    .field-hint {
+        font-size: 0.68rem;
+        color: var(--text-subtle);
+        opacity: 0.75;
+        margin-top: 2px;
+    }
+
+    .input-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+  input {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+    input::placeholder {
+        color: var(--text-muted);
+        filter: brightness(1.22);
+    }
+
+    input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-dim), 0 0 16px var(--accent-dim);
+    }
+
+    input[type="password"] {
+        padding-right: 44px;
+    }
+
+    /* Inline validation states */
+    .field.valid input {
+        border-color: rgba(122,158,110,0.6);
+    }
+
+    .field.invalid input {
+        border-color: #c97070;
+    }
+
+    .toggle-visibility {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        cursor: pointer;
+        padding: 4px 6px;
+        letter-spacing: 0.05rem;
+        border-radius: 4px;
+        transition: color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .toggle-visibility:hover {
+        color: var(--accent);
+        background-color: var(--accent-dim);
+    }
+
+    button.enter-btn {
+        width: 100%;
+        padding: 12px;
+        margin-top: -4px;
+        background-color: var(--accent);
+        color: var(--bg);
+        border: none;
+        border-radius: 6px;
+        font-family: 'Georgia', serif;
+        font-size: 0.92rem;
+        cursor: pointer;
+        letter-spacing: 0.08rem;
+        transition: filter 0.2s ease, background-color 0.2s ease;
+    }
+
+    button.enter-btn:hover {
+        filter: brightness(1.08);
+    }
+
+  .stars-divider {
+    text-align: center;
+    color: var(--accent);
+    opacity: 0.15;
+    font-size: 0.6rem;
+    letter-spacing: 0.5rem;
+}
+
+    a.register-link {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        text-decoration: none;
+        text-align: center;
+        transition: color 0.2s ease;
+    }
+
+    a.register-link:hover { color: var(--accent); }
+
+    .privacy-footer {
+        position: fixed;
+        bottom: 60px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.72rem;
+        color: var(--text-subtle);
+        letter-spacing: 0.04rem;
+        z-index: 1;
+        opacity: 0.88;
+        filter: brightness(1.2);
+    }
     </style>
 </head>
 <body>
     <canvas id="bg"></canvas>
+    <div class="stars" id="stars"></div>
 
     <div class="chamber">
-        <h1>🌙 Oneiric</h1>
+        <h1>
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            Oneiric
+        </h1>
         <p class="subtitle">Create your Secret Chamber</p>
 
         <p class="error" th:if="${error}" th:text="${error}"></p>
 
-        <form method="post" action="/register" style="width:100%; display:flex; flex-direction:column; gap:16px;">
-            <input type="text" name="username" placeholder="choose a username" required />
-            <input type="email" name="email" placeholder="your email" required />
-            <input type="password" name="password" placeholder="create a password" required />
-            <button type="submit">Enter Chamber</button>
+        <form class="register-form" method="post" action="/register" novalidate>
+            <div class="field" id="usernameField">
+                <label for="username">Username</label>
+                <div class="input-wrap">
+                    <input type="text" id="username" name="username" placeholder="choose a username" required minlength="3" />
+                </div>
+            </div>
+
+            <div class="field" id="emailField">
+                <label for="email">Email</label>
+                <div class="input-wrap">
+                    <input type="email" id="email" name="email" placeholder="your email" required />
+                </div>
+            </div>
+
+            <div class="field" id="passwordField">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <input type="password" id="password" name="password" placeholder="create a password" required minlength="8" />
+                    <button type="button" class="toggle-visibility" onclick="togglePassword()">show</button>
+                </div>
+                <p class="field-hint">at least 8 characters</p>
+            </div>
+
+            <button type="submit" class="enter-btn">Create Your Chamber</button>
         </form>
 
-        <a href="/login">Already have an Account? Enter here</a>
+        <div class="stars-divider">✦ · ✦</div>
+
+        <a href="/login" class="register-link">Already have an Account? Enter here</a>
     </div>
 
+    <p class="privacy-footer">A quiet place for what belongs to you.</p>
+
     <script>
+        function togglePassword() {
+            const input = document.getElementById('password');
+            const btn = document.querySelector('.toggle-visibility');
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = 'hide';
+            } else {
+                input.type = 'password';
+                btn.textContent = 'show';
+            }
+        }
+
+        // Lightweight inline validation
+        function attachValidation(fieldId, inputEl, validateFn) {
+            const field = document.getElementById(fieldId);
+            inputEl.addEventListener('blur', () => {
+                if (inputEl.value.trim() === '') {
+                    field.classList.remove('valid', 'invalid');
+                    return;
+                }
+                if (validateFn(inputEl.value)) {
+                    field.classList.add('valid');
+                    field.classList.remove('invalid');
+                } else {
+                    field.classList.add('invalid');
+                    field.classList.remove('valid');
+                }
+            });
+            inputEl.addEventListener('input', () => {
+                field.classList.remove('valid', 'invalid');
+            });
+        }
+
+        attachValidation('usernameField', document.getElementById('username'), v => v.trim().length >= 3);
+        attachValidation('emailField', document.getElementById('email'), v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+        attachValidation('passwordField', document.getElementById('password'), v => v.length >= 8);
+
         const canvas = document.getElementById('bg');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -184,20 +412,18 @@
         const h = canvas.height;
 
         function drawCloud(x, y, size) {
-            const circles = [
-                [0, 0, size],
-                [size*0.6, -size*0.2, size*0.75],
-                [-size*0.5, -size*0.1, size*0.7],
-                [size*0.2, -size*0.5, size*0.6],
-                [-size*0.2, -size*0.55, size*0.55],
-            ];
-            circles.forEach(([cx, cy, r]) => {
-                const g = ctx.createRadialGradient(x+cx, y+cy, 0, x+cx, y+cy, r);
-                g.addColorStop(0, `rgba(180,140,80,0.18)`);
-                g.addColorStop(1, `rgba(180,140,80,0)`);
-                ctx.fillStyle = g;
+            const r = getComputedStyle(document.documentElement).getPropertyValue('--cloud-r').trim() || '180';
+            const g = getComputedStyle(document.documentElement).getPropertyValue('--cloud-g').trim() || '140';
+            const b = getComputedStyle(document.documentElement).getPropertyValue('--cloud-b').trim() || '80';
+            [[0,0,size],[size*.6,-size*.2,size*.75],[-size*.5,-size*.1,size*.7],
+             [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
+            ].forEach(([cx,cy,r2]) => {
+                const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
+                grad.addColorStop(0, `rgba(${r},${g},${b},0.10)`);
+                grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+                ctx.fillStyle = grad;
                 ctx.beginPath();
-                ctx.arc(x+cx, y+cy, r, 0, Math.PI*2);
+                ctx.arc(x+cx, y+cy, r2, 0, Math.PI*2);
                 ctx.fill();
             });
         }
@@ -208,28 +434,55 @@
             ctx.strokeStyle = `rgba(201,169,110,${alpha})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(x, y-size); ctx.lineTo(x, y+size);
-            ctx.moveTo(x-size, y); ctx.lineTo(x+size, y);
-            ctx.moveTo(x-size*0.6, y-size*0.6); ctx.lineTo(x+size*0.6, y+size*0.6);
-            ctx.moveTo(x+size*0.6, y-size*0.6); ctx.lineTo(x-size*0.6, y+size*0.6);
+            ctx.moveTo(x, y - size);
+            ctx.lineTo(x, y + size);
+            ctx.moveTo(x - size, y);
+            ctx.lineTo(x + size, y);
+            ctx.moveTo(x - size*0.6, y - size*0.6);
+            ctx.lineTo(x + size*0.6, y + size*0.6);
+            ctx.moveTo(x + size*0.6, y - size*0.6);
+            ctx.lineTo(x - size*0.6, y + size*0.6);
             ctx.stroke();
             ctx.restore();
         }
 
-        drawCloud(0, h, 180);
-        drawCloud(w*0.15, h, 140);
-        drawCloud(w, h, 180);
-        drawCloud(w*0.85, h, 140);
-        drawCloud(0, 0, 160);
-        drawCloud(w*0.12, 0, 120);
-        drawCloud(w, 0, 160);
-        drawCloud(w*0.88, 0, 120);
+        function drawScene() {
+            ctx.clearRect(0, 0, w, h);
+            drawCloud(0, h, 180);
+            drawCloud(w * 0.15, h, 140);
+            drawCloud(w, h, 180);
+            drawCloud(w * 0.85, h, 140);
+            drawCloud(0, 0, 160);
+            drawCloud(w * 0.12, 0, 120);
+            drawCloud(w, 0, 160);
+            drawCloud(w * 0.88, 0, 120);
 
-        [[w*0.1,h*0.2,5],[w*0.9,h*0.15,4],[w*0.05,h*0.7,6],
-         [w*0.95,h*0.75,5],[w*0.2,h*0.05,4],[w*0.8,h*0.08,6],
-         [w*0.15,h*0.92,5],[w*0.85,h*0.9,4],[w*0.5,h*0.03,3],
-         [w*0.3,h*0.97,4],[w*0.7,h*0.95,5],[w*0.02,h*0.45,4]
-        ].forEach(([x,y,s]) => drawSparkle(x, y, s, 0.6));
+            const sparkles = [
+                [w*0.1, h*0.2, 5], [w*0.9, h*0.15, 4], [w*0.05, h*0.7, 6],
+                [w*0.95, h*0.75, 5], [w*0.2, h*0.05, 4], [w*0.8, h*0.08, 6],
+                [w*0.15, h*0.92, 5], [w*0.85, h*0.9, 4], [w*0.5, h*0.03, 3],
+                [w*0.3, h*0.97, 4], [w*0.7, h*0.95, 5], [w*0.02, h*0.45, 4],
+                [w*0.98, h*0.5, 5], [w*0.25, h*0.12, 3], [w*0.75, h*0.88, 4],
+            ];
+            sparkles.forEach(([x, y, s]) => drawSparkle(x, y, s, 0.6));
+        }
+
+        drawScene();
+
+        const container = document.getElementById('stars');
+        for (let i = 0; i < 60; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 2.5 + 1;
+            star.style.cssText = `
+                width:${size}px; height:${size}px;
+                top:${Math.random()*100}%; left:${Math.random()*100}%;
+                --duration:${Math.random()*4+2}s;
+                --delay:${Math.random()*5}s;
+                --opacity:${Math.random()*0.5+0.1};
+            `;
+            container.appendChild(star);
+        }
     </script>
 </body>
 </html>

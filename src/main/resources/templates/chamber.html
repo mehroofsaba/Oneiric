@@ -38,20 +38,20 @@
             --star-color: #e8829a;
         }
 
-        [data-theme="abyss"] {
+                [data-theme="abyss"] {
             --bg: #050d1a;
             --bg-secondary: #0a1628;
             --bg-tertiary: #0f1e35;
             --text: #c8d8f0;
             --text-muted: #7090b8;
             --text-subtle: #3a5070;
-            --accent: #7eb8e8;
-            --accent-hover: #5a9fd4;
-            --accent-dim: rgba(126,184,232,0.08);
+            --accent: #c9a96e;
+            --accent-hover: #b8935a;
+            --accent-dim: rgba(201,169,110,0.12);
             --border: #1a2e48;
-            --border-accent: rgba(126,184,232,0.2);
+            --border-accent: rgba(201,169,110,0.25);
             --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
-            --star-color: #7eb8e8;
+            --star-color: #c9a96e;
         }
 
         [data-theme="sage"] {
@@ -147,20 +147,21 @@
         .menu-btn { z-index: 100; }
 
         /* Hamburger button */
-        .menu-btn {
+              .menu-btn {
             position: fixed;
             top: 24px;
             left: 24px;
             background: none;
             border: none;
-            color: #9e9589;
+            color: var(--text-muted);
             font-size: 1.6rem;
             cursor: pointer;
             z-index: 100;
             line-height: 1;
+            transition: color 0.2s;
         }
 
-        .menu-btn:hover { color: #c9a96e; }
+        .menu-btn:hover { color: var(--accent); }
 
         /* Slide-out drawer*/
               .drawer {
@@ -284,26 +285,30 @@
             margin-top: 16px;
         }
 
-        a.btn {
+                a.btn {
             padding: 12px 28px;
-            background-color: #c9a96e;
-            color: #0d0d0d;
+            background-color: var(--accent);
+            color: var(--bg);
             border-radius: 6px;
             text-decoration: none;
             font-family: 'Georgia', serif;
             font-size: 0.95rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        a.btn:hover { background-color: #b8935a; }
+        a.btn:hover { background-color: var(--accent-hover); }
 
         a.btn.secondary {
             background-color: transparent;
-            border: 1px solid #2e2e2e;
-            color: #9e9589;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            transition: all 0.3s ease;
         }
 
-        a.btn.secondary:hover { border-color: #c9a96e; color: #c9a96e; }
-        
+        a.btn.secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
                 .theme-btn {
             position: fixed;
             top: 24px;
@@ -415,8 +420,8 @@
             <p>This is your Private Space. Your thoughts live here!</p>
         <p style="color:#555; font-size:0.85rem; margin-top:4px;">
             <span th:if="${entryCount == 0}">Your chamber is Empty. Write your first thought.</span>
-            <span th:if="${entryCount == 1}">You have <span style="color:#c9a96e;">1</span> Thought here.</span>
-            <span th:if="${entryCount > 1}">You have <span style="color:#c9a96e;" th:text="${entryCount}"></span> Thoughts here.</span>
+                       <span th:if="${entryCount == 1}">You have <span style="color:var(--accent);">1</span> Thought here.</span>
+            <span th:if="${entryCount > 1}">You have <span style="color:var(--accent);" th:text="${entryCount}"></span> Thoughts here.</span>
         </p>
         <div class="actions">
             <a href="/entries/new" class="btn">✏️ Write something</a>
@@ -437,6 +442,22 @@
         canvas.height = window.innerHeight;
         const w = canvas.width;
         const h = canvas.height;
+        
+        // Falling petals for sakura
+        const petals = [];
+        for (let i = 0; i < 35; i++) {
+            petals.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                size: Math.random() * 7 + 3,
+                speedX: Math.random() * 0.6 - 0.3,
+                speedY: Math.random() * 0.8 + 0.3,
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.03,
+                opacity: Math.random() * 0.5 + 0.2,
+                sway: Math.random() * Math.PI * 2,
+            });
+        }
 
         function drawCloud(x, y, size) {
             const r = getComputedStyle(document.documentElement).getPropertyValue('--cloud-r').trim() || '180';
@@ -455,15 +476,69 @@
             });
         }
 
-        function drawScene() {
-            ctx.clearRect(0, 0, w, h);
-            drawCloud(0, h, 180); drawCloud(w*0.15, h, 140);
-            drawCloud(w, h, 180); drawCloud(w*0.85, h, 140);
-            drawCloud(0, 0, 160); drawCloud(w*0.12, 0, 120);
-            drawCloud(w, 0, 160); drawCloud(w*0.88, 0, 120);
-        }
+        // Pre-calculate blossom positions ONCE outside the loop
+        const blossomClusters = [];
+        (function initBlossoms() {
+            function addCluster(cx, cy, count, spread) {
+                for (let i = 0; i < count; i++) {
+                    blossomClusters.push({
+                        x: cx + (Math.random() - 0.5) * spread,
+                        y: cy + (Math.random() - 0.5) * spread * 0.5,
+                        r: Math.random() * 40 + 20,
+                    });
+                }
+            }
+            // These run once at page load
+            const W = window.innerWidth, H = window.innerHeight;
+            addCluster(W*0.92, H*0.05, 12, 140);
+            addCluster(W*0.75, H*0.08, 10, 100);
+            addCluster(W*0.85, H*0.18, 8, 80);
+            addCluster(W*0.05, H*0.88, 12, 140);
+            addCluster(W*0.18, H*0.75, 10, 100);
+            addCluster(W*0.08, H*0.65, 8, 80);
+        })();
 
-        drawScene();
+        function drawSakuraScene() {
+            ctx.clearRect(0, 0, w, h);
+
+            // Static sky gradient
+            const sky = ctx.createLinearGradient(0, 0, 0, h);
+            sky.addColorStop(0, 'rgba(255,192,203,0.2)');
+            sky.addColorStop(1, 'rgba(255,240,245,0.05)');
+            ctx.fillStyle = sky;
+            ctx.fillRect(0, 0, w, h);
+
+            // Draw pre-calculated static blossoms
+            blossomClusters.forEach(b => {
+                const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+                grad.addColorStop(0, 'rgba(255,160,185,0.18)');
+                grad.addColorStop(0.5, 'rgba(255,182,203,0.1)');
+                grad.addColorStop(1, 'rgba(255,200,215,0)');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Only petals move
+            petals.forEach(p => {
+                p.sway += 0.008;
+                p.x += p.speedX * 0.4 + Math.sin(p.sway) * 0.3;
+                p.y += p.speedY * 0.4;
+                p.rotation += p.rotationSpeed * 0.5;
+                if (p.y > h + 20) { p.y = -10; p.x = Math.random() * w; }
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation);
+                ctx.globalAlpha = p.opacity * 0.7;
+                ctx.fillStyle = 'rgba(240,140,170,0.9)';
+                ctx.beginPath();
+                ctx.ellipse(0, 0, p.size * 0.5, p.size * 0.9, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+        }
 
         function drawSparkle(x, y, size, alpha) {
             ctx.save();
@@ -479,14 +554,36 @@
             ctx.restore();
         }
 
-        drawCloud(0, h, 180);
-        drawCloud(w*0.15, h, 140);
-        drawCloud(w, h, 180);
-        drawCloud(w*0.85, h, 140);
-        drawCloud(0, 0, 160);
-        drawCloud(w*0.12, 0, 120);
-        drawCloud(w, 0, 160);
-        drawCloud(w*0.88, 0, 120);
+        function drawCloudScene() {
+            ctx.clearRect(0, 0, w, h);
+            // Draw once, no loop needed
+            [[0,h,180],[w*.15,h,140],[w,h,180],[w*.85,h,140],
+             [0,0,160],[w*.12,0,120],[w,0,160],[w*.88,0,120]
+            ].forEach(([x,y,s]) => drawCloud(x, y, s));
+        }
+        
+        let sakuraAnimFrame = null;
+
+        function drawScene() {
+            const theme = document.documentElement.getAttribute('data-theme');
+
+            if (sakuraAnimFrame) {
+                cancelAnimationFrame(sakuraAnimFrame);
+                sakuraAnimFrame = null;
+            }
+
+            ctx.clearRect(0, 0, w, h);
+
+            if (theme === 'sakura') {
+                function loopSakura() {
+                    drawSakuraScene();
+                    sakuraAnimFrame = requestAnimationFrame(loopSakura);
+                }
+                loopSakura();
+            } else {
+                drawCloudScene();
+            }
+        }
 
         [[w*0.1,h*0.2,5],[w*0.9,h*0.15,4],[w*0.05,h*0.7,6],
          [w*0.95,h*0.75,5],[w*0.2,h*0.05,4],[w*0.8,h*0.08,6],
