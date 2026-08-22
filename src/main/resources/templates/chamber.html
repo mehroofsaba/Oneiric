@@ -2,17 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oneiric — Your Chamber</title>
     <style>
-    
-            /* ===== THEME SYSTEM ===== */
+
+        /* ===== THEME SYSTEM ===== */
         :root {
             --bg: #0d0d0d;
             --bg-secondary: #111111;
             --bg-tertiary: #1a1a1a;
             --text: #e8e0d0;
             --text-muted: #9e9589;
-            --text-subtle: #555;
+            --text-subtle: #6e6558;
             --accent: #c9a96e;
             --accent-hover: #b8935a;
             --accent-dim: rgba(201,169,110,0.08);
@@ -38,7 +39,7 @@
             --star-color: #e8829a;
         }
 
-                [data-theme="abyss"] {
+        [data-theme="abyss"] {
             --bg: #050d1a;
             --bg-secondary: #0a1628;
             --bg-tertiary: #0f1e35;
@@ -85,10 +86,15 @@
             --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
             --star-color: #ffffff;
         }
-    
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-                body {
+        ::selection {
+            background: var(--accent-dim);
+            color: var(--text);
+        }
+
+        body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Georgia', serif;
@@ -118,7 +124,7 @@
 
         .star {
             position: absolute;
-            background: #c9a96e;
+            background: var(--star-color);
             border-radius: 50%;
             opacity: 0;
             animation: twinkle var(--duration) ease-in-out infinite var(--delay);
@@ -132,128 +138,190 @@
         .moon-deco {
             position: fixed;
             font-size: var(--size);
-            opacity: 0.07;
+            opacity: 0.06;
             pointer-events: none;
             z-index: 0;
+            color: var(--accent);
             animation: float var(--fduration) ease-in-out infinite var(--fdelay);
         }
+
+        .moon-deco svg { width: 1em; height: 1em; display: block; fill: var(--accent); }
+        .moon-deco.symbol { font-family: Georgia, serif; line-height: 1; }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(var(--rot)); }
             50% { transform: translateY(-12px) rotate(var(--rot)); }
         }
 
-        .chamber { position: relative; z-index: 1; }
-        .menu-btn { z-index: 100; }
+.menu-btn {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--text-muted);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.25s ease;
+}
 
-        /* Hamburger button */
-              .menu-btn {
-            position: fixed;
-            top: 24px;
-            left: 24px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.6rem;
-            cursor: pointer;
-            z-index: 100;
-            line-height: 1;
-            transition: color 0.2s;
-        }
+.menu-btn svg {
+    width: 15px;
+    height: 15px;
+}
 
-        .menu-btn:hover { color: var(--accent); }
+.menu-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-dim);
+    transform: translateY(-1px);
+}
 
-        /* Slide-out drawer*/
-              .drawer {
-            position: fixed;
-            top: 0;
-            left: -280px;
-            width: 260px;
-            height: 100vh;
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            padding: 60px 32px 40px;
-            gap: 28px;
-            transition: left 0.3s ease, background 0.4s ease;
-            z-index: 99;
-            overflow: hidden;
-        }
+        /* Slide-out drawer */
+        .drawer {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 270px;
+    height: 100vh;
+    background: var(--bg-tertiary);
+    display: flex;
+    flex-direction: column;
+    padding: 44px 28px 32px;
+    gap: 20px;
+    transition: left 0.35s cubic-bezier(.4,0,.2,1), background 0.4s ease;
+    z-index: 99;
+    overflow: hidden;
+}
 
-        .drawer h2 { color: var(--accent); font-size: 0.85rem; letter-spacing: 0.35rem; text-transform: uppercase; text-align: center; }
-        .drawer a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; transition: color 0.2s, padding-left 0.2s; display: flex; align-items: center; gap: 10px; }
-        .drawer a:hover { color: var(--accent); padding-left: 6px; }
-        .drawer .divider { border: none; border-top: 1px solid var(--border); }
-        .drawer a.danger { color: #a05050; }
-        .drawer a.danger:hover { color: #c97070; }
+.drawer.open { left: 0; }
 
-        .drawer.open { left: 0; }
+.drawer-stars {
+    text-align: center;
+    color: var(--accent);
+    opacity: 0.4;
+    font-size: 0.65rem;
+    letter-spacing: 0.4rem;
+}
+        
+.drawer::before {
+    content: '';
+    position: absolute;
+    width: 8rem;
+    height: 8rem;
+    bottom: -20px;
+    right: -20px;
+    opacity: 0.08;
+    pointer-events: none;
+    background: var(--accent);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z'/%3E%3C/svg%3E") center/contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
 
-        .drawer::before {
-            content: '🌙';
-            position: absolute;
-            font-size: 8rem;
-            opacity: 0.04;
-            bottom: -20px;
-            right: -20px;
-            pointer-events: none;
-        }
+.drawer::after {
+    content: none;
+}
 
-        .drawer::after {
-            content: '✦ ✧ ✦ ✧ ✦';
-            position: absolute;
-            top: 16px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 0.55rem;
-            letter-spacing: 0.4rem;
-            color: #c9a96e;
-            opacity: 0.4;
-            pointer-events: none;
-        }
+.drawer-stars-scatter {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
 
-        .drawer h2 {
-            color: #c9a96e;
-            font-size: 0.85rem;
-            letter-spacing: 0.35rem;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-            text-align: center;
-        }
+.drawer-stars-scatter .dstar {
+    position: absolute;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0;
+    animation: drawerTwinkle var(--duration) ease-in-out infinite var(--delay);
+}
 
-        .drawer .stars-divider {
-            text-align: center;
-            color: #c9a96e;
-            opacity: 0.3;
-            font-size: 0.6rem;
-            letter-spacing: 0.3rem;
-        }
+@keyframes drawerTwinkle {
+    0%, 100% { opacity: 0; transform: scale(0.7); }
+    50% { opacity: var(--opacity); transform: scale(1.2); }
+}
 
-        .drawer a {
-            color: #9e9589;
-            text-decoration: none;
-            font-size: 0.95rem;
-            letter-spacing: 0.08rem;
-            transition: color 0.2s, padding-left 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.drawer h2 {
+    color: var(--accent);
+    font-size: 1.05rem;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+}
 
-        .drawer a:hover {
-            color: #c9a96e;
-            padding-left: 6px;
-        }
+.drawer h2 svg { width: 1em; height: 1em; fill: var(--accent); }
 
-        .drawer .divider {
-            border: none;
-            border-top: 1px solid #1e1a0e;
-        }
+.drawer nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 6px;
+}
 
-        .drawer a.danger { color: #a05050; }
-        .drawer a.danger:hover { color: #c97070; padding-left: 6px; }
+.drawer nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.03rem;
+    padding: 11px 12px;
+    border-radius: 8px;
+    border-left: 2px solid transparent;
+    transition: color 0.2s, background 0.2s, border-color 0.2s, padding-left 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.drawer nav a svg {
+    width: 1.05em;
+    height: 1.05em;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.85;
+}
+
+.drawer nav a:hover {
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding-left: 16px;
+}
+
+.drawer nav a:hover svg { opacity: 1; }
+
+.drawer nav a.active {
+    color: var(--accent);
+    background: var(--accent-dim);
+    border-left: 2px solid var(--accent);
+}
+
+.drawer nav a.active svg { opacity: 1; }
+
+.drawer .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 8px 0;
+}
+
+.drawer .account-group { margin-top: 8px; }
+
+.drawer a.danger { color: #a8686e; }
+.drawer a.danger:hover { color: #c2868b; background: rgba(168,104,110,0.08); padding-left: 16px; }
 
         /* Overlay */
         .overlay {
@@ -268,64 +336,109 @@
 
         /* Main content */
         .chamber {
+            position: relative;
+            z-index: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
             text-align: center;
+            padding: 0 24px;
+            transform: translateY(-7%);
+            animation: riseIn 0.7s ease-out;
         }
 
-        h1 { font-size: 3rem; color: var(--accent); letter-spacing: 0.3rem; }
-        p { color: var(--text-muted); font-size: 0.95rem; }
-        p span { color: var(--accent); }
+        @keyframes riseIn {
+            0% { opacity: 0; transform: translateY(calc(-7% + 16px)); }
+            100% { opacity: 1; transform: translateY(-7%); }
+        }
 
-        .actions {
+        .logo {
             display: flex;
-            gap: 16px;
-            margin-top: 16px;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 6px;
         }
 
-                a.btn {
-            padding: 12px 28px;
+        .logo svg { width: 2.1rem; height: 2.1rem; fill: var(--accent); flex-shrink: 0; }
+
+        h1 { font-size: 2.6rem; color: var(--accent); letter-spacing: 0.2rem; font-weight: 600; }
+
+        p { color: var(--text-muted); font-size: 0.95rem; }
+        .welcome { font-size: 0.85rem; color: var(--text); }
+        .welcome span { color: var(--accent); }
+
+        .status-line { color: var(--accent); opacity: 0.75; font-size: 0.85rem; margin-top: -8px; }
+        .status-line .count { color: var(--accent); opacity: 1; }
+
+        .actions { display: flex; gap: 16px; margin-top: 18px; flex-wrap: wrap; justify-content: center; }
+
+        a.btn {
+            padding: 13px 28px;
+            height: 48px;
+            min-width: 190px;
+            justify-content: center;
             background-color: var(--accent);
             color: var(--bg);
             border-radius: 6px;
             text-decoration: none;
             font-family: 'Georgia', serif;
             font-size: 0.95rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid transparent;
+            box-shadow: 0 0 0 rgba(201,169,110,0);
+            transition: all 0.25s ease;
         }
 
-        a.btn:hover { background-color: var(--accent-hover); }
+        a.btn svg { width: 0.9em; height: 0.9em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+        a.btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 18px rgba(201,169,110,0.25);
+        }
+
+        a.btn:active { transform: translateY(0) scale(0.97); }
+        a.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
         a.btn.secondary {
             background-color: transparent;
-            border: 1px solid var(--border);
+            border: 1.5px solid var(--border-accent);
             color: var(--text-muted);
-            transition: all 0.3s ease;
+            box-shadow: none;
         }
 
         a.btn.secondary:hover {
             border-color: var(--accent);
             color: var(--accent);
-        }
-                .theme-btn {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.2s;
+            background-color: var(--accent-dim);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(201,169,110,0.12);
         }
 
-        .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+       .theme-btn {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.theme-btn:hover { color: var(--accent); transform: translateY(-1px); }
 
         .theme-panel {
             position: fixed;
@@ -342,28 +455,72 @@
 
         .theme-panel.open { display: block; }
 
-        .theme-options {
-            display: flex;
-            gap: 10px;
+        .theme-panel .label {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            letter-spacing: 0.15rem;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-align: center;
         }
+
+        .theme-options { display: flex; gap: 10px; }
 
         .theme-option {
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             border: 2px solid var(--border);
-            background: var(--bg-tertiary);
-            font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .theme-option:hover { border-color: var(--accent); transform: scale(1.15); }
+        .theme-option[data-theme="default"] { background: linear-gradient(135deg, #0d0d0d, #c9a96e); }
+        .theme-option[data-theme="sakura"] { background: linear-gradient(135deg, #fdf6f0, #e8829a); }
+        .theme-option[data-theme="abyss"] { background: linear-gradient(135deg, #050d1a, #3a5f9e); }
+        .theme-option[data-theme="sage"] { background: linear-gradient(135deg, #f4f6f0, #7a9e6e); }
+        .theme-option[data-theme="noir"] { background: linear-gradient(135deg, #000000, #ffffff); }
+
+        .theme-option:hover { transform: scale(1.15); }
         .theme-option.active { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-dim); }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .logo svg { width: 1.7rem; height: 1.7rem; }
+            .actions { flex-direction: column; width: 100%; max-width: 280px; }
+            a.btn { width: 100%; justify-content: center; }
+        }
         
+        .confirm-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+}
+.confirm-modal.open { display: flex; }
+.confirm-box {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    text-align: center;
+    max-width: 300px;
+}
+.confirm-box p { color: var(--text); margin-bottom: 18px; }
+.confirm-actions { display: flex; gap: 12px; justify-content: center; }
+.danger-btn {
+    background: #a8686e;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+}
+
     </style>
 </head>
 <body>
@@ -372,78 +529,121 @@
     <canvas id="bg"></canvas>
     <div class="stars" id="stars"></div>
 
-    <!-- Celestial background -->
-    <div class="stars" id="stars"></div>
-    <div class="moon-deco" style="top:8%; left:5%; --size:5rem; --fduration:7s; --fdelay:0s; --rot:-20deg;">🌙</div>
-    <div class="moon-deco" style="top:15%; right:6%; --size:3rem; --fduration:9s; --fdelay:2s; --rot:15deg;">🌙</div>
-    <div class="moon-deco" style="bottom:10%; left:8%; --size:4rem; --fduration:8s; --fdelay:1s; --rot:10deg;">🌙</div>
-    <div class="moon-deco" style="bottom:18%; right:5%; --size:2.5rem; --fduration:11s; --fdelay:3s; --rot:-10deg;">🌙</div>
+    <div class="moon-deco" style="top:8%; left:5%; --size:5rem; --fduration:7s; --fdelay:0s; --rot:-20deg;">
+        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </div>
+    <div class="moon-deco symbol" style="top:15%; right:6%; --size:2.2rem; --fduration:9s; --fdelay:2s; --rot:15deg;">✦</div>
+    <div class="moon-deco symbol" style="bottom:10%; left:8%; --size:3.6rem; --fduration:8s; --fdelay:1s; --rot:10deg;">◐</div>
+    <div class="moon-deco symbol" style="bottom:18%; right:5%; --size:1.8rem; --fduration:11s; --fdelay:3s; --rot:-10deg;">✧</div>
 
     <!-- Hamburger -->
-    <button class="menu-btn" onclick="toggleMenu()">≡</button>
-    
-        <!-- Theme picker button -->
-    <button class="theme-btn" onclick="toggleThemePicker()" title="Change theme">◑</button>
+   <button class="menu-btn" onclick="toggleMenu()" aria-label="Open menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+         </button>
+    <!-- Theme picker button -->
+    <button class="theme-btn" onclick="toggleThemePicker()" title="Change theme" aria-label="Change theme">
+        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
 
     <!-- Theme picker panel -->
     <div class="theme-panel" id="themePanel">
-        <p style="color:var(--text-muted); font-size:0.75rem; letter-spacing:0.15rem; text-transform:uppercase; margin-bottom:12px;">theme</p>
+        <p class="label">Theme</p>
         <div class="theme-options">
-            <button class="theme-option" data-theme="default" onclick="setTheme('default')" title="Oneiric">🌙</button>
-            <button class="theme-option" data-theme="sakura" onclick="setTheme('sakura')" title="Sakura">🌸</button>
-            <button class="theme-option" data-theme="abyss" onclick="setTheme('abyss')" title="Abyss">🌊</button>
-            <button class="theme-option" data-theme="sage" onclick="setTheme('sage')" title="Sage">🌿</button>
-            <button class="theme-option" data-theme="noir" onclick="setTheme('noir')" title="Noir">🖤</button>
+            <button class="theme-option" data-theme="default" onclick="setTheme('default')" title="Oneiric"></button>
+            <button class="theme-option" data-theme="sakura" onclick="setTheme('sakura')" title="Sakura"></button>
+            <button class="theme-option" data-theme="abyss" onclick="setTheme('abyss')" title="Abyss"></button>
+            <button class="theme-option" data-theme="sage" onclick="setTheme('sage')" title="Sage"></button>
+            <button class="theme-option" data-theme="noir" onclick="setTheme('noir')" title="Noir"></button>
         </div>
     </div>
 
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    
+    <div class="confirm-modal" id="confirmModal">
+    <div class="confirm-box">
+        <p>Leave your chamber?</p>
+        <div class="confirm-actions">
+            <button class="btn secondary" onclick="closeConfirm()">Stay</button>
+            <a href="/logout" class="btn danger-btn">Leave</a>
+        </div>
+    </div>
+</div>
 
     <!-- Drawer -->
-       <!-- Drawer -->
-    <div class="drawer" id="drawer">
-                <h2><svg viewBox="0 0 24 24" width="0.9em" height="0.9em" fill="var(--accent)" style="vertical-align:middle; margin-right:6px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Oneiric</h2>
-        <div class="stars-divider">✦ ✧ ✦ ✧ ✦</div>
-                <a href="/chamber"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="var(--accent)" style="vertical-align:middle;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> &nbsp;Your chamber</a>
-        <a href="/entries"> &nbsp;🎀 Browse Entries</a>
-        <a href="/entries/new"> &nbsp;✏️ Write Something</a>
+<div class="drawer" id="drawer">
+    <h2>
+        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        Oneiric
+    </h2>
+    <div class="drawer-stars">✦ ✧ ✦ ✧ ✦</div>
+    <nav>
+        <a href="/chamber" class="active">
+            <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+            Your Chamber
+        </a>
+        <a href="/entries">
+            <svg viewBox="0 0 24 24"><path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/></svg>
+            Browse Entries
+        </a>
+        <a href="/entries/new">
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            Write Something
+        </a>
         <hr class="divider"/>
-        <a href="/account"> &nbsp;💫 Account Settings</a>
+        <div class="account-group">
+            <a href="/account">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+                Account Settings
+            </a>
+        </div>
         <hr class="divider"/>
-        <a href="/logout" class="danger"> &nbsp;ಥ_ಥ Leave Chamber</a>
-    </div>
+        <a href="#" class="danger" onclick="confirmLeave(event)">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+            Leave Chamber
+        </a>
+    </nav>
+
+    <div class="drawer-stars-scatter" id="drawerStars"></div>
+</div>
+
     <!-- Main -->
     <div class="chamber">
-                <h1><svg viewBox="0 0 24 24" width="0.85em" height="0.85em" fill="var(--accent)" style="vertical-align:middle; margin-right:8px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Oneiric</h1>
-        <p>Welcome Back, <span th:text="${username}"></span>.</p>
-            <p>This is your Private Space. Your thoughts live here!</p>
-        <p style="color:#555; font-size:0.85rem; margin-top:4px;">
-            <span th:if="${entryCount == 0}">Your chamber is Empty. Write your first thought.</span>
-                       <span th:if="${entryCount == 1}">You have <span style="color:var(--accent);">1</span> Thought here.</span>
-            <span th:if="${entryCount > 1}">You have <span style="color:var(--accent);" th:text="${entryCount}"></span> Thoughts here.</span>
+        <div class="logo">
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            <h1>Oneiric</h1>
+        </div>
+        <p class="welcome">Welcome back, <span th:text="${username}"></span>. This is your private space.</p>
+        <p class="status-line">
+            <span th:if="${entryCount == 0}">Your chamber is empty — write your first thought.</span>
+            <span th:if="${entryCount == 1}">You have <span class="count">1</span> thought here.</span>
+            <span th:if="${entryCount > 1}">You have <span class="count" th:text="${entryCount}"></span> thoughts here.</span>
         </p>
         <div class="actions">
-            <a href="/entries/new" class="btn">✏️ Write something</a>
-            <a href="/entries" class="btn secondary">◑﹏◐ Browse entries</a>
+            <a href="/entries/new" class="btn">
+                <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                Write something
+            </a>
+            <a href="/entries" class="btn secondary">
+                <svg viewBox="0 0 24 24"><path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/></svg>
+                Browse entries
+            </a>
         </div>
     </div>
 
-        <script>
+    <script>
         function toggleMenu() {
             document.getElementById('drawer').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('active');
         }
 
-        // Golden clouds
         const canvas = document.getElementById('bg');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         const w = canvas.width;
         const h = canvas.height;
-        
-        // Falling petals for sakura
+
         const petals = [];
         for (let i = 0; i < 35; i++) {
             petals.push({
@@ -459,7 +659,7 @@
             });
         }
 
-        function drawCloud(x, y, size) {
+        function drawCloud(x, y, size, alpha) {
             const r = getComputedStyle(document.documentElement).getPropertyValue('--cloud-r').trim() || '180';
             const g = getComputedStyle(document.documentElement).getPropertyValue('--cloud-g').trim() || '140';
             const b = getComputedStyle(document.documentElement).getPropertyValue('--cloud-b').trim() || '80';
@@ -467,7 +667,7 @@
              [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
             ].forEach(([cx,cy,r2]) => {
                 const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
-                grad.addColorStop(0,`rgba(${r},${g},${b},0.18)`);
+                grad.addColorStop(0,`rgba(${r},${g},${b},${alpha})`);
                 grad.addColorStop(1,`rgba(${r},${g},${b},0)`);
                 ctx.fillStyle = grad;
                 ctx.beginPath();
@@ -476,7 +676,6 @@
             });
         }
 
-        // Pre-calculate blossom positions ONCE outside the loop
         const blossomClusters = [];
         (function initBlossoms() {
             function addCluster(cx, cy, count, spread) {
@@ -488,7 +687,6 @@
                     });
                 }
             }
-            // These run once at page load
             const W = window.innerWidth, H = window.innerHeight;
             addCluster(W*0.92, H*0.05, 12, 140);
             addCluster(W*0.75, H*0.08, 10, 100);
@@ -500,15 +698,12 @@
 
         function drawSakuraScene() {
             ctx.clearRect(0, 0, w, h);
-
-            // Static sky gradient
             const sky = ctx.createLinearGradient(0, 0, 0, h);
             sky.addColorStop(0, 'rgba(255,192,203,0.2)');
             sky.addColorStop(1, 'rgba(255,240,245,0.05)');
             ctx.fillStyle = sky;
             ctx.fillRect(0, 0, w, h);
 
-            // Draw pre-calculated static blossoms
             blossomClusters.forEach(b => {
                 const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
                 grad.addColorStop(0, 'rgba(255,160,185,0.18)');
@@ -520,7 +715,6 @@
                 ctx.fill();
             });
 
-            // Only petals move
             petals.forEach(p => {
                 p.sway += 0.008;
                 p.x += p.speedX * 0.4 + Math.sin(p.sway) * 0.3;
@@ -539,11 +733,64 @@
                 ctx.restore();
             });
         }
+        
+        function getAccentRGB() {
+            const r = getComputedStyle(document.documentElement).getPropertyValue('--cloud-r').trim() || '180';
+            const g = getComputedStyle(document.documentElement).getPropertyValue('--cloud-g').trim() || '140';
+            const b = getComputedStyle(document.documentElement).getPropertyValue('--cloud-b').trim() || '80';
+            return { r, g, b };
+        }
 
-        function drawSparkle(x, y, size, alpha) {
+        function drawGlowStar(x, y, size, alpha) {
+            const { r, g, b } = getAccentRGB();
+            ctx.save();
+            const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 2.5);
+            glow.addColorStop(0, `rgba(${r},${g},${b},${alpha * 0.3})`);
+            glow.addColorStop(1, `rgba(${r},${g},${b},0)`);
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(x, y, size * 2.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(x, y - size);
+            ctx.quadraticCurveTo(x + size * 0.15, y - size * 0.15, x + size, y);
+            ctx.quadraticCurveTo(x + size * 0.15, y + size * 0.15, x, y + size);
+            ctx.quadraticCurveTo(x - size * 0.15, y + size * 0.15, x - size, y);
+            ctx.quadraticCurveTo(x - size * 0.15, y - size * 0.15, x, y - size);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawFivePointStar(x, y, size, alpha) {
+            const { r, g, b } = getAccentRGB();
             ctx.save();
             ctx.globalAlpha = alpha;
-            ctx.strokeStyle = `rgba(201,169,110,${alpha})`;
+            ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+                const outerAngle = (Math.PI * 2 * i) / 5 - Math.PI / 2;
+                const innerAngle = outerAngle + Math.PI / 5;
+                const ox = x + Math.cos(outerAngle) * size;
+                const oy = y + Math.sin(outerAngle) * size;
+                const ix = x + Math.cos(innerAngle) * size * 0.45;
+                const iy = y + Math.sin(innerAngle) * size * 0.45;
+                if (i === 0) ctx.moveTo(ox, oy); else ctx.lineTo(ox, oy);
+                ctx.lineTo(ix, iy);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawSparkle(x, y, size, alpha) {
+            const { r, g, b } = getAccentRGB();
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(x, y-size); ctx.lineTo(x, y+size);
@@ -553,47 +800,94 @@
             ctx.stroke();
             ctx.restore();
         }
+        
+        const featureStars = [
+            { bx: w * 0.92, by: h * 0.08, size: 7, phase: 0 },
+            { bx: w * 0.88, by: h * 0.15, size: 4.5, phase: 1.5 },
+            { bx: w * 0.9, by: h * 0.9, size: 6.5, phase: 3 },
+            { bx: w * 0.85, by: h * 0.82, size: 4, phase: 4.5 },
+        ];
+        const scatterStars = [];
+        for (let i = 0; i < 34; i++) {
+            scatterStars.push({
+                bx: Math.random() * w,
+                by: Math.random() * h,
+                size: Math.random() * 3.5 + 2.5,
+                shapeType: Math.floor(Math.random() * 3),
+                phase: Math.random() * Math.PI * 2,
+                driftSpeed: Math.random() * 0.4 + 0.15,
+            });
+        }
+
+        let starTime = 0;
+
+        function animateStars() {
+            starTime += 0.015;
+
+            featureStars.forEach(s => {
+                const drift = Math.sin(starTime + s.phase) * 6;
+                const twinkle = 0.45 + Math.sin(starTime * 1.3 + s.phase) * 0.2;
+                drawGlowStar(s.bx, s.by + drift, s.size, Math.max(0.25, twinkle));
+            });
+
+            scatterStars.forEach(s => {
+                const drift = Math.sin(starTime * s.driftSpeed + s.phase) * 8;
+                const twinkle = 0.35 + Math.sin(starTime * 1.5 + s.phase) * 0.25;
+                const alpha = Math.max(0.15, twinkle);
+                const y = s.by + drift;
+
+                if (s.shapeType === 0) {
+                    drawSparkle(s.bx, y, s.size, alpha);
+                } else if (s.shapeType === 1) {
+                    drawFivePointStar(s.bx, y, s.size * 0.8, alpha);
+                } else {
+                    drawGlowStar(s.bx, y, s.size * 0.6, alpha);
+                }
+            });
+        }
 
         function drawCloudScene() {
-            ctx.clearRect(0, 0, w, h);
-            // Draw once, no loop needed
-            [[0,h,180],[w*.15,h,140],[w,h,180],[w*.85,h,140],
-             [0,0,160],[w*.12,0,120],[w,0,160],[w*.88,0,120]
-            ].forEach(([x,y,s]) => drawCloud(x, y, s));
+            [[0,h,135,0.09],[w*.15,h,105,0.09],[w,h,135,0.09],[w*.85,h,105,0.09],
+             [0,0,120,0.12],[w*.12,0,90,0.12],[w,0,120,0.12],[w*.88,0,90,0.12]
+            ].forEach(([x,y,s,a]) => drawCloud(x, y, s, a));
         }
-        
+
         let sakuraAnimFrame = null;
 
-        function drawScene() {
-            const theme = document.documentElement.getAttribute('data-theme');
+        let starAnimFrame = null;
+        	function drawScene() {
+        	    const theme = document.documentElement.getAttribute('data-theme');
+        	    if (sakuraAnimFrame) {
+        	        cancelAnimationFrame(sakuraAnimFrame);
+        	        sakuraAnimFrame = null;
+        	    }
+        	    if (starAnimFrame) {
+        	        cancelAnimationFrame(starAnimFrame);
+        	        starAnimFrame = null;
+        	    }
 
-            if (sakuraAnimFrame) {
-                cancelAnimationFrame(sakuraAnimFrame);
-                sakuraAnimFrame = null;
-            }
+        	    if (theme === 'sakura') {
+        	        function loopSakura() {
+        	            drawSakuraScene();
+        	            sakuraAnimFrame = requestAnimationFrame(loopSakura);
+        	        }
+        	        loopSakura();
+        	    } else {
+        	        function loopStatic() {
+        	            ctx.clearRect(0, 0, w, h);
+        	            drawCloudScene();
+        	            animateStars();
+        	            starAnimFrame = requestAnimationFrame(loopStatic);
+        	        }
+        	        loopStatic();
+        	    }
+        	}
+        
 
-            ctx.clearRect(0, 0, w, h);
+        
 
-            if (theme === 'sakura') {
-                function loopSakura() {
-                    drawSakuraScene();
-                    sakuraAnimFrame = requestAnimationFrame(loopSakura);
-                }
-                loopSakura();
-            } else {
-                drawCloudScene();
-            }
-        }
-
-        [[w*0.1,h*0.2,5],[w*0.9,h*0.15,4],[w*0.05,h*0.7,6],
-         [w*0.95,h*0.75,5],[w*0.2,h*0.05,4],[w*0.8,h*0.08,6],
-         [w*0.15,h*0.92,5],[w*0.85,h*0.9,4],[w*0.5,h*0.03,3],
-         [w*0.3,h*0.97,4],[w*0.7,h*0.95,5],[w*0.02,h*0.45,4]
-        ].forEach(([x,y,s]) => drawSparkle(x, y, s, 0.6));
-
-        // Twinkling stars
         const container = document.getElementById('stars');
-        for (let i = 0; i < 80; i++) {
+        for (let i = 0; i < 45; i++) {
             const star = document.createElement('div');
             star.classList.add('star');
             const size = Math.random() * 2.5 + 1;
@@ -606,8 +900,7 @@
             `;
             container.appendChild(star);
         }
-        
-        // Theme system
+
         function setTheme(theme) {
             if (theme === 'default') {
                 document.documentElement.removeAttribute('data-theme');
@@ -618,7 +911,6 @@
             document.querySelectorAll('.theme-option').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.theme === theme);
             });
-            // Redraw clouds with theme color
             drawScene();
         }
 
@@ -626,20 +918,35 @@
             document.getElementById('themePanel').classList.toggle('open');
         }
 
-        // Close theme panel when clicking outside
         document.addEventListener('click', function(e) {
             const panel = document.getElementById('themePanel');
             const btn = document.querySelector('.theme-btn');
-            if (!panel.contains(e.target) && e.target !== btn) {
+            if (!panel.contains(e.target) && !btn.contains(e.target)) {
                 panel.classList.remove('open');
             }
         });
 
-        // Load saved theme
         const savedTheme = localStorage.getItem('oneiric-theme') || 'default';
         setTheme(savedTheme);
         
     </script>
+    
+    <script>
+    const drawerStarContainer = document.getElementById('drawerStars');
+    for (let i = 0; i < 25; i++) {
+        const s = document.createElement('div');
+        s.classList.add('dstar');
+        const size = Math.random() * 2.2 + 1;
+        s.style.cssText = `
+            width:${size}px; height:${size}px;
+            top:${Math.random()*100}%; left:${Math.random()*100}%;
+            --duration:${Math.random()*4+2}s;
+            --delay:${Math.random()*5}s;
+            --opacity:${Math.random()*0.5+0.2};
+        `;
+        drawerStarContainer.appendChild(s);
+    }
+</script>
 
 </body>
 </html>
