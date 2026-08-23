@@ -3,47 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <script>
-    // Apply saved theme immediately to prevent flash
     (function() {
         const t = localStorage.getItem('oneiric-theme');
         if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
     })();
-</script>
+    </script>
     <title>Oneiric — Write</title>
-        <style>
-        
-        .border-deco {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-}
+    <style>
 
-.border-moon {
-    position: fixed;
-    font-size: 2.2rem;
-    opacity: 0.12;
-    color: var(--accent);
-    pointer-events: none;
-    z-index: 0;
-    animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(-8deg); }
-    50% { transform: translateY(-10px) rotate(5deg); }
-}
-
-.border-star {
-    position: fixed;
-    color: var(--accent);
-    opacity: 0.18;
-    pointer-events: none;
-    z-index: 0;
-    animation: twinkle 4s ease-in-out infinite;
-}
-        
-                :root {
+        /* ===== THEME SYSTEM ===== */
+        :root {
             --bg: #0d0d0d;
             --bg-secondary: #111111;
             --bg-tertiary: #1a1a1a;
@@ -117,17 +86,25 @@
             --border-accent: rgba(255,255,255,0.15);
             --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: #0d0d0d;
-            color: #e8e0d0;
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Georgia', serif;
             min-height: 100vh;
             padding: 40px;
             position: relative;
             overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
         }
 
         /* Corner decorations */
@@ -137,7 +114,7 @@
             opacity: 0.15;
             pointer-events: none;
             z-index: 0;
-            color: #c9a96e;
+            color: var(--accent);
             line-height: 1;
         }
 
@@ -152,7 +129,8 @@
             left: 48px;
             right: 48px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, #c9a96e44, #c9a96e88, #c9a96e44, transparent);
+            background: linear-gradient(90deg, transparent, var(--border-accent), var(--accent-hover), var(--border-accent), transparent);
+            opacity: 0.5;
             pointer-events: none;
             z-index: 0;
         }
@@ -165,7 +143,8 @@
             top: 48px;
             bottom: 48px;
             width: 1px;
-            background: linear-gradient(180deg, transparent, #c9a96e44, #c9a96e88, #c9a96e44, transparent);
+            background: linear-gradient(180deg, transparent, var(--border-accent), var(--accent-hover), var(--border-accent), transparent);
+            opacity: 0.5;
             pointer-events: none;
             z-index: 0;
         }
@@ -176,7 +155,7 @@
         /* Floating stars at corners */
         .deco-star {
             position: fixed;
-            color: #c9a96e;
+            color: var(--accent);
             opacity: 0.2;
             pointer-events: none;
             z-index: 0;
@@ -198,15 +177,60 @@
             margin-bottom: 48px;
         }
 
-        h1 { color: #c9a96e; font-size: 1.8rem; letter-spacing: 0.15rem; }
-
-        a.back {
-            color: #9e9589;
-            text-decoration: none;
-            font-size: 0.9rem;
+        h1 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            letter-spacing: 0.15rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        a.back:hover { color: #c9a96e; }
+        h1 svg { width: 1em; height: 1em; fill: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            min-width: 140px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .nav-links a.chamber-link {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .nav-links a.chamber-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px var(--accent-dim);
+        }
+
+        .nav-links a.btn {
+            background-color: var(--accent);
+            color: var(--bg);
+        }
+
+        .nav-links a.btn:hover {
+            background-color: var(--accent-hover);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px var(--accent-dim);
+        }
 
         .editor {
             position: relative;
@@ -223,15 +247,16 @@
             padding: 14px 0;
             background: transparent;
             border: none;
-            border-bottom: 1px solid #2e2e2e;
-            color: #e8e0d0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
             font-family: 'Georgia', serif;
             font-size: 1.4rem;
             outline: none;
+            transition: border-bottom-color 0.25s ease;
         }
 
-        input[type="text"]::placeholder { color: #444; }
-        input[type="text"]:focus { border-bottom-color: #c9a96e; }
+        input[type="text"]::placeholder { color: var(--text-subtle); }
+        input[type="text"]:focus { border-bottom-color: var(--accent); }
 
         textarea {
             width: 100%;
@@ -239,7 +264,7 @@
             padding: 20px 0;
             background: transparent;
             border: none;
-            color: #e8e0d0;
+            color: var(--text);
             font-family: 'Georgia', serif;
             font-size: 1rem;
             line-height: 1.8;
@@ -247,114 +272,78 @@
             resize: none;
         }
 
-        textarea::placeholder { color: #444; }
+        textarea::placeholder { color: var(--text-subtle); }
 
-        button {
+        button[type="submit"] {
             align-self: flex-end;
             padding: 12px 32px;
-            background-color: #c9a96e;
-            color: #0d0d0d;
+            background-color: var(--accent);
+            color: var(--bg);
             border: none;
             border-radius: 6px;
             font-family: 'Georgia', serif;
             font-size: 1rem;
             cursor: pointer;
+            transition: background-color 0.2s ease;
         }
 
-        button:hover { background-color: #b8935a; }
+        button[type="submit"]:hover { background-color: var(--accent-hover); }
 
-      .mood-group-label {
-    color: #9e9589;
-    font-size: 1rem;
-    align-self: center;
-    letter-spacing: 0.03rem;
-}
+        .mood-group-label {
+            color: var(--text-muted);
+            font-size: 1rem;
+            align-self: center;
+            letter-spacing: 0.03rem;
+        }
 
-.mood-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    padding: 6px 12px;
-    background-color: #1a1a1a;
-    border: 1px solid #2e2e2e;
-    border-radius: 18px;
-    font-family: 'Georgia', serif;
-    font-size: 0.82rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-}
+        .mood-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 8px;
+            padding: 8px 0;
+            width: 100%;
+        }
 
-.mood-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 8px;
-    padding: 8px 0;
-    width: 100%;
-}
+        .mood-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            font-family: 'Georgia', serif;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            color: var(--text-muted);
+        }
 
-.mood-label:hover { border-color: #c9a96e; }
-.mood-label input[type="radio"] { display: none; }
-.mood-label:has(input:checked) {
-    border-color: #c9a96e;
-    background-color: #1e1a0e;
-}
+        .mood-label:hover { border-color: var(--accent); }
+        .mood-label input[type="radio"] { display: none; }
+        .mood-label:has(input:checked) {
+            border-color: var(--accent);
+            background-color: var(--accent-dim);
+        }
 
-.mood-label.happy .face,    .mood-label.happy .mood-text    { color: #ffd9a0; }
-.mood-label.calm .face,     .mood-label.calm .mood-text     { color: #a8e0d0; }
-.mood-label.sad .face,      .mood-label.sad .mood-text      { color: #a8c8f0; }
-.mood-label.anxious .face,  .mood-label.anxious .mood-text  { color: #d8b0e8; }
-.mood-label.angry .face,    .mood-label.angry .mood-text    { color: #f0a8a8; }
-.mood-label.lonely .face,   .mood-label.lonely .mood-text   { color: #b0b8d8; }
-.mood-label.excited .face,  .mood-label.excited .mood-text  { color: #ffcfa0; }
-.mood-label.confused .face, .mood-label.confused .mood-text { color: #d0d0a0; }
-.mood-label.neutral .face,  .mood-label.neutral .mood-text  { color: #c0c0c0; }
-.mood-label.bored .face, .mood-label.bored .mood-text { color: #b8a8c8; }
-        
-        .nav-links a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 24px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-family: 'Georgia', serif;
-    font-size: 0.9rem;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-    min-width: 140px;
-    box-sizing: border-box;
-    text-align: center;
-}
+         .mood-label.happy .face,    .mood-label.happy .mood-text    { color: #c47a20; }
+         .mood-label.calm .face,     .mood-label.calm .mood-text     { color: #3a9e88; }
+         .mood-label.sad .face,      .mood-label.sad .mood-text      { color: #4a88c8; }
+         .mood-label.anxious .face,  .mood-label.anxious .mood-text  { color: #9060c0; }
+         .mood-label.angry .face,    .mood-label.angry .mood-text    { color: #c84040; }
+         .mood-label.lonely .face,   .mood-label.lonely .mood-text   { color: #5060a8; }
+         .mood-label.excited .face,  .mood-label.excited .mood-text  { color: #c07820; }
+           .mood-label.confused .face, .mood-label.confused .mood-text { color: #888840; }
+     .mood-label.neutral .face,  .mood-label.neutral .mood-text  { color: #707070; }
+     .mood-label.bored .face,    .mood-label.bored .mood-text    { color: #7858a0; }
 
-.nav-links a.chamber-link {
-    background-color: #1a1a1a;
-    color: #8a8175;
-    font-size: 0.95rem;
-}
-
-.nav-links a.chamber-link:hover {
-    color: #c9a96e;
-    border-color: #c9a96e;
-    box-shadow: 0 0 12px rgba(201, 169, 110, 0.25);
-}
-
-
-.nav-links a.btn {
-    background-color: #c9a96e;
-    color: #0d0d0d;
-}
-
-.nav-links a.btn:hover {
-    background-color: #b8935a;
-    border-color: #c9a96e;
-    box-shadow: 0 0 12px rgba(201, 169, 110, 0.35);
-}
-        
     </style>
 </head>
 <body>
+
+    <canvas id="bg"></canvas>
 
     <!-- Frame decoration -->
     <div class="border-top"></div>
@@ -373,33 +362,187 @@
     <div class="deco-star" style="bottom:60px; right:80px; --sz:0.7rem; --dur:4s; --del:2s;">✦</div>
     <div class="deco-star" style="top:50%; left:52px; --sz:0.5rem; --dur:5s; --del:1s;">·</div>
     <div class="deco-star" style="top:50%; right:52px; --sz:0.5rem; --dur:5s; --del:2s;">·</div>
- <div class="header">
-    <h1>🌙 Write</h1>
-    <div class="nav-links">
-        <a href="/chamber" class="chamber-link">🌙 Chamber</a>
-        <a href="/entries" class="btn">💖 Entries</a>
+
+    <div class="header">
+        <h1>
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            Write
+        </h1>
+        <div class="nav-links">
+           <a href="/chamber" class="chamber-link">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="flex-shrink:0;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    Chamber
+</a>
+<a href="/entries" class="btn">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/></svg>
+    Entries
+</a>
+        </div>
     </div>
-</div>
 
     <form class="editor" method="post" action="/entries/new">
         <input type="text" name="title" placeholder="Give it a Title..." required />
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-    <span class="mood-group-label">Mood:</span>
-</div>
-<div class="mood-row">
-    <label class="mood-label happy"><input type="radio" name="mood" value="happy"><span class="face">(❁´◡`❁)</span> <span class="mood-text">Happy</span></label>
-    <label class="mood-label calm"><input type="radio" name="mood" value="calm"><span class="face">^_^</span> <span class="mood-text">Calm</span></label>
-    <label class="mood-label sad"><input type="radio" name="mood" value="sad"><span class="face">＞︿＜</span> <span class="mood-text">Sad</span></label>
-    <label class="mood-label anxious"><input type="radio" name="mood" value="anxious"><span class="face">＞﹏＜</span> <span class="mood-text">Anxious</span></label>
-    <label class="mood-label angry"><input type="radio" name="mood" value="angry"><span class="face">(╬▔皿▔)╯</span> <span class="mood-text">Angry</span></label>
-    <label class="mood-label lonely"><input type="radio" name="mood" value="lonely"><span class="face">( ﾉ ﾟｰﾟ)ﾉ</span> <span class="mood-text">Lonely</span></label>
-    <label class="mood-label excited"><input type="radio" name="mood" value="excited"><span class="face">(≧∀≦)ゞ</span> <span class="mood-text">Excited</span></label>
-    <label class="mood-label confused"><input type="radio" name="mood" value="confused"><span class="face">*-*</span> <span class="mood-text">Confused</span></label>
-    <label class="mood-label neutral"><input type="radio" name="mood" value="neutral"><span class="face">^_____^</span> <span class="mood-text">Neutral</span></label>
-    <label class="mood-label bored"><input type="radio" name="mood" value="bored"><span class="face">–_–</span> <span class="mood-text">Bored</span></label>
-</div>
+            <span class="mood-group-label">Mood:</span>
+        </div>
+        <div class="mood-row">
+            <label class="mood-label happy"><input type="radio" name="mood" value="happy"><span class="face">(❁´◡`❁)</span> <span class="mood-text">Happy</span></label>
+            <label class="mood-label calm"><input type="radio" name="mood" value="calm"><span class="face">^_^</span> <span class="mood-text">Calm</span></label>
+            <label class="mood-label sad"><input type="radio" name="mood" value="sad"><span class="face">＞︿＜</span> <span class="mood-text">Sad</span></label>
+            <label class="mood-label anxious"><input type="radio" name="mood" value="anxious"><span class="face">＞﹏＜</span> <span class="mood-text">Anxious</span></label>
+            <label class="mood-label angry"><input type="radio" name="mood" value="angry"><span class="face">(╬▔皿▔)╯</span> <span class="mood-text">Angry</span></label>
+            <label class="mood-label lonely"><input type="radio" name="mood" value="lonely"><span class="face">( ﾉ ﾟｰﾟ)ﾉ</span> <span class="mood-text">Lonely</span></label>
+            <label class="mood-label excited"><input type="radio" name="mood" value="excited"><span class="face">(≧∀≦)ゞ</span> <span class="mood-text">Excited</span></label>
+            <label class="mood-label confused"><input type="radio" name="mood" value="confused"><span class="face">*-*</span> <span class="mood-text">Confused</span></label>
+            <label class="mood-label neutral"><input type="radio" name="mood" value="neutral"><span class="face">^_____^</span> <span class="mood-text">Neutral</span></label>
+            <label class="mood-label bored"><input type="radio" name="mood" value="bored"><span class="face">–_–</span> <span class="mood-text">Bored</span></label>
+        </div>
         <textarea name="content" placeholder="What's on your mind..."></textarea>
         <button type="submit">Save to Chamber</button>
     </form>
+
+    <script>
+        const canvas = document.getElementById('bg');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drawScene();
+        }
+
+        function getCloudRGB() {
+            const style = getComputedStyle(document.documentElement);
+            const r = style.getPropertyValue('--cloud-r').trim() || '180';
+            const g = style.getPropertyValue('--cloud-g').trim() || '140';
+            const b = style.getPropertyValue('--cloud-b').trim() || '80';
+            return { r, g, b };
+        }
+
+        function drawCloud(x, y, size, alpha) {
+            const { r, g, b } = getCloudRGB();
+            [[0,0,size],[size*.6,-size*.2,size*.75],[-size*.5,-size*.1,size*.7],
+             [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
+            ].forEach(([cx, cy, r2]) => {
+                const grad = ctx.createRadialGradient(x+cx, y+cy, 0, x+cx, y+cy, r2);
+                grad.addColorStop(0, `rgba(${r},${g},${b},${alpha})`);
+                grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(x+cx, y+cy, r2, 0, Math.PI*2);
+                ctx.fill();
+            });
+        }
+
+        function drawSparkle(x, y, size, alpha) {
+            const { r, g, b } = getCloudRGB();
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x, y - size); ctx.lineTo(x, y + size);
+            ctx.moveTo(x - size, y); ctx.lineTo(x + size, y);
+            ctx.moveTo(x - size*0.6, y - size*0.6); ctx.lineTo(x + size*0.6, y + size*0.6);
+            ctx.moveTo(x + size*0.6, y - size*0.6); ctx.lineTo(x - size*0.6, y + size*0.6);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        // Sakura petals
+        const petals = [];
+        for (let i = 0; i < 35; i++) {
+            petals.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                size: Math.random() * 7 + 3,
+                speedX: Math.random() * 0.6 - 0.3,
+                speedY: Math.random() * 0.8 + 0.3,
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.03,
+                opacity: Math.random() * 0.5 + 0.2,
+                sway: Math.random() * Math.PI * 2,
+            });
+        }
+
+        function drawSakuraScene() {
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            const sky = ctx.createLinearGradient(0, 0, 0, h);
+            sky.addColorStop(0, 'rgba(255,192,203,0.2)');
+            sky.addColorStop(1, 'rgba(255,240,245,0.05)');
+            ctx.fillStyle = sky;
+            ctx.fillRect(0, 0, w, h);
+
+            petals.forEach(p => {
+                p.sway += 0.008;
+                p.x += p.speedX * 0.4 + Math.sin(p.sway) * 0.3;
+                p.y += p.speedY * 0.4;
+                p.rotation += p.rotationSpeed * 0.5;
+                if (p.y > h + 20) { p.y = -10; p.x = Math.random() * w; }
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation);
+                ctx.globalAlpha = p.opacity * 0.7;
+                ctx.fillStyle = 'rgba(240,140,170,0.9)';
+                ctx.beginPath();
+                ctx.ellipse(0, 0, p.size * 0.5, p.size * 0.9, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+
+        function drawStaticScene() {
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            [[0,h,135,0.09],[w*.15,h,105,0.09],[w,h,135,0.09],[w*.85,h,105,0.09],
+             [0,0,120,0.12],[w*.12,0,90,0.12],[w,0,120,0.12],[w*.88,0,90,0.12]
+            ].forEach(([x, y, s, a]) => drawCloud(x, y, s, a));
+
+            const sparkles = [
+                [w*0.1, h*0.2, 5], [w*0.9, h*0.15, 4], [w*0.05, h*0.7, 6],
+                [w*0.95, h*0.75, 5], [w*0.2, h*0.05, 4], [w*0.8, h*0.08, 6],
+                [w*0.15, h*0.92, 5], [w*0.85, h*0.9, 4], [w*0.5, h*0.03, 3],
+                [w*0.3, h*0.97, 4], [w*0.7, h*0.95, 5], [w*0.02, h*0.45, 4],
+                [w*0.98, h*0.5, 5], [w*0.25, h*0.12, 3], [w*0.75, h*0.88, 4],
+            ];
+            sparkles.forEach(([x, y, s]) => drawSparkle(x, y, s, 0.6));
+        }
+
+        let sakuraAnimFrame = null;
+
+        function drawScene() {
+            const theme = document.documentElement.getAttribute('data-theme');
+            if (sakuraAnimFrame) {
+                cancelAnimationFrame(sakuraAnimFrame);
+                sakuraAnimFrame = null;
+            }
+
+            if (theme === 'sakura') {
+                function loopSakura() {
+                    drawSakuraScene();
+                    sakuraAnimFrame = requestAnimationFrame(loopSakura);
+                }
+                loopSakura();
+            } else {
+                drawStaticScene();
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // ── Theme persistence (reads from localStorage on load, same as chamber) ──
+        const savedTheme = localStorage.getItem('oneiric-theme') || 'default';
+        if (savedTheme === 'default') {
+            document.documentElement.removeAttribute('data-theme');
+        } else {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+        drawScene();
+    </script>
 </body>
 </html>

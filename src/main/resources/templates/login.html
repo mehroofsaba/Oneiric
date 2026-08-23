@@ -218,10 +218,19 @@ input {
         filter: brightness(1.12);
     }
 
-    input:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px var(--accent-dim), 0 0 16px var(--accent-dim);
-    }
+input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim), 0 0 16px var(--accent-dim);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px var(--bg-tertiary) inset;
+    -webkit-text-fill-color: var(--text);
+    border-color: var(--accent);
+    transition: background-color 5000s ease-in-out 0s;
+}
 
     input[type="password"] {
         padding-right: 44px;
