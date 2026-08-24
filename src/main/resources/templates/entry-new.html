@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
     (function() {
         const t = localStorage.getItem('oneiric-theme');
@@ -11,14 +12,13 @@
     <title>Oneiric — Write</title>
     <style>
 
-        /* ===== THEME SYSTEM ===== */
         :root {
             --bg: #0d0d0d;
             --bg-secondary: #111111;
             --bg-tertiary: #1a1a1a;
             --text: #e8e0d0;
             --text-muted: #9e9589;
-            --text-subtle: #555;
+            --text-subtle: #6e6858;
             --accent: #c9a96e;
             --accent-hover: #b8935a;
             --accent-dim: rgba(201,169,110,0.08);
@@ -28,62 +28,38 @@
         }
 
         [data-theme="sakura"] {
-            --bg: #fdf6f0;
-            --bg-secondary: #fff0f3;
-            --bg-tertiary: #ffe4ec;
-            --text: #4a3040;
-            --text-muted: #9e7080;
-            --text-subtle: #c4a0b0;
-            --accent: #e8829a;
-            --accent-hover: #d4607a;
+            --bg: #fdf6f0; --bg-secondary: #fff0f3; --bg-tertiary: #ffe4ec;
+            --text: #4a3040; --text-muted: #9e7080; --text-subtle: #c4a0b0;
+            --accent: #e8829a; --accent-hover: #d4607a;
             --accent-dim: rgba(232,130,154,0.08);
-            --border: #f0c0d0;
-            --border-accent: rgba(232,130,154,0.3);
+            --border: #f0c0d0; --border-accent: rgba(232,130,154,0.3);
             --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
         }
 
         [data-theme="abyss"] {
-            --bg: #050d1a;
-            --bg-secondary: #0a1628;
-            --bg-tertiary: #0f1e35;
-            --text: #c8d8f0;
-            --text-muted: #7090b8;
-            --text-subtle: #3a5070;
-            --accent: #7eb8e8;
-            --accent-hover: #5a9fd4;
+            --bg: #050d1a; --bg-secondary: #0a1628; --bg-tertiary: #0f1e35;
+            --text: #c8d8f0; --text-muted: #7090b8; --text-subtle: #3a5070;
+            --accent: #7eb8e8; --accent-hover: #5a9fd4;
             --accent-dim: rgba(126,184,232,0.08);
-            --border: #1a2e48;
-            --border-accent: rgba(126,184,232,0.2);
+            --border: #1a2e48; --border-accent: rgba(126,184,232,0.2);
             --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
         }
 
         [data-theme="sage"] {
-            --bg: #f4f6f0;
-            --bg-secondary: #eaefe4;
-            --bg-tertiary: #dde5d4;
-            --text: #2d3828;
-            --text-muted: #6e8060;
-            --text-subtle: #a0b090;
-            --accent: #7a9e6e;
-            --accent-hover: #5e8050;
+            --bg: #f4f6f0; --bg-secondary: #eaefe4; --bg-tertiary: #dde5d4;
+            --text: #2d3828; --text-muted: #6e8060; --text-subtle: #a0b090;
+            --accent: #7a9e6e; --accent-hover: #5e8050;
             --accent-dim: rgba(122,158,110,0.08);
-            --border: #c8d8b8;
-            --border-accent: rgba(122,158,110,0.3);
+            --border: #c8d8b8; --border-accent: rgba(122,158,110,0.3);
             --cloud-r: 122; --cloud-g: 158; --cloud-b: 110;
         }
 
         [data-theme="noir"] {
-            --bg: #000000;
-            --bg-secondary: #0a0a0a;
-            --bg-tertiary: #141414;
-            --text: #ffffff;
-            --text-muted: #888888;
-            --text-subtle: #444444;
-            --accent: #ffffff;
-            --accent-hover: #cccccc;
+            --bg: #000000; --bg-secondary: #0a0a0a; --bg-tertiary: #141414;
+            --text: #ffffff; --text-muted: #888888; --text-subtle: #444444;
+            --accent: #ffffff; --accent-hover: #cccccc;
             --accent-dim: rgba(255,255,255,0.05);
-            --border: #222222;
-            --border-accent: rgba(255,255,255,0.15);
+            --border: #222222; --border-accent: rgba(255,255,255,0.15);
             --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
         }
 
@@ -98,75 +74,71 @@
             position: relative;
             overflow-x: hidden;
             transition: background-color 0.4s ease, color 0.4s ease;
+            animation: pageFadeIn 0.6s ease-out;
         }
 
-        canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
+        @keyframes pageFadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
-        /* Corner decorations */
-        .corner {
+        canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+        .corner-deco {
             position: fixed;
-            font-size: 1.2rem;
-            opacity: 0.15;
-            pointer-events: none;
             z-index: 0;
+            pointer-events: none;
+            opacity: 0.22;
             color: var(--accent);
-            line-height: 1;
+            animation: gentleDrift 6s ease-in-out infinite;
         }
 
-        .corner-tl { top: 16px; left: 16px; }
-        .corner-tr { top: 16px; right: 16px; transform: scaleX(-1); }
-        .corner-bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
-        .corner-br { bottom: 16px; right: 16px; transform: scale(-1); }
+        .corner-deco svg { display: block; overflow: visible; }
 
-        /* Border lines */
-        .border-top, .border-bottom {
-            position: fixed;
-            left: 48px;
-            right: 48px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-accent), var(--accent-hover), var(--border-accent), transparent);
-            opacity: 0.5;
-            pointer-events: none;
-            z-index: 0;
+        .corner-tl { top: 20px; left: 20px; width: 110px; }
+        .corner-tr { top: 20px; right: 20px; width: 160px; }
+        .corner-bl { bottom: 20px; left: 20px; width: 160px; }
+        .corner-br { bottom: 20px; right: 20px; width: 120px; }
+
+        .vine { stroke: var(--accent); stroke-width: 1.3; fill: none; stroke-linecap: round; }
+        .bud { fill: var(--accent); opacity: 0.7; }
+        .book-deco { stroke: var(--accent); stroke-width: 1.1; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+        @keyframes gentleDrift {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
         }
 
-        .border-top { top: 48px; }
-        .border-bottom { bottom: 48px; }
-
-        .border-left, .border-right {
-            position: fixed;
-            top: 48px;
-            bottom: 48px;
-            width: 1px;
-            background: linear-gradient(180deg, transparent, var(--border-accent), var(--accent-hover), var(--border-accent), transparent);
-            opacity: 0.5;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .border-left { left: 48px; }
-        .border-right { right: 48px; }
-
-        /* Floating stars at corners */
         .deco-star {
             position: fixed;
             color: var(--accent);
-            opacity: 0.2;
             pointer-events: none;
             z-index: 0;
             font-size: var(--sz);
+            opacity: var(--base-op, 0.16);
             animation: twinkle var(--dur) ease-in-out infinite var(--del);
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.1; }
-            50% { opacity: 0.35; }
+            0%, 100% { opacity: calc(var(--base-op, 0.16) * 0.4); transform: scale(0.85); }
+            50% { opacity: calc(var(--base-op, 0.16) * 1.6); transform: scale(1.15); }
         }
+
+        .border-top, .border-bottom {
+            position: fixed; left: 48px; right: 48px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-accent), var(--accent-hover), var(--border-accent), transparent);
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        .border-top { top: 48px; }
+        .border-bottom { bottom: 48px; }
+
+        .border-left, .border-right {
+            position: fixed; top: 48px; bottom: 48px; width: 1px;
+            background: linear-gradient(180deg, transparent, var(--border-accent), var(--accent-hover), var(--border-accent), transparent);
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        .border-left { left: 48px; }
+        .border-right { right: 48px; }
 
         .header {
             position: relative;
@@ -174,77 +146,66 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 48px;
+            margin-bottom: 10px;
         }
 
         h1 {
             color: var(--accent);
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             letter-spacing: 0.15rem;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-weight: 600;
         }
 
-        h1 svg { width: 1em; height: 1em; fill: var(--accent); }
+        h1 svg { width: 0.9em; height: 0.9em; fill: var(--accent); }
 
-        .nav-links {
-            display: flex;
-            gap: 10px;
-        }
+        .nav-links { display: flex; gap: 8px; opacity: 0.75; transition: opacity 0.2s; }
+        .nav-links:hover { opacity: 1; }
 
         .nav-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 24px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-family: 'Georgia', serif;
-            font-size: 0.9rem;
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
-            min-width: 140px;
-            box-sizing: border-box;
-            text-align: center;
+            display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+            padding: 6px 16px; border-radius: 16px; text-decoration: none;
+            font-family: 'Georgia', serif; font-size: 0.76rem;
+            border: 1px solid transparent; transition: all 0.2s ease;
+            min-width: 92px; box-sizing: border-box; text-align: center;
         }
 
-        .nav-links a.chamber-link {
-            background-color: var(--bg-tertiary);
-            color: var(--text-muted);
-            font-size: 0.95rem;
+        .nav-links a.chamber-link { background-color: var(--bg-tertiary); color: var(--text-muted); }
+        .nav-links a.chamber-link:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-dim); }
+        .nav-links a.btn { background-color: var(--bg-tertiary); color: var(--text-muted); border-color: var(--border); }
+        .nav-links a.btn:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-dim); }
+
+        .meta-row {
+            position: relative; z-index: 1; max-width: 700px; margin: 0 auto 20px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
         }
 
-        .nav-links a.chamber-link:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-            box-shadow: 0 0 12px var(--accent-dim);
-        }
+        .datetime { color: var(--text-subtle); font-size: 0.78rem; letter-spacing: 0.03rem; }
 
-        .nav-links a.btn {
-            background-color: var(--accent);
-            color: var(--bg);
+        .private-tag {
+            display: inline-flex; align-items: center; gap: 5px;
+            color: var(--text-subtle); font-size: 0.78rem; letter-spacing: 0.02rem;
         }
-
-        .nav-links a.btn:hover {
-            background-color: var(--accent-hover);
-            border-color: var(--accent);
-            box-shadow: 0 0 12px var(--accent-dim);
-        }
+        .private-tag svg { width: 0.9em; height: 0.9em; fill: none; stroke: currentColor; stroke-width: 1.8; }
 
         .editor {
             position: relative;
             z-index: 1;
             max-width: 700px;
+            width: 100%;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 14px;
         }
+
+        .title-wrap { position: relative; }
 
         input[type="text"] {
             width: 100%;
-            padding: 14px 0;
+            padding: 12px 0;
             background: transparent;
             border: none;
             border-bottom: 1px solid var(--border);
@@ -252,69 +213,48 @@
             font-family: 'Georgia', serif;
             font-size: 1.4rem;
             outline: none;
-            transition: border-bottom-color 0.25s ease;
+            transition: all 0.25s ease;
+            caret-color: var(--accent);
         }
 
-        input[type="text"]::placeholder { color: var(--text-subtle); }
-        input[type="text"]:focus { border-bottom-color: var(--accent); }
+        input[type="text"]::placeholder { color: var(--text-muted); }
 
-        textarea {
-            width: 100%;
-            min-height: 400px;
-            padding: 20px 0;
-            background: transparent;
-            border: none;
-            color: var(--text);
-            font-family: 'Georgia', serif;
-            font-size: 1rem;
-            line-height: 1.8;
-            outline: none;
-            resize: none;
+        input[type="text"]:focus {
+            border-bottom: 1px solid var(--accent);
+            box-shadow: 0 1px 0 0 var(--accent), 0 6px 16px -8px var(--accent-dim);
+            font-size: 1.6rem;
+            color: var(--accent);
         }
-
-        textarea::placeholder { color: var(--text-subtle); }
-
-        button[type="submit"] {
-            align-self: flex-end;
-            padding: 12px 32px;
-            background-color: var(--accent);
-            color: var(--bg);
-            border: none;
-            border-radius: 6px;
-            font-family: 'Georgia', serif;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        button[type="submit"]:hover { background-color: var(--accent-hover); }
 
         .mood-group-label {
             color: var(--text-muted);
-            font-size: 1rem;
-            align-self: center;
+            font-size: 0.85rem;
             letter-spacing: 0.03rem;
         }
 
         .mood-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 8px;
-            padding: 8px 0;
+            grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+            gap: 6px;
+            padding: 2px 0 4px;
             width: 100%;
+        }
+
+        @media (max-width: 640px) {
+            .mood-row { grid-template-columns: repeat(2, 1fr); }
         }
 
         .mood-label {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            padding: 6px 12px;
+            gap: 4px;
+            padding: 5px 10px;
             background-color: var(--bg-tertiary);
             border: 1px solid var(--border);
-            border-radius: 18px;
+            border-radius: 16px;
             font-family: 'Georgia', serif;
-            font-size: 0.82rem;
+            font-size: 0.74rem;
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
@@ -323,21 +263,237 @@
 
         .mood-label:hover { border-color: var(--accent); }
         .mood-label input[type="radio"] { display: none; }
+
         .mood-label:has(input:checked) {
             border-color: var(--accent);
-            background-color: var(--accent-dim);
+            background: linear-gradient(180deg, var(--accent-dim), rgba(201,169,110,0.14));
+            box-shadow: 0 0 0 2px var(--accent-dim), 0 0 16px var(--accent-dim);
         }
 
-         .mood-label.happy .face,    .mood-label.happy .mood-text    { color: #c47a20; }
-         .mood-label.calm .face,     .mood-label.calm .mood-text     { color: #3a9e88; }
-         .mood-label.sad .face,      .mood-label.sad .mood-text      { color: #4a88c8; }
-         .mood-label.anxious .face,  .mood-label.anxious .mood-text  { color: #9060c0; }
-         .mood-label.angry .face,    .mood-label.angry .mood-text    { color: #c84040; }
-         .mood-label.lonely .face,   .mood-label.lonely .mood-text   { color: #5060a8; }
-         .mood-label.excited .face,  .mood-label.excited .mood-text  { color: #c07820; }
-           .mood-label.confused .face, .mood-label.confused .mood-text { color: #888840; }
-     .mood-label.neutral .face,  .mood-label.neutral .mood-text  { color: #707070; }
-     .mood-label.bored .face,    .mood-label.bored .mood-text    { color: #7858a0; }
+        .mood-label:has(input:checked) .face,
+        .mood-label:has(input:checked) .mood-text { color: var(--accent) !important; }
+
+        .mood-label.happy .face,    .mood-label.happy .mood-text    { color: #d9b06a; }
+        .mood-label.calm .face,     .mood-label.calm .mood-text     { color: #b8a878; }
+        .mood-label.sad .face,      .mood-label.sad .mood-text      { color: #9e9589; }
+        .mood-label.anxious .face,  .mood-label.anxious .mood-text  { color: #a68f6a; }
+        .mood-label.angry .face,    .mood-label.angry .mood-text    { color: #c0876a; }
+        .mood-label.lonely .face,   .mood-label.lonely .mood-text   { color: #8a8478; }
+        .mood-label.excited .face,  .mood-label.excited .mood-text  { color: #e0b56e; }
+        .mood-label.confused .face, .mood-label.confused .mood-text { color: #a99a72; }
+        .mood-label.neutral .face,  .mood-label.neutral .mood-text  { color: #837a6c; }
+        .mood-label.bored .face,    .mood-label.bored .mood-text    { color: #948a76; }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 6px 6px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .toolbar button {
+            position: relative;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toolbar button svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .toolbar button:hover { color: var(--accent); background: var(--accent-dim); border-color: var(--border-accent); }
+
+        .toolbar button[title]::after {
+            content: attr(title);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-3px);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 0.68rem;
+            font-family: 'Georgia', serif;
+            padding: 4px 8px;
+            border-radius: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            z-index: 5;
+        }
+        .toolbar button[title]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .toolbar .divider-line { width: 1px; height: 16px; background: var(--border); margin: 0 4px; }
+        .toolbar .attach-btn { margin-left: auto; }
+
+        /* Writing area */
+        .write-wrap {
+            position: relative;
+            border: 1px solid var(--border-accent);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            padding: 20px 20px 0;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: var(--bg-secondary);
+        }
+
+        .write-wrap:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-dim), 0 0 26px var(--accent-dim);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 360px;
+            padding: 0 0 16px;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            line-height: 1.85;
+            outline: none;
+            resize: none;
+            caret-color: var(--accent);
+        }
+
+        textarea::placeholder { color: var(--text-muted); }
+
+        .write-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0 12px;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+        }
+
+        .autosave { display: flex; align-items: center; gap: 6px; color: var(--text-muted); transition: color 0.2s; }
+        .autosave.is-saved { color: var(--accent); }
+        .autosave .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: 0.6; animation: pulseDot 2s ease-in-out infinite; }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 0.3; transform: scale(0.9); }
+            50% { opacity: 0.9; transform: scale(1.1); }
+        }
+
+        .counter { letter-spacing: 0.02rem; color: var(--text-muted); }
+        .counter.near-limit { color: var(--accent); }
+
+        .actions-row { display: flex; justify-content: flex-end; gap: 14px; align-items: center; margin-top: 4px; }
+
+        button[type="button"].discard-btn {
+            padding: 12px 22px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            border-radius: 6px;
+            font-family: 'Georgia', serif;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button[type="button"].discard-btn:hover {
+            border-color: #a8686e;
+            color: #c2868b;
+            transform: translateY(-2px);
+        }
+
+        button[type="submit"] {
+            padding: 14px 38px;
+            background-color: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 6px;
+            font-family: 'Georgia', serif;
+            font-size: 1.02rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--accent-dim);
+        }
+
+        /* Save confirmation glow overlay */
+        .save-confirm {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            pointer-events: none;
+            background: rgba(0,0,0,0.3);
+        }
+        .save-confirm.show { display: flex; }
+        .save-confirm .badge {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px var(--accent-dim), 0 0 80px var(--accent-dim);
+            animation: badgePop 0.5s ease;
+            background: var(--bg-tertiary);
+        }
+        .save-confirm .badge svg { width: 36px; height: 36px; stroke: var(--accent); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+        @keyframes badgePop {
+            0% { transform: scale(0.6); opacity: 0; }
+            60% { transform: scale(1.08); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .confirm-modal.open { display: flex; }
+        .confirm-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 32px;
+            text-align: center;
+            max-width: 320px;
+        }
+        .confirm-box p { color: var(--text); margin-bottom: 18px; font-size: 0.95rem; }
+        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
+        .confirm-actions button, .confirm-actions a {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-family: 'Georgia', serif;
+            font-size: 0.88rem;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+        }
+        .confirm-actions .danger-confirm { background: #a8686e; color: #fff; border-color: transparent; }
 
     </style>
 </head>
@@ -345,43 +501,100 @@
 
     <canvas id="bg"></canvas>
 
-    <!-- Frame decoration -->
     <div class="border-top"></div>
     <div class="border-bottom"></div>
     <div class="border-left"></div>
     <div class="border-right"></div>
 
-    <div class="corner corner-tl">✦ · · ·<br>·<br>·</div>
-    <div class="corner corner-tr">✦ · · ·<br>·<br>·</div>
-    <div class="corner corner-bl">·<br>·<br>✦ · · ·</div>
-    <div class="corner corner-br">·<br>·<br>✦ · · ·</div>
+    <div class="corner-deco corner-tl">
+        <svg viewBox="0 0 90 90" fill="none">
+            <path class="bud" d="M14 10 L17 17 L24 18 L17 21 L18 28 L14 23 L8 27 L11 20 L4 16 L12 16 Z" opacity="0.55"/>
+            <path class="bud" d="M42 6 L44 11 L49 12 L44 14 L45 19 L42 15 L37 18 L39 13 L34 10 L40 10 Z" opacity="0.35"/>
+        </svg>
+    </div>
 
-    <div class="deco-star" style="top:60px; left:80px; --sz:0.7rem; --dur:3s; --del:0s;">✧</div>
-    <div class="deco-star" style="top:60px; right:80px; --sz:0.6rem; --dur:4s; --del:1s;">✦</div>
-    <div class="deco-star" style="bottom:60px; left:80px; --sz:0.6rem; --dur:3.5s; --del:0.5s;">✧</div>
-    <div class="deco-star" style="bottom:60px; right:80px; --sz:0.7rem; --dur:4s; --del:2s;">✦</div>
-    <div class="deco-star" style="top:50%; left:52px; --sz:0.5rem; --dur:5s; --del:1s;">·</div>
-    <div class="deco-star" style="top:50%; right:52px; --sz:0.5rem; --dur:5s; --del:2s;">·</div>
+    <div class="corner-deco corner-tr">
+        <svg viewBox="0 0 160 140" fill="none">
+            <path class="vine" d="M158 2 C130 4 100 14 80 34 C64 50 54 70 50 92 C48 104 48 116 50 126"/>
+            <path class="vine" d="M158 2 C138 8 120 18 106 32 C96 42 90 52 88 62 C86 72 90 80 100 82 C110 84 116 76 112 68 C108 60 98 60 96 68"/>
+            <path class="vine" d="M120 8 C104 16 92 28 84 42 C78 52 76 62 78 70 C80 78 88 82 94 78 C100 74 98 66 92 66" opacity="0.7"/>
+            <circle class="bud" cx="94" cy="78" r="2.5"/>
+            <circle class="bud" cx="100" cy="82" r="2"/>
+            <circle class="bud" cx="50" cy="126" r="2.5" opacity="0.6"/>
+            <path class="vine" d="M70 20 C60 26 52 34 46 44" opacity="0.5"/>
+            <circle class="bud" cx="46" cy="44" r="1.8" opacity="0.5"/>
+        </svg>
+    </div>
+
+    <div class="corner-deco corner-bl">
+        <svg viewBox="0 0 160 140" fill="none">
+            <path class="vine" d="M2 138 C30 136 60 126 80 106 C96 90 106 70 110 48 C112 36 112 24 110 14"/>
+            <path class="vine" d="M2 138 C22 132 40 122 54 108 C64 98 70 88 72 78 C74 68 70 60 60 58 C50 56 44 64 48 72 C52 80 62 80 64 72"/>
+            <path class="vine" d="M40 132 C56 124 68 112 76 98 C82 88 84 78 82 70 C80 62 72 58 66 62 C60 66 62 74 68 74" opacity="0.7"/>
+            <circle class="bud" cx="66" cy="62" r="2.5"/>
+            <circle class="bud" cx="60" cy="58" r="2"/>
+            <circle class="bud" cx="110" cy="14" r="2.5" opacity="0.6"/>
+            <path class="vine" d="M90 120 C100 114 108 106 114 96" opacity="0.5"/>
+            <circle class="bud" cx="114" cy="96" r="1.8" opacity="0.5"/>
+        </svg>
+    </div>
+
+    <div class="corner-deco corner-br">
+        <svg viewBox="0 0 110 80" fill="none">
+            <path class="book-deco" d="M55 20 C48 14 36 12 26 14 L26 60 C36 58 48 60 55 66"/>
+            <path class="book-deco" d="M55 20 C62 14 74 12 84 14 L84 60 C74 58 62 60 55 66"/>
+            <path class="book-deco" d="M55 20 L55 66" opacity="0.5"/>
+            <path class="book-deco" d="M32 24 L48 22" opacity="0.5"/>
+            <path class="book-deco" d="M32 32 L48 30" opacity="0.5"/>
+            <path class="book-deco" d="M32 40 L46 38" opacity="0.5"/>
+            <path class="book-deco" d="M62 22 L78 24" opacity="0.5"/>
+            <path class="book-deco" d="M62 30 L78 32" opacity="0.5"/>
+            <path class="book-deco" d="M64 38 L78 40" opacity="0.5"/>
+        </svg>
+    </div>
+
+    <div class="deco-star" style="top:64px; left:110px; --sz:0.55rem; --dur:3s; --del:0s; --base-op:0.16;">✧</div>
+    <div class="deco-star" style="top:96px; left:70px; --sz:0.4rem; --dur:4.2s; --del:0.8s; --base-op:0.12;">·</div>
+    <div class="deco-star" style="top:28px; left:150px; --sz:0.65rem; --dur:3.6s; --del:1.4s; --base-op:0.16;">✦</div>
+    <div class="deco-star" style="top:60px; right:130px; --sz:0.5rem; --dur:3.4s; --del:0.4s; --base-op:0.14;">✧</div>
+    <div class="deco-star" style="top:110px; right:80px; --sz:0.45rem; --dur:4.6s; --del:1.8s; --base-op:0.12;">·</div>
+    <div class="deco-star" style="bottom:70px; left:130px; --sz:0.5rem; --dur:3.8s; --del:0.6s; --base-op:0.14;">✦</div>
+    <div class="deco-star" style="bottom:110px; left:80px; --sz:0.4rem; --dur:4.4s; --del:1.2s; --base-op:0.11;">·</div>
+    <div class="deco-star" style="bottom:100px; right:140px; --sz:0.6rem; --dur:3.2s; --del:0.2s; --base-op:0.16;">✧</div>
+    <div class="deco-star" style="bottom:60px; right:90px; --sz:0.4rem; --dur:5s; --del:2s; --base-op:0.11;">·</div>
+    <div class="deco-star" style="top:50%; left:52px; --sz:0.5rem; --dur:5s; --del:1s; --base-op:0.12;">·</div>
+    <div class="deco-star" style="top:50%; right:52px; --sz:0.5rem; --dur:5s; --del:2s; --base-op:0.12;">·</div>
 
     <div class="header">
         <h1>
             <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-            Write
+            Your Thoughts
         </h1>
         <div class="nav-links">
-           <a href="/chamber" class="chamber-link">
-    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="flex-shrink:0;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-    Chamber
-</a>
-<a href="/entries" class="btn">
-    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/></svg>
-    Entries
-</a>
+            <a href="/chamber" class="chamber-link">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="flex-shrink:0;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                Chamber
+            </a>
+            <a href="/entries" class="btn">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/></svg>
+                Entries
+            </a>
         </div>
     </div>
 
-    <form class="editor" method="post" action="/entries/new">
-        <input type="text" name="title" placeholder="Give it a Title..." required />
+    <div class="meta-row">
+        <span class="datetime" id="dateTimeLabel"></span>
+        <span class="private-tag">
+            <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg>
+            Only you can see this
+        </span>
+    </div>
+
+    <form class="editor" method="post" action="/entries/new" id="entryForm">
+        <div class="title-wrap">
+            <input type="text" name="title" id="titleInput" placeholder="Give it a Title..." required />
+        </div>
+
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
             <span class="mood-group-label">Mood:</span>
         </div>
@@ -397,9 +610,62 @@
             <label class="mood-label neutral"><input type="radio" name="mood" value="neutral"><span class="face">^_____^</span> <span class="mood-text">Neutral</span></label>
             <label class="mood-label bored"><input type="radio" name="mood" value="bored"><span class="face">–_–</span> <span class="mood-text">Bored</span></label>
         </div>
-        <textarea name="content" placeholder="What's on your mind..."></textarea>
-        <button type="submit">Save to Chamber</button>
+
+        <div>
+            <div class="toolbar">
+                <button type="button" title="Bold (Ctrl+B)" onclick="wrapSelection('**','**')">
+                    <svg viewBox="0 0 24 24"><path d="M6 4h7a4 4 0 0 1 0 8H6z"/><path d="M6 12h8a4 4 0 0 1 0 8H6z"/></svg>
+                </button>
+                <button type="button" title="Italic (Ctrl+I)" onclick="wrapSelection('_','_')">
+                    <svg viewBox="0 0 24 24"><line x1="10" y1="4" x2="18" y2="4"/><line x1="6" y1="20" x2="14" y2="20"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
+                </button>
+                <button type="button" title="Quote" onclick="wrapSelection('&#10;&gt; ','')">
+                    <svg viewBox="0 0 24 24"><path d="M7 8c-2 1-3 3-3 5.5S6 18 8 18"/><path d="M15 8c-2 1-3 3-3 5.5s2 4.5 4 4.5"/></svg>
+                </button>
+                <button type="button" title="List" onclick="wrapSelection('&#10;- ','')">
+                    <svg viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>
+                </button>
+                <button type="button" title="Divider" onclick="insertText('&#10;---&#10;')">
+                    <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/></svg>
+                </button>
+                <div class="divider-line"></div>
+                <button type="button" class="attach-btn" title="Add image" onclick="document.getElementById('imgAttach').click()">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-4 4-3-3-4 4"/></svg>
+                </button>
+                <input type="file" id="imgAttach" name="attachment" accept="image/*" style="display:none;">
+            </div>
+
+            <div class="write-wrap">
+                <textarea name="content" id="contentArea" placeholder="What's on your mind..." maxlength="10000"></textarea>
+
+                <div class="write-footer">
+                    <span class="autosave" id="autosaveWrap"><span class="dot"></span> <span id="autosaveLabel">Saved • just now</span></span>
+                    <span class="counter" id="counterLabel">0 / 10,000</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions-row">
+            <button type="button" class="discard-btn" onclick="confirmDiscard()">Discard</button>
+            <button type="submit">Save to Chamber</button>
+        </div>
     </form>
+
+    <div class="save-confirm" id="saveConfirm">
+        <div class="badge">
+            <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+    </div>
+
+    <div class="confirm-modal" id="discardModal">
+        <div class="confirm-box">
+            <p>Discard this entry? Your writing will be lost.</p>
+            <div class="confirm-actions">
+                <button onclick="closeDiscard()">Keep writing</button>
+                <a href="/chamber" class="danger-confirm">Discard</a>
+            </div>
+        </div>
+    </div>
 
     <script>
         const canvas = document.getElementById('bg');
@@ -449,7 +715,6 @@
             ctx.restore();
         }
 
-        // Sakura petals
         const petals = [];
         for (let i = 0; i < 35; i++) {
             petals.push({
@@ -468,7 +733,6 @@
         function drawSakuraScene() {
             const w = canvas.width, h = canvas.height;
             ctx.clearRect(0, 0, w, h);
-
             const sky = ctx.createLinearGradient(0, 0, 0, h);
             sky.addColorStop(0, 'rgba(255,192,203,0.2)');
             sky.addColorStop(1, 'rgba(255,240,245,0.05)');
@@ -481,7 +745,6 @@
                 p.y += p.speedY * 0.4;
                 p.rotation += p.rotationSpeed * 0.5;
                 if (p.y > h + 20) { p.y = -10; p.x = Math.random() * w; }
-
                 ctx.save();
                 ctx.translate(p.x, p.y);
                 ctx.rotate(p.rotation);
@@ -497,7 +760,6 @@
         function drawStaticScene() {
             const w = canvas.width, h = canvas.height;
             ctx.clearRect(0, 0, w, h);
-
             [[0,h,135,0.09],[w*.15,h,105,0.09],[w,h,135,0.09],[w*.85,h,105,0.09],
              [0,0,120,0.12],[w*.12,0,90,0.12],[w,0,120,0.12],[w*.88,0,90,0.12]
             ].forEach(([x, y, s, a]) => drawCloud(x, y, s, a));
@@ -520,7 +782,6 @@
                 cancelAnimationFrame(sakuraAnimFrame);
                 sakuraAnimFrame = null;
             }
-
             if (theme === 'sakura') {
                 function loopSakura() {
                     drawSakuraScene();
@@ -535,7 +796,6 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // ── Theme persistence (reads from localStorage on load, same as chamber) ──
         const savedTheme = localStorage.getItem('oneiric-theme') || 'default';
         if (savedTheme === 'default') {
             document.documentElement.removeAttribute('data-theme');
@@ -543,6 +803,103 @@
             document.documentElement.setAttribute('data-theme', savedTheme);
         }
         drawScene();
+
+        function updateDateTime() {
+            const now = new Date();
+            const opts = { year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString(undefined, opts);
+            const timeStr = now.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+            document.getElementById('dateTimeLabel').textContent = `${dateStr} • ${timeStr}`;
+        }
+        updateDateTime();
+
+        const contentArea = document.getElementById('contentArea');
+        const counterLabel = document.getElementById('counterLabel');
+        const CHAR_LIMIT = 10000;
+        function updateCounter() {
+            const len = contentArea.value.length;
+            counterLabel.textContent = `${len.toLocaleString()} / ${CHAR_LIMIT.toLocaleString()}`;
+            counterLabel.classList.toggle('near-limit', len > CHAR_LIMIT * 0.9);
+        }
+        contentArea.addEventListener('input', updateCounter);
+        updateCounter();
+
+        const autosaveLabel = document.getElementById('autosaveLabel');
+        const autosaveWrap = document.getElementById('autosaveWrap');
+        let autosaveTimer = null;
+        let hasUnsavedChanges = false;
+
+        function markUnsaved() {
+            hasUnsavedChanges = true;
+            autosaveLabel.textContent = 'Saving…';
+            autosaveWrap.classList.remove('is-saved');
+            clearTimeout(autosaveTimer);
+            autosaveTimer = setTimeout(() => {
+                autosaveLabel.textContent = 'Saved just now';
+                autosaveWrap.classList.add('is-saved');
+                hasUnsavedChanges = false;
+            }, 900);
+        }
+        contentArea.addEventListener('input', markUnsaved);
+        document.getElementById('titleInput').addEventListener('input', markUnsaved);
+
+        function wrapSelection(before, after) {
+            const start = contentArea.selectionStart;
+            const end = contentArea.selectionEnd;
+            const val = contentArea.value;
+            const selected = val.substring(start, end);
+            contentArea.value = val.substring(0, start) + before + selected + after + val.substring(end);
+            contentArea.focus();
+            contentArea.selectionStart = start + before.length;
+            contentArea.selectionEnd = start + before.length + selected.length;
+            updateCounter();
+            markUnsaved();
+        }
+
+        function insertText(text) {
+            const start = contentArea.selectionStart;
+            const val = contentArea.value;
+            contentArea.value = val.substring(0, start) + text + val.substring(start);
+            contentArea.focus();
+            const pos = start + text.length;
+            contentArea.selectionStart = contentArea.selectionEnd = pos;
+            updateCounter();
+            markUnsaved();
+        }
+
+        function confirmDiscard() {
+            document.getElementById('discardModal').classList.add('open');
+        }
+        function closeDiscard() {
+            document.getElementById('discardModal').classList.remove('open');
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            const meta = e.ctrlKey || e.metaKey;
+            if (meta && e.key.toLowerCase() === 'b' && document.activeElement === contentArea) {
+                e.preventDefault();
+                wrapSelection('**','**');
+            }
+            if (meta && e.key.toLowerCase() === 'i' && document.activeElement === contentArea) {
+                e.preventDefault();
+                wrapSelection('_','_');
+            }
+            if (meta && e.key.toLowerCase() === 's') {
+                e.preventDefault();
+                document.getElementById('entryForm').requestSubmit();
+            }
+        });
+
+        // Save confirmation glow before navigating away
+        document.getElementById('entryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const overlay = document.getElementById('saveConfirm');
+            overlay.classList.add('show');
+            setTimeout(() => {
+                e.target.submit();
+            }, 650);
+        });
     </script>
 </body>
 </html>
