@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <script>
     // Apply saved theme immediately to prevent flash
@@ -87,59 +88,80 @@
             --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
         }
     
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background-color: #0d0d0d;
-            color: #e8e0d0;
-            font-family: 'Georgia', serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-            width: 100%;
-            max-width: 400px;
-            padding: 40px;
-        }
-        h1 { color: #c9a96e; font-size: 1.8rem; letter-spacing: 0.2rem; }
-        p.subtitle { color: #9e9589; font-size: 0.9rem; }
-        p.success { color: #70c970; font-size: 0.9rem; }
-        p.error { color: #c97070; font-size: 0.9rem; }
-        input {
-            width: 100%;
-            padding: 12px 16px;
-            background-color: #1a1a1a;
-            border: 1px solid #2e2e2e;
-            border-radius: 6px;
-            color: #e8e0d0;
-            font-family: 'Georgia', serif;
-            font-size: 1rem;
-            outline: none;
-        }
-        input:focus { border-color: #c9a96e; }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #c9a96e;
-            color: #0d0d0d;
-            border: none;
-            border-radius: 6px;
-            font-family: 'Georgia', serif;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        button:hover { background-color: #b8935a; }
-        a.back {
-            color: #9e9589;
-            text-decoration: none;
-            font-size: 0.85rem;
-        }
-        a.back:hover { color: #c9a96e; }
+       * { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Georgia', serif;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+}
+
+h1 { color: var(--accent); font-size: 1.8rem; letter-spacing: 0.2rem; text-align: center; }
+p.subtitle { color: var(--text-muted); font-size: 0.9rem; text-align: center; word-break: break-word; }
+p.success { color: #70c970; font-size: 0.9rem; text-align: center; }
+p.error { color: #c97070; font-size: 0.9rem; text-align: center; }
+
+input {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Georgia', serif;
+    font-size: 16px; /* prevents iOS Safari auto-zoom on focus */
+    outline: none;
+}
+
+input:focus { border-color: var(--accent); }
+
+button {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+button:hover { background-color: var(--accent-hover); }
+
+a.back {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+a.back:hover { color: var(--accent); }
+
+@media (max-width: 480px) {
+    .container {
+        padding: 24px 20px;
+        gap: 18px;
+    }
+    h1 { font-size: 1.5rem; }
+    input, button { padding: 13px 14px; }
+}
+        
     </style>
 </head>
 <body>

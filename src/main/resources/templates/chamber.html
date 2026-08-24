@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
     <title>Oneiric — Your Chamber</title>
     <style>
 
@@ -87,7 +87,13 @@
             --star-color: #ffffff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        html, body {
+            overscroll-behavior: none;
+            width: 100%;
+            height: 100%;
+        }
 
         ::selection {
             background: var(--accent-dim);
@@ -104,7 +110,8 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            position: relative;
+            position: fixed;
+            inset: 0;
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
@@ -153,175 +160,190 @@
             50% { transform: translateY(-12px) rotate(var(--rot)); }
         }
 
-.menu-btn {
-    position: fixed;
-    top: 30px;
-    left: 30px;
-    background: var(--bg-secondary);
-    border: 1px solid rgba(255,255,255,0.06);
-    color: var(--text-muted);
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 100;
-    transition: all 0.25s ease;
-}
+        @media (prefers-reduced-motion: reduce) {
+            .star { animation: none; opacity: var(--opacity, 0.3); }
+            .moon-deco { animation: none; }
+        }
 
-.menu-btn svg {
-    width: 15px;
-    height: 15px;
-}
+        .menu-btn {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top));
+            left: max(20px, env(safe-area-inset-left));
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-muted);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.25s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
 
-.menu-btn:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px var(--accent-dim);
-    transform: translateY(-1px);
-}
+        .menu-btn svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .menu-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-dim);
+            transform: translateY(-1px);
+        }
+
+        .menu-btn:active { transform: scale(0.94); }
 
         /* Slide-out drawer */
         .drawer {
-    position: fixed;
-    top: 0;
-    left: -280px;
-    width: 270px;
-    height: 100vh;
-    background: var(--bg-tertiary);
-    display: flex;
-    flex-direction: column;
-    padding: 44px 28px 32px;
-    gap: 20px;
-    transition: left 0.35s cubic-bezier(.4,0,.2,1), background 0.4s ease;
-    z-index: 99;
-    overflow: hidden;
-}
+            position: fixed;
+            top: 0;
+            left: -85vw;
+            width: min(80vw, 280px);
+            height: 100vh;
+            height: 100dvh;
+            background: var(--bg-tertiary);
+            display: flex;
+            flex-direction: column;
+            padding: calc(env(safe-area-inset-top) + 44px) 26px 32px;
+            padding-left: calc(env(safe-area-inset-left) + 26px);
+            gap: 20px;
+            transition: left 0.35s cubic-bezier(.4,0,.2,1), background 0.4s ease;
+            z-index: 99;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
 
-.drawer.open { left: 0; }
+        .drawer.open { left: 0; }
 
-.drawer-stars {
-    text-align: center;
-    color: var(--accent);
-    opacity: 0.4;
-    font-size: 0.65rem;
-    letter-spacing: 0.4rem;
-}
-        
-.drawer::before {
-    content: '';
-    position: absolute;
-    width: 8rem;
-    height: 8rem;
-    bottom: -20px;
-    right: -20px;
-    opacity: 0.08;
-    pointer-events: none;
-    background: var(--accent);
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z'/%3E%3C/svg%3E") center/contain no-repeat;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z'/%3E%3C/svg%3E") center/contain no-repeat;
-}
+        .drawer-stars {
+            text-align: center;
+            color: var(--accent);
+            opacity: 0.4;
+            font-size: 0.65rem;
+            letter-spacing: 0.4rem;
+        }
 
-.drawer::after {
-    content: none;
-}
+        .drawer::before {
+            content: '';
+            position: absolute;
+            width: 8rem;
+            height: 8rem;
+            bottom: -20px;
+            right: -20px;
+            opacity: 0.08;
+            pointer-events: none;
+            background: var(--accent);
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z'/%3E%3C/svg%3E") center/contain no-repeat;
+        }
 
-.drawer-stars-scatter {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 0;
-}
+        .drawer::after { content: none; }
 
-.drawer-stars-scatter .dstar {
-    position: absolute;
-    background: var(--accent);
-    border-radius: 50%;
-    opacity: 0;
-    animation: drawerTwinkle var(--duration) ease-in-out infinite var(--delay);
-}
+        .drawer-stars-scatter {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
 
-@keyframes drawerTwinkle {
-    0%, 100% { opacity: 0; transform: scale(0.7); }
-    50% { opacity: var(--opacity); transform: scale(1.2); }
-}
+        .drawer-stars-scatter .dstar {
+            position: absolute;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: drawerTwinkle var(--duration) ease-in-out infinite var(--delay);
+        }
 
-.drawer h2 {
-    color: var(--accent);
-    font-size: 1.05rem;
-    letter-spacing: 0.3rem;
-    text-transform: uppercase;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-}
+        @keyframes drawerTwinkle {
+            0%, 100% { opacity: 0; transform: scale(0.7); }
+            50% { opacity: var(--opacity); transform: scale(1.2); }
+        }
 
-.drawer h2 svg { width: 1em; height: 1em; fill: var(--accent); }
+        .drawer h2 {
+            color: var(--accent);
+            font-size: 1.05rem;
+            letter-spacing: 0.3rem;
+            text-transform: uppercase;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            flex-shrink: 0;
+        }
 
-.drawer nav {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 6px;
-}
+        .drawer h2 svg { width: 1em; height: 1em; fill: var(--accent); }
 
-.drawer nav a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.95rem;
-    letter-spacing: 0.03rem;
-    padding: 11px 12px;
-    border-radius: 8px;
-    border-left: 2px solid transparent;
-    transition: color 0.2s, background 0.2s, border-color 0.2s, padding-left 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
+        .drawer nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 6px;
+        }
 
-.drawer nav a svg {
-    width: 1.05em;
-    height: 1.05em;
-    flex-shrink: 0;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.7;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    opacity: 0.85;
-}
+        .drawer nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            letter-spacing: 0.03rem;
+            padding: 13px 12px;
+            border-radius: 8px;
+            border-left: 2px solid transparent;
+            transition: color 0.2s, background 0.2s, border-color 0.2s, padding-left 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 44px;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-.drawer nav a:hover {
-    color: var(--accent);
-    background: var(--accent-dim);
-    padding-left: 16px;
-}
+        .drawer nav a svg {
+            width: 1.05em;
+            height: 1.05em;
+            flex-shrink: 0;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.85;
+        }
 
-.drawer nav a:hover svg { opacity: 1; }
+        .drawer nav a:hover {
+            color: var(--accent);
+            background: var(--accent-dim);
+            padding-left: 16px;
+        }
 
-.drawer nav a.active {
-    color: var(--accent);
-    background: var(--accent-dim);
-    border-left: 2px solid var(--accent);
-}
+        .drawer nav a:active { background: var(--accent-dim); }
+        .drawer nav a:hover svg { opacity: 1; }
 
-.drawer nav a.active svg { opacity: 1; }
+        .drawer nav a.active {
+            color: var(--accent);
+            background: var(--accent-dim);
+            border-left: 2px solid var(--accent);
+        }
 
-.drawer .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 8px 0;
-}
+        .drawer nav a.active svg { opacity: 1; }
 
-.drawer .account-group { margin-top: 8px; }
+        .drawer .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 8px 0;
+            flex-shrink: 0;
+        }
 
-.drawer a.danger { color: #a8686e; }
-.drawer a.danger:hover { color: #c2868b; background: rgba(168,104,110,0.08); padding-left: 16px; }
+        .drawer .account-group { margin-top: 8px; }
+
+        .drawer a.danger { color: #a8686e; }
+        .drawer a.danger:hover { color: #c2868b; background: rgba(168,104,110,0.08); padding-left: 16px; }
 
         /* Overlay */
         .overlay {
@@ -344,6 +366,8 @@
             gap: 18px;
             text-align: center;
             padding: 0 24px;
+            width: 100%;
+            max-width: 480px;
             transform: translateY(-7%);
             animation: riseIn 0.7s ease-out;
         }
@@ -366,13 +390,13 @@
         h1 { font-size: 2.6rem; color: var(--accent); letter-spacing: 0.2rem; font-weight: 600; }
 
         p { color: var(--text-muted); font-size: 0.95rem; }
-        .welcome { font-size: 0.85rem; color: var(--text); }
+        .welcome { font-size: 0.85rem; color: var(--text); word-break: break-word; }
         .welcome span { color: var(--accent); }
 
         .status-line { color: var(--accent); opacity: 0.75; font-size: 0.85rem; margin-top: -8px; }
         .status-line .count { color: var(--accent); opacity: 1; }
 
-        .actions { display: flex; gap: 16px; margin-top: 18px; flex-wrap: wrap; justify-content: center; }
+        .actions { display: flex; gap: 16px; margin-top: 18px; flex-wrap: wrap; justify-content: center; width: 100%; }
 
         a.btn {
             padding: 13px 28px;
@@ -391,6 +415,8 @@
             border: 1px solid transparent;
             box-shadow: 0 0 0 rgba(201,169,110,0);
             transition: all 0.25s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         a.btn svg { width: 0.9em; height: 0.9em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
@@ -419,31 +445,34 @@
             box-shadow: 0 4px 14px rgba(201,169,110,0.12);
         }
 
-       .theme-btn {
-    position: fixed;
-    top: 30px;
-    right: 30px;
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    width: 36px;
-    height: 36px;
-    cursor: pointer;
-    z-index: 100;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .theme-btn {
+            position: fixed;
+            top: max(20px, env(safe-area-inset-top));
+            right: max(20px, env(safe-area-inset-right));
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            width: 42px;
+            height: 42px;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
 
-.theme-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.theme-btn:hover { color: var(--accent); transform: translateY(-1px); }
+        .theme-btn svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .theme-btn:hover { color: var(--accent); transform: translateY(-1px); }
+        .theme-btn:active { transform: scale(0.92); }
 
         .theme-panel {
             position: fixed;
-            top: 68px;
-            right: 24px;
+            top: calc(max(20px, env(safe-area-inset-top)) + 48px);
+            right: max(16px, env(safe-area-inset-right));
             background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -451,6 +480,7 @@
             z-index: 100;
             display: none;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            max-width: calc(100vw - 32px);
         }
 
         .theme-panel.open { display: block; }
@@ -464,15 +494,17 @@
             text-align: center;
         }
 
-        .theme-options { display: flex; gap: 10px; }
+        .theme-options { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
 
         .theme-option {
-            width: 34px;
-            height: 34px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             border: 2px solid var(--border);
             cursor: pointer;
             transition: all 0.2s;
+            flex-shrink: 0;
+            touch-action: manipulation;
         }
 
         .theme-option[data-theme="default"] { background: linear-gradient(135deg, #0d0d0d, #c9a96e); }
@@ -484,43 +516,77 @@
         .theme-option:hover { transform: scale(1.15); }
         .theme-option.active { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-dim); }
 
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .confirm-modal.open { display: flex; }
+        .confirm-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 32px;
+            text-align: center;
+            max-width: 300px;
+            width: 100%;
+        }
+        .confirm-box p { color: var(--text); margin-bottom: 18px; }
+        .confirm-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .danger-btn {
+            background: #a8686e;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: Georgia, serif;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            min-height: 44px;
+        }
+
+        /* ===== MOBILE / SMALL SCREEN ADJUSTMENTS ===== */
         @media (max-width: 600px) {
             h1 { font-size: 2rem; }
             .logo svg { width: 1.7rem; height: 1.7rem; }
-            .actions { flex-direction: column; width: 100%; max-width: 280px; }
-            a.btn { width: 100%; justify-content: center; }
+            .logo { gap: 11px; }
+            p { font-size: 0.9rem; }
+            .welcome { font-size: 0.82rem; }
+            .status-line { font-size: 0.8rem; }
+            .chamber { gap: 14px; padding: 0 20px; transform: translateY(-4%); }
+            @keyframes riseIn {
+                0% { opacity: 0; transform: translateY(calc(-4% + 16px)); }
+                100% { opacity: 1; transform: translateY(-4%); }
+            }
+            .actions { flex-direction: column; width: 100%; max-width: 280px; margin-top: 14px; gap: 12px; }
+            a.btn { width: 100%; min-width: 0; justify-content: center; }
+            .menu-btn, .theme-btn { width: 44px; height: 44px; }
+            .drawer { padding-top: calc(env(safe-area-inset-top) + 40px); }
         }
-        
-        .confirm-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-}
-.confirm-modal.open { display: flex; }
-.confirm-box {
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px 32px;
-    text-align: center;
-    max-width: 300px;
-}
-.confirm-box p { color: var(--text); margin-bottom: 18px; }
-.confirm-actions { display: flex; gap: 12px; justify-content: center; }
-.danger-btn {
-    background: #a8686e;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-family: Georgia, serif;
-    font-size: 0.9rem;
-}
 
+        @media (max-width: 360px) {
+            h1 { font-size: 1.7rem; }
+            .drawer nav a { font-size: 0.9rem; padding: 12px 10px; }
+        }
+
+        @media (max-height: 600px) and (orientation: landscape) {
+            .chamber { transform: translateY(0); gap: 10px; }
+            @keyframes riseIn {
+                0% { opacity: 0; transform: translateY(16px); }
+                100% { opacity: 1; transform: translateY(0); }
+            }
+            h1 { font-size: 1.8rem; }
+            .logo svg { width: 1.5rem; height: 1.5rem; }
+            .actions { margin-top: 10px; flex-direction: row; }
+            a.btn { height: 42px; min-width: 160px; }
+            .drawer { padding-top: calc(env(safe-area-inset-top) + 30px); }
+        }
     </style>
 </head>
 <body>
@@ -537,9 +603,9 @@
     <div class="moon-deco symbol" style="bottom:18%; right:5%; --size:1.8rem; --fduration:11s; --fdelay:3s; --rot:-10deg;">✧</div>
 
     <!-- Hamburger -->
-   <button class="menu-btn" onclick="toggleMenu()" aria-label="Open menu">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-         </button>
+    <button class="menu-btn" onclick="toggleMenu()" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
     <!-- Theme picker button -->
     <button class="theme-btn" onclick="toggleThemePicker()" title="Change theme" aria-label="Change theme">
         <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
@@ -559,53 +625,53 @@
 
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-    
+
     <div class="confirm-modal" id="confirmModal">
-    <div class="confirm-box">
-        <p>Leave your chamber?</p>
-        <div class="confirm-actions">
-            <button class="btn secondary" onclick="closeConfirm()">Stay</button>
-            <a href="/logout" class="btn danger-btn">Leave</a>
+        <div class="confirm-box">
+            <p>Leave your chamber?</p>
+            <div class="confirm-actions">
+                <button class="btn secondary" onclick="closeConfirm()">Stay</button>
+                <a href="/logout" class="btn danger-btn">Leave</a>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- Drawer -->
-<div class="drawer" id="drawer">
-    <h2>
-        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        Oneiric
-    </h2>
-    <div class="drawer-stars">✦ ✧ ✦ ✧ ✦</div>
-    <nav>
-        <a href="/chamber" class="active">
-            <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
-            Your Chamber
-        </a>
-        <a href="/entries">
-            <svg viewBox="0 0 24 24"><path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/></svg>
-            Browse Entries
-        </a>
-        <a href="/entries/new">
-            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-            Write Something
-        </a>
-        <hr class="divider"/>
-        <div class="account-group">
-            <a href="/account">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
-                Account Settings
+    <div class="drawer" id="drawer">
+        <h2>
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            Oneiric
+        </h2>
+        <div class="drawer-stars">✦ ✧ ✦ ✧ ✦</div>
+        <nav>
+            <a href="/chamber" class="active">
+                <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+                Your Chamber
             </a>
-        </div>
-        <hr class="divider"/>
-        <a href="#" class="danger" onclick="confirmLeave(event)">
-            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-            Leave Chamber
-        </a>
-    </nav>
+            <a href="/entries">
+                <svg viewBox="0 0 24 24"><path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/></svg>
+                Browse Entries
+            </a>
+            <a href="/entries/new">
+                <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                Write Something
+            </a>
+            <hr class="divider"/>
+            <div class="account-group">
+                <a href="/account">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+                    Account Settings
+                </a>
+            </div>
+            <hr class="divider"/>
+            <a href="#" class="danger" onclick="confirmLeave(event)">
+                <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                Leave Chamber
+            </a>
+        </nav>
 
-    <div class="drawer-stars-scatter" id="drawerStars"></div>
-</div>
+        <div class="drawer-stars-scatter" id="drawerStars"></div>
+    </div>
 
     <!-- Main -->
     <div class="chamber">
@@ -637,18 +703,29 @@
             document.getElementById('overlay').classList.toggle('active');
         }
 
+        function confirmLeave(e) {
+            e.preventDefault();
+            document.getElementById('confirmModal').classList.add('open');
+        }
+
+        function closeConfirm() {
+            document.getElementById('confirmModal').classList.remove('open');
+        }
+
         const canvas = document.getElementById('bg');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const w = canvas.width;
-        const h = canvas.height;
+
+        // Cap DPR-driven size on mobile for perf; use CSS pixel dims consistently
+        let w = window.innerWidth;
+        let h = window.innerHeight;
+        canvas.width = w;
+        canvas.height = h;
 
         const petals = [];
         for (let i = 0; i < 35; i++) {
             petals.push({
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
+                x: Math.random() * w,
+                y: Math.random() * h,
                 size: Math.random() * 7 + 3,
                 speedX: Math.random() * 0.6 - 0.3,
                 speedY: Math.random() * 0.8 + 0.3,
@@ -676,8 +753,9 @@
             });
         }
 
-        const blossomClusters = [];
-        (function initBlossoms() {
+        let blossomClusters = [];
+        function initBlossoms() {
+            blossomClusters = [];
             function addCluster(cx, cy, count, spread) {
                 for (let i = 0; i < count; i++) {
                     blossomClusters.push({
@@ -687,14 +765,15 @@
                     });
                 }
             }
-            const W = window.innerWidth, H = window.innerHeight;
+            const W = w, H = h;
             addCluster(W*0.92, H*0.05, 12, 140);
             addCluster(W*0.75, H*0.08, 10, 100);
             addCluster(W*0.85, H*0.18, 8, 80);
             addCluster(W*0.05, H*0.88, 12, 140);
             addCluster(W*0.18, H*0.75, 10, 100);
             addCluster(W*0.08, H*0.65, 8, 80);
-        })();
+        }
+        initBlossoms();
 
         function drawSakuraScene() {
             ctx.clearRect(0, 0, w, h);
@@ -733,7 +812,7 @@
                 ctx.restore();
             });
         }
-        
+
         function getAccentRGB() {
             const r = getComputedStyle(document.documentElement).getPropertyValue('--cloud-r').trim() || '180';
             const g = getComputedStyle(document.documentElement).getPropertyValue('--cloud-g').trim() || '140';
@@ -800,24 +879,35 @@
             ctx.stroke();
             ctx.restore();
         }
-        
-        const featureStars = [
-            { bx: w * 0.92, by: h * 0.08, size: 7, phase: 0 },
-            { bx: w * 0.88, by: h * 0.15, size: 4.5, phase: 1.5 },
-            { bx: w * 0.9, by: h * 0.9, size: 6.5, phase: 3 },
-            { bx: w * 0.85, by: h * 0.82, size: 4, phase: 4.5 },
-        ];
-        const scatterStars = [];
-        for (let i = 0; i < 34; i++) {
-            scatterStars.push({
-                bx: Math.random() * w,
-                by: Math.random() * h,
-                size: Math.random() * 3.5 + 2.5,
-                shapeType: Math.floor(Math.random() * 3),
-                phase: Math.random() * Math.PI * 2,
-                driftSpeed: Math.random() * 0.4 + 0.15,
-            });
+
+        // Fewer stars on small/narrow screens for performance
+        const isSmallScreen = () => window.innerWidth <= 600;
+
+        let featureStars = [];
+        let scatterStars = [];
+
+        function initStarField() {
+            const small = isSmallScreen();
+            featureStars = [
+                { bx: w * 0.92, by: h * 0.08, size: small ? 5.5 : 7, phase: 0 },
+                { bx: w * 0.88, by: h * 0.15, size: small ? 3.5 : 4.5, phase: 1.5 },
+                { bx: w * 0.9, by: h * 0.9, size: small ? 5 : 6.5, phase: 3 },
+                { bx: w * 0.85, by: h * 0.82, size: small ? 3 : 4, phase: 4.5 },
+            ];
+            scatterStars = [];
+            const count = small ? 20 : 34;
+            for (let i = 0; i < count; i++) {
+                scatterStars.push({
+                    bx: Math.random() * w,
+                    by: Math.random() * h,
+                    size: Math.random() * 3.5 + 2.5,
+                    shapeType: Math.floor(Math.random() * 3),
+                    phase: Math.random() * Math.PI * 2,
+                    driftSpeed: Math.random() * 0.4 + 0.15,
+                });
+            }
         }
+        initStarField();
 
         let starTime = 0;
 
@@ -853,41 +943,49 @@
         }
 
         let sakuraAnimFrame = null;
-
         let starAnimFrame = null;
-        	function drawScene() {
-        	    const theme = document.documentElement.getAttribute('data-theme');
-        	    if (sakuraAnimFrame) {
-        	        cancelAnimationFrame(sakuraAnimFrame);
-        	        sakuraAnimFrame = null;
-        	    }
-        	    if (starAnimFrame) {
-        	        cancelAnimationFrame(starAnimFrame);
-        	        starAnimFrame = null;
-        	    }
 
-        	    if (theme === 'sakura') {
-        	        function loopSakura() {
-        	            drawSakuraScene();
-        	            sakuraAnimFrame = requestAnimationFrame(loopSakura);
-        	        }
-        	        loopSakura();
-        	    } else {
-        	        function loopStatic() {
-        	            ctx.clearRect(0, 0, w, h);
-        	            drawCloudScene();
-        	            animateStars();
-        	            starAnimFrame = requestAnimationFrame(loopStatic);
-        	        }
-        	        loopStatic();
-        	    }
-        	}
-        
+        function drawScene() {
+            const theme = document.documentElement.getAttribute('data-theme');
+            if (sakuraAnimFrame) { cancelAnimationFrame(sakuraAnimFrame); sakuraAnimFrame = null; }
+            if (starAnimFrame) { cancelAnimationFrame(starAnimFrame); starAnimFrame = null; }
 
-        
+            if (theme === 'sakura') {
+                function loopSakura() {
+                    drawSakuraScene();
+                    sakuraAnimFrame = requestAnimationFrame(loopSakura);
+                }
+                loopSakura();
+            } else {
+                function loopStatic() {
+                    ctx.clearRect(0, 0, w, h);
+                    drawCloudScene();
+                    animateStars();
+                    starAnimFrame = requestAnimationFrame(loopStatic);
+                }
+                loopStatic();
+            }
+        }
+
+        // Debounced resize handler — keeps canvas correct on rotation / mobile browser chrome show-hide
+        let resizeTimeout;
+        function handleResize() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                w = window.innerWidth;
+                h = window.innerHeight;
+                canvas.width = w;
+                canvas.height = h;
+                initBlossoms();
+                initStarField();
+            }, 150);
+        }
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('orientationchange', handleResize);
 
         const container = document.getElementById('stars');
-        for (let i = 0; i < 45; i++) {
+        const bgStarCount = isSmallScreen() ? 28 : 45;
+        for (let i = 0; i < bgStarCount; i++) {
             const star = document.createElement('div');
             star.classList.add('star');
             const size = Math.random() * 2.5 + 1;
@@ -928,25 +1026,25 @@
 
         const savedTheme = localStorage.getItem('oneiric-theme') || 'default';
         setTheme(savedTheme);
-        
+
     </script>
-    
+
     <script>
-    const drawerStarContainer = document.getElementById('drawerStars');
-    for (let i = 0; i < 25; i++) {
-        const s = document.createElement('div');
-        s.classList.add('dstar');
-        const size = Math.random() * 2.2 + 1;
-        s.style.cssText = `
-            width:${size}px; height:${size}px;
-            top:${Math.random()*100}%; left:${Math.random()*100}%;
-            --duration:${Math.random()*4+2}s;
-            --delay:${Math.random()*5}s;
-            --opacity:${Math.random()*0.5+0.2};
-        `;
-        drawerStarContainer.appendChild(s);
-    }
-</script>
+        const drawerStarContainer = document.getElementById('drawerStars');
+        for (let i = 0; i < 25; i++) {
+            const s = document.createElement('div');
+            s.classList.add('dstar');
+            const size = Math.random() * 2.2 + 1;
+            s.style.cssText = `
+                width:${size}px; height:${size}px;
+                top:${Math.random()*100}%; left:${Math.random()*100}%;
+                --duration:${Math.random()*4+2}s;
+                --delay:${Math.random()*5}s;
+                --opacity:${Math.random()*0.5+0.2};
+            `;
+            drawerStarContainer.appendChild(s);
+        }
+    </script>
 
 </body>
 </html>

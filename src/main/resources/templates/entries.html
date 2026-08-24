@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <script>
     // Apply saved theme immediately to prevent flash
@@ -191,6 +192,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 48px;
+            flex-wrap: wrap;
+            row-gap: 14px;
         }
 
         h1 { color: var(--accent); font-size: 1.8rem; letter-spacing: 0.15rem; }
@@ -352,6 +355,30 @@
         .nav-links a.btn:hover {
             background-color: var(--accent-hover);
             box-shadow: 0 0 12px var(--accent-dim);
+        }
+
+        /* ── Mobile fixes: header wrapping + tighter spacing ── */
+        @media (max-width: 640px) {
+            body { padding: 32px 20px; }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+                margin-bottom: 32px;
+            }
+
+            .nav-links {
+                width: 100%;
+                gap: 10px;
+            }
+
+            .nav-links a {
+                flex: 1 1 0;
+                min-width: 0;
+                padding: 10px 12px;
+                font-size: 0.82rem;
+            }
         }
     </style>
 </head>
