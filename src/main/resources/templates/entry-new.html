@@ -84,6 +84,7 @@
 
         canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
+        /* ── Corner decorations ── */
         .corner-deco {
             position: fixed;
             z-index: 0;
@@ -94,14 +95,13 @@
         }
 
         .corner-deco svg { display: block; overflow: visible; }
-
         .corner-tl { top: 20px; left: 20px; width: 110px; }
         .corner-tr { top: 20px; right: 20px; width: 160px; }
         .corner-bl { bottom: 20px; left: 20px; width: 160px; }
         .corner-br { bottom: 20px; right: 20px; width: 120px; }
 
         .vine { stroke: var(--accent); stroke-width: 1.3; fill: none; stroke-linecap: round; }
-        .bud { fill: var(--accent); opacity: 0.7; }
+        .bud  { fill: var(--accent); opacity: 0.7; }
         .book-deco { stroke: var(--accent); stroke-width: 1.1; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
         @keyframes gentleDrift {
@@ -140,6 +140,7 @@
         .border-left { left: 48px; }
         .border-right { right: 48px; }
 
+        /* ── Header ── */
         .header {
             position: relative;
             z-index: 1;
@@ -172,14 +173,26 @@
             min-width: 92px; box-sizing: border-box; text-align: center;
         }
 
-        .nav-links a.chamber-link { background-color: var(--bg-tertiary); color: var(--text-muted); }
+        .nav-links a.chamber-link {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+            border-color: var(--border);
+        }
         .nav-links a.chamber-link:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-dim); }
-        .nav-links a.btn { background-color: var(--bg-tertiary); color: var(--text-muted); border-color: var(--border); }
+
+        .nav-links a.btn {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+            border-color: var(--border);
+        }
         .nav-links a.btn:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-dim); }
 
+        /* ── Meta row ── */
         .meta-row {
-            position: relative; z-index: 1; max-width: 700px; margin: 0 auto 20px;
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+            position: relative; z-index: 1;
+            max-width: 700px; margin: 0 auto 20px;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 8px;
         }
 
         .datetime { color: var(--text-subtle); font-size: 0.78rem; letter-spacing: 0.03rem; }
@@ -190,6 +203,47 @@
         }
         .private-tag svg { width: 0.9em; height: 0.9em; fill: none; stroke: currentColor; stroke-width: 1.8; }
 
+        /* ── Draft restore banner ── */
+        .draft-banner {
+            display: none;
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto 14px;
+            padding: 10px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-accent);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .draft-banner.visible { display: flex; }
+        .draft-banner .draft-left { display: flex; align-items: center; gap: 8px; }
+        .draft-banner .draft-left svg { width: 14px; height: 14px; fill: none; stroke: var(--accent); stroke-width: 1.8; flex-shrink: 0; }
+        .draft-banner .draft-actions { display: flex; gap: 8px; flex-shrink: 0; }
+        .draft-banner button {
+            font-family: 'Georgia', serif;
+            font-size: 0.76rem;
+            padding: 4px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .draft-banner button.resume-btn {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: transparent;
+        }
+        .draft-banner button.resume-btn:hover { background: var(--accent-hover); }
+        .draft-banner button.discard-draft-btn:hover { border-color: #a8686e; color: #c2868b; }
+
+        /* ── Editor ── */
         .editor {
             position: relative;
             z-index: 1;
@@ -201,8 +255,7 @@
             gap: 14px;
         }
 
-        .title-wrap { position: relative; }
-
+        /* ── Title — fixed size, only color + underline on focus ── */
         input[type="text"] {
             width: 100%;
             padding: 12px 0;
@@ -213,23 +266,55 @@
             font-family: 'Georgia', serif;
             font-size: 1.4rem;
             outline: none;
-            transition: all 0.25s ease;
+            transition: border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
             caret-color: var(--accent);
         }
 
         input[type="text"]::placeholder { color: var(--text-muted); }
 
         input[type="text"]:focus {
-            border-bottom: 1px solid var(--accent);
-            box-shadow: 0 1px 0 0 var(--accent), 0 6px 16px -8px var(--accent-dim);
-            font-size: 1.6rem;
+            border-bottom-color: var(--accent);
             color: var(--accent);
+            box-shadow: 0 2px 0 -1px var(--accent-dim), 0 6px 16px -8px var(--accent-dim);
+            /* NO font-size change — stays at 1.4rem */
         }
 
+        /* ── Mood ── */
         .mood-group-label {
             color: var(--text-muted);
             font-size: 0.85rem;
             letter-spacing: 0.03rem;
+        }
+
+        /* Wrapper enables mobile scroll with fade mask */
+        .mood-scroll-wrap {
+            position: relative;
+        }
+
+        .mood-scroll-wrap::after {
+            content: '';
+            display: none;
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            width: 40px;
+            background: linear-gradient(to right, transparent, var(--bg));
+            pointer-events: none;
+            border-radius: 0 16px 16px 0;
+        }
+
+        @media (max-width: 640px) {
+            .mood-scroll-wrap::after { display: block; }
+            .mood-row {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                padding-bottom: 4px;
+                gap: 6px;
+            }
+            .mood-row::-webkit-scrollbar { display: none; }
+            .mood-label { flex-shrink: 0; }
         }
 
         .mood-row {
@@ -238,10 +323,6 @@
             gap: 6px;
             padding: 2px 0 4px;
             width: 100%;
-        }
-
-        @media (max-width: 640px) {
-            .mood-row { grid-template-columns: repeat(2, 1fr); }
         }
 
         .mood-label {
@@ -273,18 +354,19 @@
         .mood-label:has(input:checked) .face,
         .mood-label:has(input:checked) .mood-text { color: var(--accent) !important; }
 
-        .mood-label.happy .face,    .mood-label.happy .mood-text    { color: #d9b06a; }
-        .mood-label.calm .face,     .mood-label.calm .mood-text     { color: #b8a878; }
-        .mood-label.sad .face,      .mood-label.sad .mood-text      { color: #9e9589; }
-        .mood-label.anxious .face,  .mood-label.anxious .mood-text  { color: #a68f6a; }
-        .mood-label.angry .face,    .mood-label.angry .mood-text    { color: #c0876a; }
-        .mood-label.lonely .face,   .mood-label.lonely .mood-text   { color: #8a8478; }
-        .mood-label.excited .face,  .mood-label.excited .mood-text  { color: #e0b56e; }
-        .mood-label.confused .face, .mood-label.confused .mood-text { color: #a99a72; }
-        .mood-label.neutral .face,  .mood-label.neutral .mood-text  { color: #837a6c; }
-        .mood-label.bored .face,    .mood-label.bored .mood-text    { color: #948a76; }
+        /* Mid-tone mood colors — readable on both dark and light themes */
+        .mood-label.happy .face,    .mood-label.happy .mood-text    { color: #c47a20; }
+        .mood-label.calm .face,     .mood-label.calm .mood-text     { color: #3a9e88; }
+        .mood-label.sad .face,      .mood-label.sad .mood-text      { color: #4a88c8; }
+        .mood-label.anxious .face,  .mood-label.anxious .mood-text  { color: #9060c0; }
+        .mood-label.angry .face,    .mood-label.angry .mood-text    { color: #c84040; }
+        .mood-label.lonely .face,   .mood-label.lonely .mood-text   { color: #5060a8; }
+        .mood-label.excited .face,  .mood-label.excited .mood-text  { color: #c07820; }
+        .mood-label.confused .face, .mood-label.confused .mood-text { color: #888840; }
+        .mood-label.neutral .face,  .mood-label.neutral .mood-text  { color: #707070; }
+        .mood-label.bored .face,    .mood-label.bored .mood-text    { color: #7858a0; }
 
-        /* Toolbar */
+        /* ── Toolbar ── */
         .toolbar {
             display: flex;
             align-items: center;
@@ -298,11 +380,8 @@
 
         .toolbar button {
             position: relative;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 30px; height: 30px;
+            display: flex; align-items: center; justify-content: center;
             background: transparent;
             border: 1px solid transparent;
             border-radius: 6px;
@@ -314,6 +393,7 @@
         .toolbar button svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
         .toolbar button:hover { color: var(--accent); background: var(--accent-dim); border-color: var(--border-accent); }
 
+        /* Tooltip — z-index 10 so it clears any scrolled content */
         .toolbar button[title]::after {
             content: attr(title);
             position: absolute;
@@ -331,14 +411,17 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.15s ease, transform 0.15s ease;
-            z-index: 5;
+            z-index: 10;
         }
         .toolbar button[title]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         .toolbar .divider-line { width: 1px; height: 16px; background: var(--border); margin: 0 4px; }
-        .toolbar .attach-btn { margin-left: auto; }
 
-        /* Writing area */
+        /* Image attach — disabled until backend ready */
+        .toolbar .attach-btn { margin-left: auto; opacity: 0.45; }
+        .toolbar .attach-btn:hover { opacity: 1; }
+
+        /* ── Writing area ── */
         .write-wrap {
             position: relative;
             border: 1px solid var(--border-accent);
@@ -380,9 +463,9 @@
             font-size: 0.75rem;
         }
 
-        .autosave { display: flex; align-items: center; gap: 6px; color: var(--text-muted); transition: color 0.2s; }
+        .autosave { display: flex; align-items: center; gap: 6px; color: var(--text-muted); transition: color 0.3s; }
         .autosave.is-saved { color: var(--accent); }
-        .autosave .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: 0.6; animation: pulseDot 2s ease-in-out infinite; }
+        .autosave .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.7; animation: pulseDot 2s ease-in-out infinite; }
 
         @keyframes pulseDot {
             0%, 100% { opacity: 0.3; transform: scale(0.9); }
@@ -392,84 +475,108 @@
         .counter { letter-spacing: 0.02rem; color: var(--text-muted); }
         .counter.near-limit { color: var(--accent); }
 
-        .actions-row { display: flex; justify-content: flex-end; gap: 14px; align-items: center; margin-top: 4px; }
-
-        button[type="button"].discard-btn {
-            padding: 12px 22px;
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            border-radius: 6px;
-            font-family: 'Georgia', serif;
-            font-size: 0.88rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        button[type="button"].discard-btn:hover {
-            border-color: #a8686e;
-            color: #c2868b;
-            transform: translateY(-2px);
-        }
-
-        button[type="submit"] {
-            padding: 14px 38px;
-            background-color: var(--accent);
-            color: var(--bg);
-            border: none;
-            border-radius: 6px;
-            font-family: 'Georgia', serif;
-            font-size: 1.02rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        button[type="submit"]:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--accent-dim);
-        }
-
-        /* Save confirmation glow overlay */
-        .save-confirm {
-            position: fixed;
-            inset: 0;
-            display: none;
+        /* ── Action buttons ── */
+        .actions-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
             align-items: center;
-            justify-content: center;
-            z-index: 300;
-            pointer-events: none;
+            margin-top: 4px;
+        }
+
+    button[type="button"].discard-btn {
+    padding: 10px 22px;
+    background: transparent;
+    border: 1px solid var(--border-accent);
+    color: var(--text-subtle);
+    border-radius: 6px;
+    font-family: 'Georgia', serif;
+    font-size: 0.84rem;
+    letter-spacing: 0.03rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button[type="button"].discard-btn:hover {
+    border-color: #a8686e;
+    color: #c2868b;
+    transform: translateY(-1px);
+}
+
+button[type="submit"] {
+    padding: 10px 22px;
+    background-color: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    font-family: 'Georgia', serif;
+    font-size: 0.84rem;
+    font-weight: 400;
+    letter-spacing: 0.06rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px var(--accent-dim);
+}
+
+        /* ── Save confirmation ── */
+        .save-confirm {
+            position: fixed; inset: 0;
+            display: none; align-items: center; justify-content: center;
+            z-index: 300; pointer-events: none;
             background: rgba(0,0,0,0.3);
         }
         .save-confirm.show { display: flex; }
         .save-confirm .badge {
-            width: 84px;
-            height: 84px;
+            width: 84px; height: 84px;
             border-radius: 50%;
             border: 2px solid var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             box-shadow: 0 0 40px var(--accent-dim), 0 0 80px var(--accent-dim);
             animation: badgePop 0.5s ease;
             background: var(--bg-tertiary);
         }
         .save-confirm .badge svg { width: 36px; height: 36px; stroke: var(--accent); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
         @keyframes badgePop {
-            0% { transform: scale(0.6); opacity: 0; }
-            60% { transform: scale(1.08); opacity: 1; }
+            0%   { transform: scale(0.6); opacity: 0; }
+            60%  { transform: scale(1.08); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .confirm-modal {
-            display: none;
+        /* ── Toast (coming soon / errors) ── */
+        .toast {
             position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(12px);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-accent);
+            color: var(--text-muted);
+            font-family: 'Georgia', serif;
+            font-size: 0.8rem;
+            padding: 10px 20px;
+            border-radius: 8px;
+            z-index: 400;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            white-space: nowrap;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── Discard confirm modal ── */
+        .confirm-modal {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6); z-index: 200;
+            align-items: center; justify-content: center;
         }
         .confirm-modal.open { display: flex; }
         .confirm-box {
@@ -480,20 +587,20 @@
             text-align: center;
             max-width: 320px;
         }
-        .confirm-box p { color: var(--text); margin-bottom: 18px; font-size: 0.95rem; }
+        .confirm-box p { color: var(--text); margin-bottom: 6px; font-size: 0.95rem; }
+        .confirm-box .confirm-sub { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 20px; display: block; }
         .confirm-actions { display: flex; gap: 12px; justify-content: center; }
         .confirm-actions button, .confirm-actions a {
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-family: 'Georgia', serif;
-            font-size: 0.88rem;
-            cursor: pointer;
-            text-decoration: none;
+            padding: 10px 20px; border-radius: 6px;
+            font-family: 'Georgia', serif; font-size: 0.88rem;
+            cursor: pointer; text-decoration: none;
             border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-muted);
+            background: transparent; color: var(--text-muted);
+            transition: all 0.2s;
         }
+        .confirm-actions button:hover { border-color: var(--accent); color: var(--accent); }
         .confirm-actions .danger-confirm { background: #a8686e; color: #fff; border-color: transparent; }
+        .confirm-actions .danger-confirm:hover { background: #c2868b; }
 
     </style>
 </head>
@@ -506,6 +613,7 @@
     <div class="border-left"></div>
     <div class="border-right"></div>
 
+    <!-- Corner decos -->
     <div class="corner-deco corner-tl">
         <svg viewBox="0 0 90 90" fill="none">
             <path class="bud" d="M14 10 L17 17 L24 18 L17 21 L18 28 L14 23 L8 27 L11 20 L4 16 L12 16 Z" opacity="0.55"/>
@@ -553,22 +661,23 @@
         </svg>
     </div>
 
-    <div class="deco-star" style="top:64px; left:110px; --sz:0.55rem; --dur:3s; --del:0s; --base-op:0.16;">✧</div>
-    <div class="deco-star" style="top:96px; left:70px; --sz:0.4rem; --dur:4.2s; --del:0.8s; --base-op:0.12;">·</div>
-    <div class="deco-star" style="top:28px; left:150px; --sz:0.65rem; --dur:3.6s; --del:1.4s; --base-op:0.16;">✦</div>
-    <div class="deco-star" style="top:60px; right:130px; --sz:0.5rem; --dur:3.4s; --del:0.4s; --base-op:0.14;">✧</div>
-    <div class="deco-star" style="top:110px; right:80px; --sz:0.45rem; --dur:4.6s; --del:1.8s; --base-op:0.12;">·</div>
-    <div class="deco-star" style="bottom:70px; left:130px; --sz:0.5rem; --dur:3.8s; --del:0.6s; --base-op:0.14;">✦</div>
-    <div class="deco-star" style="bottom:110px; left:80px; --sz:0.4rem; --dur:4.4s; --del:1.2s; --base-op:0.11;">·</div>
-    <div class="deco-star" style="bottom:100px; right:140px; --sz:0.6rem; --dur:3.2s; --del:0.2s; --base-op:0.16;">✧</div>
-    <div class="deco-star" style="bottom:60px; right:90px; --sz:0.4rem; --dur:5s; --del:2s; --base-op:0.11;">·</div>
-    <div class="deco-star" style="top:50%; left:52px; --sz:0.5rem; --dur:5s; --del:1s; --base-op:0.12;">·</div>
+    <div class="deco-star" style="top:64px;  left:110px;  --sz:0.55rem; --dur:3s;   --del:0s;   --base-op:0.16;">✧</div>
+    <div class="deco-star" style="top:96px;  left:70px;   --sz:0.4rem;  --dur:4.2s; --del:0.8s; --base-op:0.12;">·</div>
+    <div class="deco-star" style="top:28px;  left:150px;  --sz:0.65rem; --dur:3.6s; --del:1.4s; --base-op:0.16;">✦</div>
+    <div class="deco-star" style="top:60px;  right:130px; --sz:0.5rem;  --dur:3.4s; --del:0.4s; --base-op:0.14;">✧</div>
+    <div class="deco-star" style="top:110px; right:80px;  --sz:0.45rem; --dur:4.6s; --del:1.8s; --base-op:0.12;">·</div>
+    <div class="deco-star" style="bottom:70px;  left:130px;  --sz:0.5rem;  --dur:3.8s; --del:0.6s; --base-op:0.14;">✦</div>
+    <div class="deco-star" style="bottom:110px; left:80px;   --sz:0.4rem;  --dur:4.4s; --del:1.2s; --base-op:0.11;">·</div>
+    <div class="deco-star" style="bottom:100px; right:140px; --sz:0.6rem;  --dur:3.2s; --del:0.2s; --base-op:0.16;">✧</div>
+    <div class="deco-star" style="bottom:60px;  right:90px;  --sz:0.4rem;  --dur:5s;   --del:2s;   --base-op:0.11;">·</div>
+    <div class="deco-star" style="top:50%; left:52px;  --sz:0.5rem; --dur:5s; --del:1s; --base-op:0.12;">·</div>
     <div class="deco-star" style="top:50%; right:52px; --sz:0.5rem; --dur:5s; --del:2s; --base-op:0.12;">·</div>
 
+    <!-- Header -->
     <div class="header">
         <h1>
             <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-            Your Thoughts
+            Write
         </h1>
         <div class="nav-links">
             <a href="/chamber" class="chamber-link">
@@ -582,6 +691,7 @@
         </div>
     </div>
 
+    <!-- Meta -->
     <div class="meta-row">
         <span class="datetime" id="dateTimeLabel"></span>
         <span class="private-tag">
@@ -590,25 +700,39 @@
         </span>
     </div>
 
-    <form class="editor" method="post" action="/entries/new" id="entryForm">
-        <div class="title-wrap">
-            <input type="text" name="title" id="titleInput" placeholder="Give it a Title..." required />
+    <!-- Draft restore banner -->
+    <div class="draft-banner" id="draftBanner">
+        <div class="draft-left">
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            <span>You have an unfinished entry. Resume where you left off?</span>
         </div>
+        <div class="draft-actions">
+            <button class="discard-draft-btn" onclick="discardDraft()">Discard draft</button>
+            <button class="resume-btn" onclick="resumeDraft()">Resume</button>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <form class="editor" method="post" action="/entries/new" id="entryForm">
+        <input type="text" name="title" id="titleInput" placeholder="Give it a Title..." required />
 
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
             <span class="mood-group-label">Mood:</span>
         </div>
-        <div class="mood-row">
-            <label class="mood-label happy"><input type="radio" name="mood" value="happy"><span class="face">(❁´◡`❁)</span> <span class="mood-text">Happy</span></label>
-            <label class="mood-label calm"><input type="radio" name="mood" value="calm"><span class="face">^_^</span> <span class="mood-text">Calm</span></label>
-            <label class="mood-label sad"><input type="radio" name="mood" value="sad"><span class="face">＞︿＜</span> <span class="mood-text">Sad</span></label>
-            <label class="mood-label anxious"><input type="radio" name="mood" value="anxious"><span class="face">＞﹏＜</span> <span class="mood-text">Anxious</span></label>
-            <label class="mood-label angry"><input type="radio" name="mood" value="angry"><span class="face">(╬▔皿▔)╯</span> <span class="mood-text">Angry</span></label>
-            <label class="mood-label lonely"><input type="radio" name="mood" value="lonely"><span class="face">( ﾉ ﾟｰﾟ)ﾉ</span> <span class="mood-text">Lonely</span></label>
-            <label class="mood-label excited"><input type="radio" name="mood" value="excited"><span class="face">(≧∀≦)ゞ</span> <span class="mood-text">Excited</span></label>
-            <label class="mood-label confused"><input type="radio" name="mood" value="confused"><span class="face">*-*</span> <span class="mood-text">Confused</span></label>
-            <label class="mood-label neutral"><input type="radio" name="mood" value="neutral"><span class="face">^_____^</span> <span class="mood-text">Neutral</span></label>
-            <label class="mood-label bored"><input type="radio" name="mood" value="bored"><span class="face">–_–</span> <span class="mood-text">Bored</span></label>
+
+        <div class="mood-scroll-wrap">
+            <div class="mood-row">
+                <label class="mood-label happy"><input type="radio" name="mood" value="happy"><span class="face">(❁´◡`❁)</span> <span class="mood-text">Happy</span></label>
+                <label class="mood-label calm"><input type="radio" name="mood" value="calm"><span class="face">^_^</span> <span class="mood-text">Calm</span></label>
+                <label class="mood-label sad"><input type="radio" name="mood" value="sad"><span class="face">＞︿＜</span> <span class="mood-text">Sad</span></label>
+                <label class="mood-label anxious"><input type="radio" name="mood" value="anxious"><span class="face">＞﹏＜</span> <span class="mood-text">Anxious</span></label>
+                <label class="mood-label angry"><input type="radio" name="mood" value="angry"><span class="face">(╬▔皿▔)╯</span> <span class="mood-text">Angry</span></label>
+                <label class="mood-label lonely"><input type="radio" name="mood" value="lonely"><span class="face">( ﾉ ﾟｰﾟ)ﾉ</span> <span class="mood-text">Lonely</span></label>
+                <label class="mood-label excited"><input type="radio" name="mood" value="excited"><span class="face">(≧∀≦)ゞ</span> <span class="mood-text">Excited</span></label>
+                <label class="mood-label confused"><input type="radio" name="mood" value="confused"><span class="face">*-*</span> <span class="mood-text">Confused</span></label>
+                <label class="mood-label neutral"><input type="radio" name="mood" value="neutral"><span class="face">^_____^</span> <span class="mood-text">Neutral</span></label>
+                <label class="mood-label bored"><input type="radio" name="mood" value="bored"><span class="face">–_–</span> <span class="mood-text">Bored</span></label>
+            </div>
         </div>
 
         <div>
@@ -619,27 +743,29 @@
                 <button type="button" title="Italic (Ctrl+I)" onclick="wrapSelection('_','_')">
                     <svg viewBox="0 0 24 24"><line x1="10" y1="4" x2="18" y2="4"/><line x1="6" y1="20" x2="14" y2="20"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
                 </button>
-                <button type="button" title="Quote" onclick="wrapSelection('&#10;&gt; ','')">
+                <button type="button" title="Quote" onclick="wrapSelection('\n> ','')">
                     <svg viewBox="0 0 24 24"><path d="M7 8c-2 1-3 3-3 5.5S6 18 8 18"/><path d="M15 8c-2 1-3 3-3 5.5s2 4.5 4 4.5"/></svg>
                 </button>
-                <button type="button" title="List" onclick="wrapSelection('&#10;- ','')">
+                <button type="button" title="List" onclick="wrapSelection('\n- ','')">
                     <svg viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>
                 </button>
-                <button type="button" title="Divider" onclick="insertText('&#10;---&#10;')">
+                <button type="button" title="Divider" onclick="insertText('\n---\n')">
                     <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/></svg>
                 </button>
                 <div class="divider-line"></div>
-                <button type="button" class="attach-btn" title="Add image" onclick="document.getElementById('imgAttach').click()">
+                <!-- Image attach: shows toast until backend is ready -->
+                <button type="button" class="attach-btn" title="Add image (coming soon)" onclick="showToast('Image attachments are coming soon ✦')">
                     <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-4 4-3-3-4 4"/></svg>
                 </button>
-                <input type="file" id="imgAttach" name="attachment" accept="image/*" style="display:none;">
             </div>
 
             <div class="write-wrap">
                 <textarea name="content" id="contentArea" placeholder="What's on your mind..." maxlength="10000"></textarea>
-
                 <div class="write-footer">
-                    <span class="autosave" id="autosaveWrap"><span class="dot"></span> <span id="autosaveLabel">Saved • just now</span></span>
+                    <span class="autosave" id="autosaveWrap">
+                        <span class="dot"></span>
+                        <span id="autosaveLabel">Draft saved</span>
+                    </span>
                     <span class="counter" id="counterLabel">0 / 10,000</span>
                 </div>
             </div>
@@ -651,23 +777,30 @@
         </div>
     </form>
 
+    <!-- Save glow -->
     <div class="save-confirm" id="saveConfirm">
         <div class="badge">
             <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
         </div>
     </div>
 
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Discard modal — goes back to /entries -->
     <div class="confirm-modal" id="discardModal">
         <div class="confirm-box">
-            <p>Discard this entry? Your writing will be lost.</p>
+            <p>Discard this entry?</p>
+            <span class="confirm-sub">Your writing will be lost.</span>
             <div class="confirm-actions">
                 <button onclick="closeDiscard()">Keep writing</button>
-                <a href="/chamber" class="danger-confirm">Discard</a>
+                <a href="/entries" class="danger-confirm">Discard</a>
             </div>
         </div>
     </div>
 
     <script>
+        /* ── Canvas / theme ── */
         const canvas = document.getElementById('bg');
         const ctx = canvas.getContext('2d');
 
@@ -678,11 +811,12 @@
         }
 
         function getCloudRGB() {
-            const style = getComputedStyle(document.documentElement);
-            const r = style.getPropertyValue('--cloud-r').trim() || '180';
-            const g = style.getPropertyValue('--cloud-g').trim() || '140';
-            const b = style.getPropertyValue('--cloud-b').trim() || '80';
-            return { r, g, b };
+            const s = getComputedStyle(document.documentElement);
+            return {
+                r: s.getPropertyValue('--cloud-r').trim() || '180',
+                g: s.getPropertyValue('--cloud-g').trim() || '140',
+                b: s.getPropertyValue('--cloud-b').trim() || '80',
+            };
         }
 
         function drawCloud(x, y, size, alpha) {
@@ -690,12 +824,12 @@
             [[0,0,size],[size*.6,-size*.2,size*.75],[-size*.5,-size*.1,size*.7],
              [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
             ].forEach(([cx, cy, r2]) => {
-                const grad = ctx.createRadialGradient(x+cx, y+cy, 0, x+cx, y+cy, r2);
+                const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
                 grad.addColorStop(0, `rgba(${r},${g},${b},${alpha})`);
                 grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
                 ctx.fillStyle = grad;
                 ctx.beginPath();
-                ctx.arc(x+cx, y+cy, r2, 0, Math.PI*2);
+                ctx.arc(x+cx,y+cy,r2,0,Math.PI*2);
                 ctx.fill();
             });
         }
@@ -707,51 +841,41 @@
             ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(x, y - size); ctx.lineTo(x, y + size);
-            ctx.moveTo(x - size, y); ctx.lineTo(x + size, y);
-            ctx.moveTo(x - size*0.6, y - size*0.6); ctx.lineTo(x + size*0.6, y + size*0.6);
-            ctx.moveTo(x + size*0.6, y - size*0.6); ctx.lineTo(x - size*0.6, y + size*0.6);
+            ctx.moveTo(x,y-size); ctx.lineTo(x,y+size);
+            ctx.moveTo(x-size,y); ctx.lineTo(x+size,y);
+            ctx.moveTo(x-size*.6,y-size*.6); ctx.lineTo(x+size*.6,y+size*.6);
+            ctx.moveTo(x+size*.6,y-size*.6); ctx.lineTo(x-size*.6,y+size*.6);
             ctx.stroke();
             ctx.restore();
         }
 
-        const petals = [];
-        for (let i = 0; i < 35; i++) {
-            petals.push({
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                size: Math.random() * 7 + 3,
-                speedX: Math.random() * 0.6 - 0.3,
-                speedY: Math.random() * 0.8 + 0.3,
-                rotation: Math.random() * Math.PI * 2,
-                rotationSpeed: (Math.random() - 0.5) * 0.03,
-                opacity: Math.random() * 0.5 + 0.2,
-                sway: Math.random() * Math.PI * 2,
-            });
-        }
+        const petals = Array.from({ length: 35 }, () => ({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            size: Math.random() * 7 + 3,
+            speedX: Math.random() * .6 - .3,
+            speedY: Math.random() * .8 + .3,
+            rotation: Math.random() * Math.PI * 2,
+            rotationSpeed: (Math.random() - .5) * .03,
+            opacity: Math.random() * .5 + .2,
+            sway: Math.random() * Math.PI * 2,
+        }));
 
         function drawSakuraScene() {
             const w = canvas.width, h = canvas.height;
-            ctx.clearRect(0, 0, w, h);
-            const sky = ctx.createLinearGradient(0, 0, 0, h);
-            sky.addColorStop(0, 'rgba(255,192,203,0.2)');
-            sky.addColorStop(1, 'rgba(255,240,245,0.05)');
-            ctx.fillStyle = sky;
-            ctx.fillRect(0, 0, w, h);
-
+            ctx.clearRect(0,0,w,h);
             petals.forEach(p => {
-                p.sway += 0.008;
-                p.x += p.speedX * 0.4 + Math.sin(p.sway) * 0.3;
-                p.y += p.speedY * 0.4;
-                p.rotation += p.rotationSpeed * 0.5;
-                if (p.y > h + 20) { p.y = -10; p.x = Math.random() * w; }
+                p.sway += .008;
+                p.x += p.speedX*.4 + Math.sin(p.sway)*.3;
+                p.y += p.speedY*.4;
+                p.rotation += p.rotationSpeed*.5;
+                if (p.y > h+20) { p.y = -10; p.x = Math.random()*w; }
                 ctx.save();
-                ctx.translate(p.x, p.y);
-                ctx.rotate(p.rotation);
-                ctx.globalAlpha = p.opacity * 0.7;
+                ctx.translate(p.x,p.y); ctx.rotate(p.rotation);
+                ctx.globalAlpha = p.opacity*.7;
                 ctx.fillStyle = 'rgba(240,140,170,0.9)';
                 ctx.beginPath();
-                ctx.ellipse(0, 0, p.size * 0.5, p.size * 0.9, 0, 0, Math.PI * 2);
+                ctx.ellipse(0,0,p.size*.5,p.size*.9,0,0,Math.PI*2);
                 ctx.fill();
                 ctx.restore();
             });
@@ -759,35 +883,23 @@
 
         function drawStaticScene() {
             const w = canvas.width, h = canvas.height;
-            ctx.clearRect(0, 0, w, h);
-            [[0,h,135,0.09],[w*.15,h,105,0.09],[w,h,135,0.09],[w*.85,h,105,0.09],
-             [0,0,120,0.12],[w*.12,0,90,0.12],[w,0,120,0.12],[w*.88,0,90,0.12]
-            ].forEach(([x, y, s, a]) => drawCloud(x, y, s, a));
-
-            const sparkles = [
-                [w*0.1, h*0.2, 5], [w*0.9, h*0.15, 4], [w*0.05, h*0.7, 6],
-                [w*0.95, h*0.75, 5], [w*0.2, h*0.05, 4], [w*0.8, h*0.08, 6],
-                [w*0.15, h*0.92, 5], [w*0.85, h*0.9, 4], [w*0.5, h*0.03, 3],
-                [w*0.3, h*0.97, 4], [w*0.7, h*0.95, 5], [w*0.02, h*0.45, 4],
-                [w*0.98, h*0.5, 5], [w*0.25, h*0.12, 3], [w*0.75, h*0.88, 4],
-            ];
-            sparkles.forEach(([x, y, s]) => drawSparkle(x, y, s, 0.6));
+            ctx.clearRect(0,0,w,h);
+            [[0,h,135,.09],[w*.15,h,105,.09],[w,h,135,.09],[w*.85,h,105,.09],
+             [0,0,120,.12],[w*.12,0,90,.12],[w,0,120,.12],[w*.88,0,90,.12]
+            ].forEach(([x,y,s,a]) => drawCloud(x,y,s,a));
+            [[w*.1,h*.2,5],[w*.9,h*.15,4],[w*.05,h*.7,6],[w*.95,h*.75,5],
+             [w*.2,h*.05,4],[w*.8,h*.08,6],[w*.15,h*.92,5],[w*.85,h*.9,4],
+             [w*.5,h*.03,3],[w*.3,h*.97,4],[w*.7,h*.95,5],[w*.02,h*.45,4],
+             [w*.98,h*.5,5],[w*.25,h*.12,3],[w*.75,h*.88,4]
+            ].forEach(([x,y,s]) => drawSparkle(x,y,s,.6));
         }
 
-        let sakuraAnimFrame = null;
-
+        let sakuraFrame = null;
         function drawScene() {
+            if (sakuraFrame) { cancelAnimationFrame(sakuraFrame); sakuraFrame = null; }
             const theme = document.documentElement.getAttribute('data-theme');
-            if (sakuraAnimFrame) {
-                cancelAnimationFrame(sakuraAnimFrame);
-                sakuraAnimFrame = null;
-            }
             if (theme === 'sakura') {
-                function loopSakura() {
-                    drawSakuraScene();
-                    sakuraAnimFrame = requestAnimationFrame(loopSakura);
-                }
-                loopSakura();
+                (function loop() { drawSakuraScene(); sakuraFrame = requestAnimationFrame(loop); })();
             } else {
                 drawStaticScene();
             }
@@ -797,93 +909,137 @@
         resizeCanvas();
 
         const savedTheme = localStorage.getItem('oneiric-theme') || 'default';
-        if (savedTheme === 'default') {
-            document.documentElement.removeAttribute('data-theme');
-        } else {
-            document.documentElement.setAttribute('data-theme', savedTheme);
-        }
+        if (savedTheme === 'default') document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.setAttribute('data-theme', savedTheme);
         drawScene();
 
+        /* ── DateTime ── */
         function updateDateTime() {
             const now = new Date();
-            const opts = { year: 'numeric', month: 'long', day: 'numeric' };
-            const dateStr = now.toLocaleDateString(undefined, opts);
-            const timeStr = now.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-            document.getElementById('dateTimeLabel').textContent = `${dateStr} • ${timeStr}`;
+            const date = now.toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' });
+            const time = now.toLocaleTimeString(undefined, { hour:'numeric', minute:'2-digit' });
+            document.getElementById('dateTimeLabel').textContent = `${date} • ${time}`;
         }
         updateDateTime();
 
-        const contentArea = document.getElementById('contentArea');
+        /* ── Counter ── */
+        const contentArea  = document.getElementById('contentArea');
         const counterLabel = document.getElementById('counterLabel');
-        const CHAR_LIMIT = 10000;
+        const LIMIT = 10000;
+
         function updateCounter() {
             const len = contentArea.value.length;
-            counterLabel.textContent = `${len.toLocaleString()} / ${CHAR_LIMIT.toLocaleString()}`;
-            counterLabel.classList.toggle('near-limit', len > CHAR_LIMIT * 0.9);
+            counterLabel.textContent = `${len.toLocaleString()} / ${LIMIT.toLocaleString()}`;
+            counterLabel.classList.toggle('near-limit', len > LIMIT * .9);
         }
         contentArea.addEventListener('input', updateCounter);
         updateCounter();
 
+        /* ── Real localStorage draft autosave ── */
+        const DRAFT_KEY = 'oneiric-draft';
+        const titleInput    = document.getElementById('titleInput');
         const autosaveLabel = document.getElementById('autosaveLabel');
-        const autosaveWrap = document.getElementById('autosaveWrap');
-        let autosaveTimer = null;
-        let hasUnsavedChanges = false;
+        const autosaveWrap  = document.getElementById('autosaveWrap');
+        let saveTimer = null;
 
-        function markUnsaved() {
-            hasUnsavedChanges = true;
+        function saveDraft() {
+            const draft = {
+                title:   titleInput.value,
+                content: contentArea.value,
+                mood:    (document.querySelector('input[name="mood"]:checked') || {}).value || '',
+                savedAt: Date.now(),
+            };
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+            autosaveLabel.textContent = 'Draft saved';
+            autosaveWrap.classList.add('is-saved');
+        }
+
+        function scheduleSave() {
             autosaveLabel.textContent = 'Saving…';
             autosaveWrap.classList.remove('is-saved');
-            clearTimeout(autosaveTimer);
-            autosaveTimer = setTimeout(() => {
-                autosaveLabel.textContent = 'Saved just now';
-                autosaveWrap.classList.add('is-saved');
-                hasUnsavedChanges = false;
-            }, 900);
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(saveDraft, 900);
         }
-        contentArea.addEventListener('input', markUnsaved);
-        document.getElementById('titleInput').addEventListener('input', markUnsaved);
 
+        titleInput.addEventListener('input', scheduleSave);
+        contentArea.addEventListener('input', scheduleSave);
+        document.querySelectorAll('input[name="mood"]').forEach(r => r.addEventListener('change', scheduleSave));
+
+        /* ── Check for existing draft on load ── */
+        (function checkDraft() {
+            const raw = localStorage.getItem(DRAFT_KEY);
+            if (!raw) return;
+            try {
+                const draft = JSON.parse(raw);
+                if (!draft.title && !draft.content) return;
+                document.getElementById('draftBanner').classList.add('visible');
+            } catch(e) { localStorage.removeItem(DRAFT_KEY); }
+        })();
+
+        function resumeDraft() {
+            const raw = localStorage.getItem(DRAFT_KEY);
+            if (!raw) return;
+            try {
+                const draft = JSON.parse(raw);
+                titleInput.value   = draft.title   || '';
+                contentArea.value  = draft.content || '';
+                if (draft.mood) {
+                    const radio = document.querySelector(`input[name="mood"][value="${draft.mood}"]`);
+                    if (radio) radio.checked = true;
+                }
+                updateCounter();
+                autosaveLabel.textContent = 'Draft restored';
+                autosaveWrap.classList.add('is-saved');
+            } catch(e) {}
+            document.getElementById('draftBanner').classList.remove('visible');
+        }
+
+        function discardDraft() {
+            localStorage.removeItem(DRAFT_KEY);
+            document.getElementById('draftBanner').classList.remove('visible');
+        }
+
+        /* ── Toast ── */
+        let toastTimer = null;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+        }
+
+        /* ── Toolbar helpers ── */
         function wrapSelection(before, after) {
-            const start = contentArea.selectionStart;
-            const end = contentArea.selectionEnd;
-            const val = contentArea.value;
-            const selected = val.substring(start, end);
-            contentArea.value = val.substring(0, start) + before + selected + after + val.substring(end);
+            const s = contentArea.selectionStart;
+            const e = contentArea.selectionEnd;
+            const v = contentArea.value;
+            const sel = v.substring(s, e);
+            contentArea.value = v.substring(0,s) + before + sel + after + v.substring(e);
             contentArea.focus();
-            contentArea.selectionStart = start + before.length;
-            contentArea.selectionEnd = start + before.length + selected.length;
-            updateCounter();
-            markUnsaved();
+            contentArea.selectionStart = s + before.length;
+            contentArea.selectionEnd   = s + before.length + sel.length;
+            updateCounter(); scheduleSave();
         }
 
         function insertText(text) {
-            const start = contentArea.selectionStart;
-            const val = contentArea.value;
-            contentArea.value = val.substring(0, start) + text + val.substring(start);
+            const s = contentArea.selectionStart;
+            const v = contentArea.value;
+            contentArea.value = v.substring(0,s) + text + v.substring(s);
             contentArea.focus();
-            const pos = start + text.length;
+            const pos = s + text.length;
             contentArea.selectionStart = contentArea.selectionEnd = pos;
-            updateCounter();
-            markUnsaved();
+            updateCounter(); scheduleSave();
         }
 
-        function confirmDiscard() {
-            document.getElementById('discardModal').classList.add('open');
-        }
-        function closeDiscard() {
-            document.getElementById('discardModal').classList.remove('open');
-        }
-
-        // Keyboard shortcuts
+        /* ── Keyboard shortcuts ── */
         document.addEventListener('keydown', function(e) {
             const meta = e.ctrlKey || e.metaKey;
             if (meta && e.key.toLowerCase() === 'b' && document.activeElement === contentArea) {
-                e.preventDefault();
-                wrapSelection('**','**');
+                e.preventDefault(); wrapSelection('**','**');
             }
             if (meta && e.key.toLowerCase() === 'i' && document.activeElement === contentArea) {
-                e.preventDefault();
-                wrapSelection('_','_');
+                e.preventDefault(); wrapSelection('_','_');
             }
             if (meta && e.key.toLowerCase() === 's') {
                 e.preventDefault();
@@ -891,14 +1047,17 @@
             }
         });
 
-        // Save confirmation glow before navigating away
+        /* ── Discard modal ── */
+        function confirmDiscard() { document.getElementById('discardModal').classList.add('open'); }
+        function closeDiscard()   { document.getElementById('discardModal').classList.remove('open'); }
+
+        /* ── Save: clear draft then show badge ── */
         document.getElementById('entryForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            localStorage.removeItem(DRAFT_KEY);  // clear draft on real save
             const overlay = document.getElementById('saveConfirm');
             overlay.classList.add('show');
-            setTimeout(() => {
-                e.target.submit();
-            }, 650);
+            setTimeout(() => e.target.submit(), 650);
         });
     </script>
 </body>

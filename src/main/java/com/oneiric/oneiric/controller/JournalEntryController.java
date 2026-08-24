@@ -5,10 +5,12 @@ import com.oneiric.oneiric.model.User;
 import com.oneiric.oneiric.service.JournalEntryService;
 import com.oneiric.oneiric.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -21,9 +23,10 @@ public class JournalEntryController {
     @Autowired
     private UserService userService;
 
+    // ── List active entries ──────────────────────────────────────────────────
     @GetMapping
     public String listEntries(HttpSession session, Model model,
-            @RequestParam(required = false) String query) {
+                              @RequestParam(required = false) String query) {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
@@ -38,6 +41,7 @@ public class JournalEntryController {
         return "entries";
     }
 
+    // ── New entry ────────────────────────────────────────────────────────────
     @GetMapping("/new")
     public String newEntryPage(HttpSession session) {
         if (session.getAttribute("username") == null) return "redirect:/login";
@@ -57,6 +61,7 @@ public class JournalEntryController {
         return "redirect:/entries";
     }
 
+    // ── Edit entry ───────────────────────────────────────────────────────────
     @GetMapping("/{id}/edit")
     public String editEntryPage(@PathVariable Long id, HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
@@ -83,13 +88,88 @@ public class JournalEntryController {
         return "redirect:/entries";
     }
 
+    // ── Soft delete (move to trash) ──────────────────────────────────────────
     @PostMapping("/{id}/delete")
-    public String deleteEntry(@PathVariable Long id, HttpSession session) {
+    public String softDelete(@PathVariable Long id, HttpSession session) {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
         Optional<JournalEntry> entry = journalEntryService.getEntryById(id);
-        entry.ifPresent(journalEntryService::deleteEntry);
+        if (entry.isEmpty()) return "redirect:/entries";
+
+        // Security: only owner can delete
+        if (!entry.get().getUser().getUsername().equals(username)) return "redirect:/entries";
+
+        journalEntryService.softDeleteEntry(entry.get());
         return "redirect:/entries";
+    }
+
+    // ── Trash page ───────────────────────────────────────────────────────────
+    @GetMapping("/trash")
+    public String trashPage(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        User user = userService.findByUsername(username).get();
+        model.addAttribute("entries", journalEntryService.getTrashedEntriesForUser(user));
+        return "trash";
+    }
+
+    // ── Restore from trash ───────────────────────────────────────────────────
+    @PostMapping("/{id}/restore")
+    public String restore(@PathVariable Long id, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        Optional<JournalEntry> entry = journalEntryService.getEntryById(id);
+        if (entry.isEmpty()) return "redirect:/entries/trash";
+
+        if (!entry.get().getUser().getUsername().equals(username)) return "redirect:/entries/trash";
+
+        journalEntryService.restoreEntry(entry.get());
+        return "redirect:/entries/trash";
+    }
+
+    // ── Permanent delete (from trash only) ───────────────────────────────────
+    @PostMapping("/{id}/delete-permanent")
+    public String permanentDelete(@PathVariable Long id, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        Optional<JournalEntry> entry = journalEntryService.getEntryById(id);
+        if (entry.isEmpty()) return "redirect:/entries/trash";
+
+        if (!entry.get().getUser().getUsername().equals(username)) return "redirect:/entries/trash";
+
+        journalEntryService.deleteEntry(entry.get());
+        return "redirect:/entries/trash";
+    }
+
+    // ── Toggle favorite (AJAX) ───────────────────────────────────────────────
+    @PostMapping("/{id}/favorite")
+    @ResponseBody
+    public ResponseEntity<?> toggleFavorite(@PathVariable Long id, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return ResponseEntity.status(401).build();
+
+        Optional<JournalEntry> entry = journalEntryService.getEntryById(id);
+        if (entry.isEmpty()) return ResponseEntity.notFound().build();
+
+        if (!entry.get().getUser().getUsername().equals(username))
+            return ResponseEntity.status(403).build();
+
+        boolean isFavorite = journalEntryService.toggleFavorite(entry.get());
+        return ResponseEntity.ok(Map.of("favorite", isFavorite));
+    }
+
+    // ── Favorites page ───────────────────────────────────────────────────────
+    @GetMapping("/favorites")
+    public String favoritesPage(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        User user = userService.findByUsername(username).get();
+        model.addAttribute("entries", journalEntryService.getFavoriteEntriesForUser(user));
+        return "favorites";
     }
 }
