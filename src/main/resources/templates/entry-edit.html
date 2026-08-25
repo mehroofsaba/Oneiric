@@ -180,14 +180,14 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 22px;
         }
 
         .last-edited {
             position: relative;
             z-index: 1;
             max-width: 700px;
-            margin: 0 auto 4px;
+            margin: 0 auto 18px;
             text-align: left;
             color: var(--text-subtle);
             font-size: 0.78rem;
@@ -196,19 +196,20 @@
             gap: 8px;
         }
 
-        .last-edited svg { width: 0.9em; height: 0.9em; fill: none; stroke: currentColor; stroke-width: 1.8; }
+        .last-edited svg { width: 0.9em; height: 0.9em; fill: none; stroke: currentColor; stroke-width: 1.8; flex-shrink: 0; }
+
+        .field-group { display: flex; flex-direction: column; gap: 8px; }
 
         .field-label {
             font-size: 0.72rem;
             letter-spacing: 0.12rem;
             text-transform: uppercase;
             color: var(--text-subtle);
-            margin-bottom: -12px;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 14px 0;
+            padding: 10px 0 14px;
             background: transparent;
             border: none;
             border-bottom: 1px solid var(--border);
@@ -222,10 +223,11 @@
         input[type="text"]:focus { border-bottom-color: var(--accent); }
 
         /* Mood selector — matches Write page chips */
+        .mood-group { display: flex; flex-direction: column; gap: 10px; }
+
         .mood-label {
             font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: -8px;
         }
 
         .mood-options {
@@ -346,19 +348,19 @@
 
         .left-actions, .right-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         button.primary {
-            padding: 12px 32px;
+            padding: 9px 22px;
             background-color: var(--accent);
             color: var(--bg);
             border: none;
             border-radius: 6px;
             font-family: 'Georgia', serif;
-            font-size: 1rem;
+            font-size: 0.88rem;
             cursor: pointer;
-            letter-spacing: 0.05rem;
+            letter-spacing: 0.03rem;
             transition: background-color 0.2s;
         }
 
@@ -368,13 +370,13 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 12px 24px;
+            padding: 9px 18px;
             background: transparent;
             border: 1px solid var(--border);
             border-radius: 6px;
             color: var(--text-muted);
             font-family: 'Georgia', serif;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             text-decoration: none;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -388,6 +390,7 @@
         button.delete-entry {
             color: var(--danger);
             border-color: transparent;
+            padding: 9px 14px;
         }
 
         button.delete-entry:hover {
@@ -395,7 +398,7 @@
             border-color: var(--danger);
         }
 
-        a.discard svg, button.delete-entry svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        a.discard svg, button.delete-entry svg { width: 0.95em; height: 0.95em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
         .nav-links { display: flex; gap: 16px; }
 
@@ -635,13 +638,13 @@
 
     <form class="editor" id="editForm" th:action="@{/entries/{id}/edit(id=${entry.id})}" method="post">
 
-        <div>
+        <div class="field-group">
             <p class="field-label">Title</p>
             <input type="text" name="title" id="titleInput" th:value="${entry.title}" required />
         </div>
 
         <!-- Mood selector -->
-        <div>
+        <div class="mood-group">
             <p class="mood-label">Mood:</p>
             <div class="mood-options" id="moodOptions">
                 <button type="button" class="mood-chip" data-mood="happy">(❁´◡`❁) Happy</button>
