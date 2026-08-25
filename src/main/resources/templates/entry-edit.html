@@ -55,6 +55,8 @@
             --border: #2e2e2e;
             --border-accent: rgba(201,169,110,0.2);
             --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
+            --danger: #c97070;
+            --danger-hover: #d98a8a;
         }
 
         [data-theme="sakura"] {
@@ -164,7 +166,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 48px;
+            margin-bottom: 32px;
             flex-wrap: wrap;
             row-gap: 14px;
         }
@@ -184,10 +186,24 @@
         .last-edited {
             position: relative;
             z-index: 1;
-            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4px;
+            text-align: left;
             color: var(--text-subtle);
-            font-size: 0.8rem;
-            margin-bottom: 8px;
+            font-size: 0.78rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .last-edited svg { width: 0.9em; height: 0.9em; fill: none; stroke: currentColor; stroke-width: 1.8; }
+
+        .field-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.12rem;
+            text-transform: uppercase;
+            color: var(--text-subtle);
+            margin-bottom: -12px;
         }
 
         input[type="text"] {
@@ -205,10 +221,86 @@
 
         input[type="text"]:focus { border-bottom-color: var(--accent); }
 
+        /* Mood selector — matches Write page chips */
+        .mood-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: -8px;
+        }
+
+        .mood-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .mood-chip {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+            font-family: 'Georgia', serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .mood-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .mood-chip.selected {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Toolbar — matches Write page */
+        .editor-frame {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .editor-frame:focus-within { border-color: var(--accent); }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .toolbar button {
+            all: unset;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .toolbar button:hover { color: var(--accent); background: var(--accent-dim); }
+        .toolbar button svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .toolbar .divider { width: 1px; height: 18px; background: var(--border); margin: 0 6px; }
+        .toolbar .spacer { flex: 1; }
+
         textarea {
             width: 100%;
-            min-height: 400px;
-            padding: 20px 0;
+            min-height: 260px;
+            padding: 20px;
             background: transparent;
             border: none;
             color: var(--text);
@@ -216,11 +308,48 @@
             font-size: 1rem;
             line-height: 1.8;
             outline: none;
-            resize: none;
+            resize: vertical;
         }
 
-        button {
-            align-self: flex-end;
+        .editor-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-secondary);
+            font-size: 0.78rem;
+            color: var(--text-subtle);
+        }
+
+        .editor-footer .status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .editor-footer .status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0.7;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .left-actions, .right-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        button.primary {
             padding: 12px 32px;
             background-color: var(--accent);
             color: var(--bg);
@@ -233,7 +362,40 @@
             transition: background-color 0.2s;
         }
 
-        button:hover { background-color: var(--accent-hover); }
+        button.primary:hover { background-color: var(--accent-hover); }
+
+        a.discard, button.delete-entry {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-family: 'Georgia', serif;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        a.discard:hover {
+            border-color: var(--text-muted);
+            color: var(--text);
+        }
+
+        button.delete-entry {
+            color: var(--danger);
+            border-color: transparent;
+        }
+
+        button.delete-entry:hover {
+            background: rgba(201,112,112,0.08);
+            border-color: var(--danger);
+        }
+
+        a.discard svg, button.delete-entry svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
         .nav-links { display: flex; gap: 16px; }
 
@@ -272,6 +434,69 @@
             box-shadow: 0 0 12px var(--accent-dim);
         }
 
+        /* Delete confirmation modal — matches Entries page */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 32px;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 40px var(--accent-dim);
+        }
+
+        .modal-box .modal-icon {
+            width: 1.8rem;
+            height: 1.8rem;
+            margin: 0 auto 14px;
+            opacity: 0.85;
+        }
+
+        .modal-box .modal-icon svg { width: 100%; height: 100%; fill: none; stroke: var(--danger); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+        .modal-box h3 { color: var(--accent); font-size: 1.2rem; margin-bottom: 12px; }
+        .modal-box p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; line-height: 1.6; }
+        .modal-actions { display: flex; gap: 12px; justify-content: center; }
+
+        .modal-btn {
+            padding: 10px 24px;
+            border-radius: 20px;
+            border: none;
+            font-family: 'Georgia', serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .modal-btn.cancel {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn.cancel:hover { color: var(--accent); border: 1px solid var(--accent); }
+
+        .modal-btn.confirm {
+            background-color: var(--danger);
+            color: #fff5f0;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .modal-btn.confirm:hover { background-color: var(--danger-hover); }
+
         /* ── Mobile fixes: header wrapping + tighter spacing ── */
         @media (max-width: 640px) {
             body { padding: 32px 20px; }
@@ -280,7 +505,7 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 14px;
-                margin-bottom: 32px;
+                margin-bottom: 28px;
             }
 
             .nav-links {
@@ -301,6 +526,12 @@
             .border-bottom { bottom: 20px; }
             .border-left { left: 20px; }
             .border-right { right: 20px; }
+
+            .form-actions { flex-direction: column-reverse; align-items: stretch; }
+            .left-actions, .right-actions { width: 100%; }
+            .right-actions { flex-direction: column-reverse; }
+            .left-actions button.delete-entry { width: 100%; justify-content: center; }
+            .right-actions a.discard, .right-actions button.primary { width: 100%; justify-content: center; text-align: center; }
         }
     </style>
 </head>
@@ -398,14 +629,91 @@
     </div>
 
     <p class="last-edited">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
         Last edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
     </p>
 
-    <form class="editor" th:action="@{/entries/{id}/edit(id=${entry.id})}" method="post">
-        <input type="text" name="title" th:value="${entry.title}" required />
-        <textarea name="content" th:text="${entry.content}"></textarea>
-        <button type="submit">Save Changes</button>
+    <form class="editor" id="editForm" th:action="@{/entries/{id}/edit(id=${entry.id})}" method="post">
+
+        <div>
+            <p class="field-label">Title</p>
+            <input type="text" name="title" id="titleInput" th:value="${entry.title}" required />
+        </div>
+
+        <!-- Mood selector -->
+        <div>
+            <p class="mood-label">Mood:</p>
+            <div class="mood-options" id="moodOptions">
+                <button type="button" class="mood-chip" data-mood="happy">(❁´◡`❁) Happy</button>
+                <button type="button" class="mood-chip" data-mood="calm">^_^ Calm</button>
+                <button type="button" class="mood-chip" data-mood="sad">＞︿＜ Sad</button>
+                <button type="button" class="mood-chip" data-mood="anxious">＞﹏＜ Anxious</button>
+                <button type="button" class="mood-chip" data-mood="angry">(╬▔皿▔)╯ Angry</button>
+                <button type="button" class="mood-chip" data-mood="lonely">( ﾉ ﾟｰﾟ)ﾉ Lonely</button>
+                <button type="button" class="mood-chip" data-mood="excited">(≧∀≦)ゞ Excited</button>
+                <button type="button" class="mood-chip" data-mood="confused">*-* Confused</button>
+                <button type="button" class="mood-chip" data-mood="neutral">^_____^ Neutral</button>
+                <button type="button" class="mood-chip" data-mood="bored">–_– Bored</button>
+            </div>
+            <input type="hidden" name="mood" id="moodInput" th:value="${entry.mood}"/>
+        </div>
+
+        <!-- Formatting toolbar + textarea -->
+        <div class="editor-frame">
+            <div class="toolbar">
+                <button type="button" title="Bold" onclick="wrapSelection('**','**')"><strong>B</strong></button>
+                <button type="button" title="Italic" onclick="wrapSelection('_','_')"><em>I</em></button>
+                <button type="button" title="Quote" onclick="wrapSelection('&laquo; ','')">&laquo;</button>
+                <button type="button" title="List" onclick="wrapSelection('- ','')">
+                    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1"/><circle cx="3" cy="12" r="1"/><circle cx="3" cy="18" r="1"/></svg>
+                </button>
+                <button type="button" title="Divider" onclick="wrapSelection('\n---\n','')">—</button>
+                <div class="spacer"></div>
+                <button type="button" title="Insert image">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                </button>
+            </div>
+            <textarea name="content" id="contentInput" th:text="${entry.content}"></textarea>
+            <div class="editor-footer">
+                <span class="status"><span class="dot"></span> <span id="statusText">Editing</span></span>
+                <span id="charCount">0 / 10,000</span>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <div class="left-actions">
+                <button type="button" class="delete-entry" onclick="openDeleteModal()">
+                    <svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                    Delete entry
+                </button>
+            </div>
+            <div class="right-actions">
+                <a href="/entries" class="discard">
+                    <svg viewBox="0 0 24 24"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+                    Discard
+                </a>
+                <button type="submit" class="primary">Save Changes</button>
+            </div>
+        </div>
     </form>
+
+    <!-- Delete confirmation modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <div class="modal-icon">
+                <svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            </div>
+            <h3>Let this thought go?</h3>
+            <p>This entry will be deleted permanently and cannot be recovered.</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeDeleteModal()">Keep it</button>
+                <button class="modal-btn confirm" onclick="submitDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden delete form -->
+    <form id="deleteForm" th:action="@{/entries/{id}/delete(id=${entry.id})}" method="post" style="display:none;"></form>
 
     <script>
         const canvas = document.getElementById('bg');
@@ -508,6 +816,88 @@
             'sage': '122,158,110',
             'noir': '200,200,200'
         };
+    </script>
+
+    <script>
+        // ── Mood selector wiring ──
+        const moodInput = document.getElementById('moodInput');
+        const moodButtons = document.querySelectorAll('.mood-chip');
+
+        function setMood(mood) {
+            moodInput.value = mood;
+            moodButtons.forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.mood === mood);
+            });
+        }
+
+        moodButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (moodInput.value === btn.dataset.mood) {
+                    setMood(''); // toggle off
+                } else {
+                    setMood(btn.dataset.mood);
+                }
+            });
+        });
+
+        // Pre-select mood from server-rendered value
+        if (moodInput.value) setMood(moodInput.value);
+
+        // ── Character counter ──
+        const contentInput = document.getElementById('contentInput');
+        const charCount = document.getElementById('charCount');
+        const statusText = document.getElementById('statusText');
+        const MAX_CHARS = 10000;
+
+        function updateCharCount() {
+            const len = contentInput.value.length;
+            charCount.textContent = `${len} / ${MAX_CHARS}`;
+        }
+        updateCharCount();
+
+        let dirty = false;
+        function markDirty() {
+            if (!dirty) {
+                dirty = true;
+                statusText.textContent = 'Unsaved changes';
+            }
+            updateCharCount();
+        }
+
+        contentInput.addEventListener('input', markDirty);
+        document.getElementById('titleInput').addEventListener('input', markDirty);
+
+        document.getElementById('editForm').addEventListener('submit', () => {
+            dirty = false;
+        });
+
+        // ── Basic formatting helpers ──
+        function wrapSelection(before, after) {
+            const start = contentInput.selectionStart;
+            const end = contentInput.selectionEnd;
+            const val = contentInput.value;
+            const selected = val.substring(start, end);
+            const newVal = val.substring(0, start) + before + selected + after + val.substring(end);
+            contentInput.value = newVal;
+            contentInput.focus();
+            contentInput.selectionStart = start + before.length;
+            contentInput.selectionEnd = start + before.length + selected.length;
+            markDirty();
+        }
+
+        // ── Delete modal ──
+        function openDeleteModal() {
+            document.getElementById('deleteModal').classList.add('active');
+        }
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+        function submitDelete() {
+            document.getElementById('deleteForm').submit();
+        }
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
+        });
     </script>
 
 </body>
