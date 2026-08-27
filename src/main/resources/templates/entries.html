@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-    // Apply saved theme immediately to prevent flash
     (function() {
         const t = localStorage.getItem('oneiric-theme');
         if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
@@ -19,81 +18,51 @@
             --bg-tertiary: #1a1a1a;
             --text: #e8e0d0;
             --text-muted: #9e9589;
-            --text-subtle: #555;
-            --accent: #c9a96e;
-            --accent-hover: #b8935a;
-            --accent-dim: rgba(201,169,110,0.08);
+            --text-subtle: #6e6858;
+            --accent: #d4b478;
+            --accent-hover: #c29a5c;
+            --accent-dim: rgba(212,180,120,0.1);
+            --accent-glow: rgba(212,180,120,0.2);
             --border: #2e2e2e;
-            --border-accent: rgba(201,169,110,0.2);
-            --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
-            --star-color: #c9a96e;
-            --danger: #c97070;
-            --danger-hover: #d98a8a;
-            --danger-dim: rgba(201,112,112,0.1);
+            --border-accent: rgba(212,180,120,0.25);
+            --cloud-r: 200; --cloud-g: 160; --cloud-b: 90;
+            --star-color: #d4b478;
         }
 
         [data-theme="sakura"] {
-            --bg: #fdf6f0;
-            --bg-secondary: #fff0f3;
-            --bg-tertiary: #ffe4ec;
-            --text: #4a3040;
-            --text-muted: #9e7080;
-            --text-subtle: #c4a0b0;
-            --accent: #e8829a;
-            --accent-hover: #d4607a;
-            --accent-dim: rgba(232,130,154,0.08);
-            --border: #f0c0d0;
-            --border-accent: rgba(232,130,154,0.3);
-            --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
-            --star-color: #e8829a;
+            --bg: #fdf6f0; --bg-secondary: #fff0f3; --bg-tertiary: #ffe4ec;
+            --text: #4a3040; --text-muted: #9e7080; --text-subtle: #c4a0b0;
+            --accent: #e8829a; --accent-hover: #d4607a;
+            --accent-dim: rgba(232,130,154,0.08); --accent-glow: rgba(232,130,154,0.18);
+            --border: #f0c0d0; --border-accent: rgba(232,130,154,0.3);
+            --cloud-r: 232; --cloud-g: 130; --cloud-b: 154; --star-color: #e8829a;
         }
 
         [data-theme="abyss"] {
-            --bg: #050d1a;
-            --bg-secondary: #0a1628;
-            --bg-tertiary: #0f1e35;
-            --text: #c8d8f0;
-            --text-muted: #7090b8;
-            --text-subtle: #3a5070;
-            --accent: #c9a96e;
-            --accent-hover: #b8935a;
-            --accent-dim: rgba(201,169,110,0.12);
-            --border: #1a2e48;
-            --border-accent: rgba(201,169,110,0.25);
-            --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
-            --star-color: #c9a96e;
+            --bg: #050d1a; --bg-secondary: #0a1628; --bg-tertiary: #0f1e35;
+            --text: #c8d8f0; --text-muted: #7090b8; --text-subtle: #3a5070;
+            --accent: #7eb8e8; --accent-hover: #5a9fd4;
+            --accent-dim: rgba(126,184,232,0.08); --accent-glow: rgba(126,184,232,0.18);
+            --border: #1a2e48; --border-accent: rgba(126,184,232,0.2);
+            --cloud-r: 60; --cloud-g: 100; --cloud-b: 180; --star-color: #7eb8e8;
         }
 
         [data-theme="sage"] {
-            --bg: #f4f6f0;
-            --bg-secondary: #eaefe4;
-            --bg-tertiary: #dde5d4;
-            --text: #2d3828;
-            --text-muted: #6e8060;
-            --text-subtle: #a0b090;
-            --accent: #7a9e6e;
-            --accent-hover: #5e8050;
-            --accent-dim: rgba(122,158,110,0.08);
-            --border: #c8d8b8;
-            --border-accent: rgba(122,158,110,0.3);
-            --cloud-r: 122; --cloud-g: 158; --cloud-b: 110;
-            --star-color: #7a9e6e;
+            --bg: #f4f6f0; --bg-secondary: #eaefe4; --bg-tertiary: #dde5d4;
+            --text: #2d3828; --text-muted: #6e8060; --text-subtle: #a0b090;
+            --accent: #7a9e6e; --accent-hover: #5e8050;
+            --accent-dim: rgba(122,158,110,0.08); --accent-glow: rgba(122,158,110,0.18);
+            --border: #c8d8b8; --border-accent: rgba(122,158,110,0.3);
+            --cloud-r: 122; --cloud-g: 158; --cloud-b: 110; --star-color: #7a9e6e;
         }
 
         [data-theme="noir"] {
-            --bg: #000000;
-            --bg-secondary: #0a0a0a;
-            --bg-tertiary: #141414;
-            --text: #ffffff;
-            --text-muted: #888888;
-            --text-subtle: #444444;
-            --accent: #ffffff;
-            --accent-hover: #cccccc;
-            --accent-dim: rgba(255,255,255,0.05);
-            --border: #222222;
-            --border-accent: rgba(255,255,255,0.15);
-            --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
-            --star-color: #ffffff;
+            --bg: #000000; --bg-secondary: #0a0a0a; --bg-tertiary: #141414;
+            --text: #ffffff; --text-muted: #888888; --text-subtle: #444444;
+            --accent: #ffffff; --accent-hover: #cccccc;
+            --accent-dim: rgba(255,255,255,0.05); --accent-glow: rgba(255,255,255,0.12);
+            --border: #222222; --border-accent: rgba(255,255,255,0.15);
+            --cloud-r: 200; --cloud-g: 200; --cloud-b: 200; --star-color: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -109,80 +78,46 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        canvas.bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
+        canvas.bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
-        /* Faded crescent moon + star border corners (SVG, theme-aware) */
         .corner-deco {
             position: fixed;
-            width: 160px;
-            height: 160px;
-            opacity: 0.12;
+            width: 160px; height: 160px;
+            opacity: 0.14;
             pointer-events: none;
             z-index: 0;
         }
-
         .corner-deco svg { width: 100%; height: 100%; fill: var(--accent); }
-
         .corner-deco.tl { top: 0; left: 0; }
         .corner-deco.tr { top: 0; right: 0; transform: scaleX(-1); }
         .corner-deco.bl { bottom: 0; left: 0; transform: scaleY(-1); }
         .corner-deco.br { bottom: 0; right: 0; transform: scale(-1); }
 
-        /* Hanging stars */
         .hang-star {
-            position: fixed;
-            top: 0;
+            position: fixed; top: 0;
             color: var(--accent);
             opacity: 0.5;
             pointer-events: none;
             z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0;
+            display: flex; flex-direction: column; align-items: center;
             animation: sway var(--dur) ease-in-out infinite var(--del);
         }
-
         .hang-star .line {
-            width: 1px;
-            height: var(--len);
+            width: 1px; height: var(--len);
             background: linear-gradient(180deg, transparent, var(--accent) 200%);
             opacity: 0.4;
         }
+        .hang-star .star { font-size: var(--sz); animation: twinkle var(--tdur) ease-in-out infinite var(--tdel); }
 
-        .hang-star .star {
-            font-size: var(--sz);
-            animation: twinkle var(--tdur) ease-in-out infinite var(--tdel);
-        }
+        @keyframes sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+        @keyframes twinkle { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-        @keyframes sway {
-            0%, 100% { transform: rotate(-3deg); }
-            50% { transform: rotate(3deg); }
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
-
-        /* Corner star */
         .corner-star {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            font-size: 2.5rem;
-            color: var(--accent);
-            opacity: 0.2;
-            pointer-events: none;
-            z-index: 1;
+            position: fixed; bottom: 30px; right: 30px;
+            font-size: 2.5rem; color: var(--accent);
+            opacity: 0.2; pointer-events: none; z-index: 1;
             animation: float 5s ease-in-out infinite;
         }
-
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(-10deg); }
             50% { transform: translateY(-8px) rotate(5deg); }
@@ -194,84 +129,138 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
             row-gap: 14px;
         }
 
-        h1 { color: var(--accent); font-size: 1.8rem; letter-spacing: 0.15rem; }
-
-        .entry-count {
-            position: relative;
-            z-index: 2;
+        h1 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            letter-spacing: 0.15rem;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            max-width: 500px;
-            margin: 0 auto 14px;
-            color: var(--text-subtle);
-            font-size: 0.8rem;
-            letter-spacing: 0.03rem;
+            gap: 10px;
         }
+        h1 svg { width: 0.85em; height: 0.85em; fill: var(--accent); }
 
-        .entry-count .sort-toggle {
-            display: flex;
-            gap: 6px;
-        }
+        .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
 
-        .entry-count .sort-toggle button {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            font-family: 'Georgia', serif;
-            font-size: 0.75rem;
-            padding: 4px 12px;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .entry-count .sort-toggle button.active,
-        .entry-count .sort-toggle button:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-            background: var(--accent-dim);
-        }
-
-        a.btn {
+        .nav-links a {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
-            padding: 10px 24px;
-            background-color: var(--accent);
-            color: var(--bg);
+            padding: 9px 20px;
             border-radius: 20px;
             text-decoration: none;
             font-family: 'Georgia', serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            white-space: nowrap;
         }
-        a.btn:hover { background-color: var(--accent-hover); }
-        a.btn svg { width: 0.95em; height: 0.95em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        .empty {
+        .nav-links a svg { width: 1em; height: 1em; flex-shrink: 0; }
+
+        .nav-links a.chamber-link {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+        }
+        .nav-links a.chamber-link:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+
+        .nav-links a.ghost-link {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+        }
+        .nav-links a.ghost-link:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+
+        .nav-links a.btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: var(--bg);
+            border-color: transparent;
+        }
+        .nav-links a.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow); }
+
+        /* Search */
+        .search-form {
             position: relative;
             z-index: 2;
+            max-width: 520px;
+            margin: 0 auto 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .search-form input[type="text"] {
+            flex: 1;
+            padding: 10px 18px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text);
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-form input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+        .search-form input[type="text"]::placeholder { color: var(--text-muted); }
+
+        .search-form button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 20px;
+            font-family: 'Georgia', serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .search-form button svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; }
+        .search-form button:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+        .search-info {
+            position: relative; z-index: 2;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+        .search-info .highlight { color: var(--accent); }
+        .search-info a.clear-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.82rem;
+            padding: 4px 12px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            transition: all 0.2s;
+            margin-left: 6px;
+        }
+        .search-info a.clear-link svg { width: 0.9em; height: 0.9em; fill: none; stroke: currentColor; stroke-width: 2; }
+        .search-info a.clear-link:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+        .empty {
+            position: relative; z-index: 2;
             text-align: center;
             color: var(--text-muted);
             margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
         }
-
-        .empty .empty-icon {
-            width: 2.4rem;
-            height: 2.4rem;
-            margin: 0 auto 18px;
-            opacity: 0.4;
-        }
-
-        .empty .empty-icon svg { width: 100%; height: 100%; fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-
-        .empty p.primary { color: var(--text); font-size: 1rem; margin-bottom: 6px; }
-        .empty p.secondary { color: var(--text-subtle); font-size: 0.85rem; }
+        .empty svg { width: 42px; height: 42px; fill: none; stroke: var(--accent); stroke-width: 1.3; opacity: 0.6; }
+        .empty p { font-size: 0.95rem; }
+        .empty .empty-sub { color: var(--text-subtle); font-size: 0.82rem; }
 
         .entry-card {
             position: relative;
@@ -280,334 +269,166 @@
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             border: 1px solid var(--border-accent);
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            padding: 22px 24px;
+            margin-bottom: 18px;
             transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-            cursor: pointer;
         }
-
         .entry-card:hover {
             border-color: var(--accent);
-            box-shadow: 0 0 24px var(--accent-dim);
+            box-shadow: 0 0 24px var(--accent-glow);
             transform: translateY(-2px);
         }
 
-        .entry-card h2 { color: var(--accent); font-size: 1.2rem; margin-bottom: 8px; }
-        .entry-card .date { color: var(--text-subtle); font-size: 0.8rem; margin-bottom: 10px; }
+        .entry-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .entry-card h2 { color: var(--accent); font-size: 1.15rem; margin-bottom: 6px; line-height: 1.3; }
+        .entry-card .date { color: var(--text-subtle); font-size: 0.78rem; margin-bottom: 10px; }
 
         .mood-pill {
             display: inline-flex;
             align-items: center;
-            font-size: 0.75rem;
-            color: var(--accent);
+            gap: 5px;
+            padding: 3px 12px;
+            border-radius: 14px;
             background: var(--accent-dim);
             border: 1px solid var(--border-accent);
-            padding: 3px 12px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            color: var(--accent);
+            font-size: 0.76rem;
+            margin-bottom: 10px;
         }
 
-        .entry-card p.preview {
+        .entry-card p.preview { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 16px; }
+
+        /* Favorite star button */
+        .fav-btn {
+            flex-shrink: 0;
+            width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            line-height: 1.5;
+            transition: all 0.2s ease;
         }
+        .fav-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; transition: fill 0.2s, stroke 0.2s; }
+        .fav-btn:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+        .fav-btn.is-fav { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+        .fav-btn.is-fav svg { fill: var(--accent); }
 
-        .read-more {
+        .entry-actions { display: flex; gap: 18px; align-items: center; }
+
+        a.edit-link, button.delete-link {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            color: var(--text-subtle);
-            font-size: 0.78rem;
-            margin-bottom: 16px;
-            opacity: 0.8;
-        }
-
-        .read-more svg { width: 0.85em; height: 0.85em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-        .entry-actions {
-            display: flex;
-            gap: 20px;
-            position: relative;
-            z-index: 3;
-        }
-
-        a.edit {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-muted);
+            gap: 5px;
             text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.2s ease;
+            font-size: 0.82rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            padding: 0;
+            transition: color 0.2s;
         }
-        a.edit:hover { color: var(--accent); }
-        a.edit svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        a.edit-link svg, button.delete-link svg { width: 0.95em; height: 0.95em; fill: none; stroke: currentColor; stroke-width: 1.8; }
+
+        a.edit-link { color: var(--text-muted); }
+        a.edit-link:hover { color: var(--accent); }
+
+        button.delete-link { color: var(--text-subtle); }
+        button.delete-link:hover { color: #c2868b; }
 
         form.delete-form { display: inline; }
 
-        button.delete {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: none;
-            border: none;
-            color: var(--text-subtle);
-            cursor: pointer;
-            font-family: 'Georgia', serif;
-            font-size: 0.85rem;
-            transition: color 0.2s ease;
-        }
-
-        button.delete:hover { color: var(--danger); }
-        button.delete svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-
-        .nav-links { display: flex; gap: 12px; }
-
-        /* Delete confirmation modal */
+        /* Modal */
         .modal-overlay {
             display: none;
-            position: fixed;
-            inset: 0;
+            position: fixed; inset: 0;
             background: rgba(0, 0, 0, 0.75);
             z-index: 100;
-            align-items: center;
-            justify-content: center;
+            align-items: center; justify-content: center;
         }
-
         .modal-overlay.active { display: flex; }
 
         .modal-box {
             background-color: var(--bg-secondary);
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 32px;
             max-width: 380px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 0 40px var(--accent-dim);
+            box-shadow: 0 0 40px var(--accent-glow);
         }
-
         .modal-box .modal-icon {
-            width: 1.8rem;
-            height: 1.8rem;
+            width: 40px; height: 40px;
             margin: 0 auto 14px;
-            opacity: 0.85;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--border-accent);
+            color: var(--accent);
         }
-
-        .modal-box .modal-icon svg { width: 100%; height: 100%; fill: none; stroke: var(--danger); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-
-        .modal-box h3 { color: var(--accent); font-size: 1.2rem; margin-bottom: 12px; }
-        .modal-box p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; line-height: 1.6; }
+        .modal-box .modal-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+        .modal-box h3 { color: var(--accent); font-size: 1.15rem; margin-bottom: 10px; }
+        .modal-box p { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 24px; line-height: 1.6; }
 
         .modal-actions { display: flex; gap: 12px; justify-content: center; }
 
         .modal-btn {
             padding: 10px 24px;
             border-radius: 20px;
-            border: none;
+            border: 1px solid transparent;
             font-family: 'Georgia', serif;
             font-size: 0.85rem;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
-
         .modal-btn.cancel {
             background-color: var(--bg-tertiary);
             color: var(--text-muted);
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
         }
-
-        .modal-btn.cancel:hover,
-        .modal-btn.cancel:focus,
-        .modal-btn.cancel:active {
-            color: var(--accent);
-            border: 1px solid var(--accent);
-        }
+        .modal-btn.cancel:hover { color: var(--accent); border-color: var(--accent); }
 
         .modal-btn.confirm {
-            background-color: var(--danger);
-            color: #fff5f0;
-            font-weight: 600;
-            letter-spacing: 0.02rem;
-            transition: background 0.2s ease;
+            background-color: #a8686e;
+            color: #fff;
         }
+        .modal-btn.confirm:hover { background-color: #c2868b; }
 
-        .modal-btn.confirm:hover { background-color: var(--danger-hover); }
-
-        .nav-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 10px 24px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-family: 'Georgia', serif;
-            font-size: 0.9rem;
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
-            min-width: 140px;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        .nav-links a svg { width: 1em; height: 1em; flex-shrink: 0; }
-
-        .nav-links a.chamber-link {
-            background-color: var(--bg-tertiary);
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .nav-links a.chamber-link svg { fill: var(--accent); }
-
-        .nav-links a.chamber-link:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-            box-shadow: 0 0 12px var(--accent-dim);
-        }
-
-        .nav-links a.btn {
-            background-color: var(--accent);
-            color: var(--bg);
-        }
-
-        .nav-links a.btn:hover {
-            background-color: var(--accent-hover);
-            box-shadow: 0 0 12px var(--accent-dim);
-        }
-
-        /* Search section — separated from header instead of overlapping it */
-        .search-section {
-            position: relative;
-            z-index: 2;
-            max-width: 500px;
-            margin: 0 auto 36px;
-        }
-
-        .search-form {
-            display: flex;
-            gap: 10px;
-        }
-
-        .search-form .input-wrap {
-            position: relative;
-            flex: 1;
-        }
-
-        .search-form .input-wrap svg {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1em;
-            height: 1em;
-            fill: none;
-            stroke: var(--text-subtle);
-            stroke-width: 2;
-            pointer-events: none;
-        }
-
-        .search-form input[type="text"] {
-            width: 100%;
-            padding: 10px 18px 10px 40px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            color: var(--text);
-            font-family: 'Georgia', serif;
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .search-form input[type="text"]:focus { border-color: var(--accent); }
-
-        .search-form button {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 22px;
-            background: var(--accent);
-            color: var(--bg);
-            border: none;
-            border-radius: 20px;
-            font-family: 'Georgia', serif;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .search-form button:hover { background: var(--accent-hover); }
-        .search-form button svg { width: 0.95em; height: 0.95em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
-
-        .search-result-info {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 12px;
-        }
-
-        .search-result-info a.clear {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-            padding: 4px 12px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            transition: all 0.2s;
-            margin-left: 6px;
-        }
-
-        .search-result-info a.clear svg { width: 0.85em; height: 0.85em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
-
-        .search-result-info a.clear:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-            box-shadow: 0 0 10px var(--accent-dim);
-        }
-
-        /* ── Mobile fixes: header wrapping + tighter spacing ── */
+        /* ── Mobile ── */
         @media (max-width: 640px) {
-            body { padding: 32px 20px; }
+            body { padding: 32px 18px; }
 
             .header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 14px;
-                margin-bottom: 24px;
+                margin-bottom: 28px;
             }
 
-            .nav-links {
-                width: 100%;
-                gap: 10px;
-            }
+            .nav-links { width: 100%; gap: 8px; }
+            .nav-links a { flex: 1 1 0; min-width: 0; padding: 9px 10px; font-size: 0.78rem; }
 
-            .nav-links a {
-                flex: 1 1 0;
-                min-width: 0;
-                padding: 10px 12px;
-                font-size: 0.82rem;
-            }
+            .search-form { flex-direction: column; }
+            .search-form button { justify-content: center; }
 
-            .entry-count { flex-direction: column; align-items: flex-start; gap: 8px; }
-        }
+            .entry-card { padding: 18px; }
+            .entry-card h2 { font-size: 1.05rem; }
+            .entry-card-top { gap: 8px; }
+            .fav-btn { width: 30px; height: 30px; }
 
-        /* Keep the bottom-left botanical decoration from overlapping content on short viewports */
-        @media (max-height: 700px) {
-            .botanical-deco { width: 170px; height: 195px; opacity: 0.1; }
-        }
+            .entry-actions { gap: 14px; flex-wrap: wrap; }
 
-        @media (max-height: 520px) {
-            .botanical-deco { display: none; }
+            .corner-deco { width: 100px; height: 100px; }
+            .corner-star { font-size: 1.6rem; bottom: 16px; right: 16px; }
+            .hang-star { display: none; }
         }
     </style>
 </head>
@@ -615,7 +436,6 @@
 
     <canvas class="bg" id="bg"></canvas>
 
-    <!-- Faded crescent moon + star corner decorations -->
     <div class="corner-deco tl">
         <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
             <path d="M40 10 A30 30 0 1 0 40 70 A24 24 0 1 1 40 10Z"/>
@@ -645,9 +465,8 @@
         </svg>
     </div>
 
-    <!-- Bottom left botanical decoration -->
-    <div class="botanical-deco" style="position:fixed; bottom:0; left:0; z-index:1; pointer-events:none; width:280px; height:320px; opacity:0.15;">
-        <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+    <div style="position:fixed; bottom:0; left:0; z-index:1; pointer-events:none; width:280px; height:320px; opacity:0.16;">
+        <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg" width="280" height="320">
             <path d="M60 320 C65 280 55 240 70 200 C80 170 75 140 85 110" stroke="var(--accent)" stroke-width="1.5" fill="none" opacity="0.8"/>
             <path d="M60 320 C45 285 30 260 25 230 C20 205 15 185 20 165" stroke="var(--accent)" stroke-width="1.2" fill="none" opacity="0.6"/>
             <path d="M60 320 C75 295 90 275 100 250 C110 228 108 205 115 185" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.5"/>
@@ -674,96 +493,80 @@
         </svg>
     </div>
 
-    <!-- Hanging stars from top -->
-    <div class="hang-star" style="left:8%; --dur:4s; --del:0s; --len:80px; --sz:1.2rem; --tdur:2s; --tdel:0s;">
-        <div class="line"></div><div class="star">✦</div>
-    </div>
-    <div class="hang-star" style="left:15%; --dur:5s; --del:0.5s; --len:120px; --sz:0.9rem; --tdur:3s; --tdel:0.5s;">
-        <div class="line"></div><div class="star">✧</div>
-    </div>
-    <div class="hang-star" style="left:22%; --dur:4.5s; --del:1s; --len:60px; --sz:1rem; --tdur:2.5s; --tdel:1s;">
-        <div class="line"></div><div class="star">★</div>
-    </div>
-    <div class="hang-star" style="right:8%; --dur:4s; --del:0.3s; --len:90px; --sz:1.2rem; --tdur:2s; --tdel:0.3s;">
-        <div class="line"></div><div class="star">✦</div>
-    </div>
-    <div class="hang-star" style="right:16%; --dur:5s; --del:0.8s; --len:110px; --sz:0.9rem; --tdur:3s; --tdel:0.8s;">
-        <div class="line"></div><div class="star">✧</div>
-    </div>
-    <div class="hang-star" style="right:24%; --dur:4.5s; --del:1.2s; --len:65px; --sz:1rem; --tdur:2.5s; --tdel:1.2s;">
-        <div class="line"></div><div class="star">★</div>
-    </div>
+    <div class="hang-star" style="left:8%; --dur:4s; --del:0s; --len:80px; --sz:1.2rem; --tdur:2s; --tdel:0s;"><div class="line"></div><div class="star">✦</div></div>
+    <div class="hang-star" style="left:15%; --dur:5s; --del:0.5s; --len:120px; --sz:0.9rem; --tdur:3s; --tdel:0.5s;"><div class="line"></div><div class="star">✧</div></div>
+    <div class="hang-star" style="left:22%; --dur:4.5s; --del:1s; --len:60px; --sz:1rem; --tdur:2.5s; --tdel:1s;"><div class="line"></div><div class="star">★</div></div>
+    <div class="hang-star" style="right:8%; --dur:4s; --del:0.3s; --len:90px; --sz:1.2rem; --tdur:2s; --tdel:0.3s;"><div class="line"></div><div class="star">✦</div></div>
+    <div class="hang-star" style="right:16%; --dur:5s; --del:0.8s; --len:110px; --sz:0.9rem; --tdur:3s; --tdel:0.8s;"><div class="line"></div><div class="star">✧</div></div>
+    <div class="hang-star" style="right:24%; --dur:4.5s; --del:1.2s; --len:65px; --sz:1rem; --tdur:2.5s; --tdel:1.2s;"><div class="line"></div><div class="star">★</div></div>
 
-    <!-- Corner star -->
     <div class="corner-star">✦</div>
 
     <div class="header">
-        <h1><svg viewBox="0 0 24 24" width="0.85em" height="0.85em" fill="var(--accent)" style="vertical-align:middle; margin-right:8px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Your Entries</h1>
+        <h1>
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            Your Entries
+        </h1>
         <div class="nav-links">
-            <a href="/chamber" class="chamber-link"><svg viewBox="0 0 24 24" fill="var(--accent)"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> Chamber</a>
+            <a href="/chamber" class="chamber-link">
+                <svg viewBox="0 0 24 24" fill="var(--accent)"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                Chamber
+            </a>
+            <a href="/favorites" class="ghost-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 17.3l-6.16 3.6 1.64-6.99L2 9.24l7.19-.61L12 2l2.81 6.63 7.19.61-5.48 4.67 1.64 6.99z"/></svg>
+                Favorites
+            </a>
+            <a href="/trash" class="ghost-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                Trash
+            </a>
             <a href="/entries/new" class="btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-                Write something
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+                Write
             </a>
         </div>
     </div>
 
-    <!-- Search section -->
-    <div class="search-section">
-        <form class="search-form" method="get" action="/entries">
-            <div class="input-wrap">
-                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-                <input type="text" name="query" th:value="${query}" placeholder="search your thoughts..."/>
+    <form method="get" action="/entries" class="search-form">
+        <input type="text" name="query" th:value="${query}" placeholder="search your thoughts..." />
+        <button type="submit">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Search
+        </button>
+    </form>
+
+    <p th:if="${query != null}" class="search-info">
+        results for "<span class="highlight" th:text="${query}"></span>"
+        <a href="/entries" class="clear-link">
+            <svg viewBox="0 0 24 24"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+            clear
+        </a>
+    </p>
+
+    <div th:if="${#lists.isEmpty(entries)}" class="empty">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+        <p th:if="${query == null}">Your chamber is quiet. Write your first thought.</p>
+        <p th:if="${query != null}">No entries matched your search.</p>
+        <span class="empty-sub" th:if="${query != null}">Try a different word or clear the search.</span>
+    </div>
+
+    <div th:each="entry : ${entries}" class="entry-card">
+        <div class="entry-card-top">
+            <div style="flex:1; min-width:0;">
+                <h2 th:text="${entry.title}"></h2>
+                <p class="date">
+                    Created: <span th:text="${#temporals.format(entry.createdAt, 'dd MMM yyyy, HH:mm')}"></span>
+                    &nbsp;·&nbsp;
+                    Edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
+                </p>
             </div>
-            <button type="submit">
-                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-                Search
-            </button>
-        </form>
-
-        <!-- Search result info -->
-        <p th:if="${query != null}" class="search-result-info">
-            results for "<span th:text="${query}" style="color:var(--accent);"></span>"
-            <a href="/entries" class="clear">
-                <svg viewBox="0 0 24 24"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
-                clear
-            </a>
-        </p>
-    </div>
-
-    <!-- Entry count / sort (only relevant when there are entries) -->
-    <div class="entry-count" th:if="${!#lists.isEmpty(entries)}">
-        <span th:text="${entries.size()} + (${entries.size()} == 1 ? ' entry' : ' entries')"></span>
-        <div class="sort-toggle">
-            <button type="button" class="active">Newest</button>
-            <button type="button">Oldest</button>
+            <form th:action="@{/entries/{id}/favorite(id=${entry.id})}" method="post">
+                <button type="submit" class="fav-btn" th:classappend="${entry.favorite} ? 'is-fav' : ''" th:title="${entry.favorite} ? 'Remove from favorites' : 'Add to favorites'">
+                    <svg viewBox="0 0 24 24"><path d="M12 17.3l-6.16 3.6 1.64-6.99L2 9.24l7.19-.61L12 2l2.81 6.63 7.19.61-5.48 4.67 1.64 6.99z"/></svg>
+                </button>
+            </form>
         </div>
-    </div>
 
-    <!-- Empty states: no entries at all vs. no search matches -->
-    <div th:if="${#lists.isEmpty(entries) and query == null}" class="empty">
-        <div class="empty-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-        </div>
-        <p class="primary">Your chamber is quiet for now.</p>
-        <p class="secondary">Write your first thought whenever you're ready.</p>
-    </div>
-
-    <div th:if="${#lists.isEmpty(entries) and query != null}" class="empty">
-        <div class="empty-icon">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        </div>
-        <p class="primary">No entries matched your search.</p>
-        <p class="secondary">Try a different word, or clear the search to see everything.</p>
-    </div>
-
-    <div th:each="entry : ${entries}" class="entry-card" th:onclick="'window.location.href=\'' + @{/entries/{id}/edit(id=${entry.id})} + '\''">
-        <h2 th:text="${entry.title}"></h2>
-        <p class="date">
-            Created: <span th:text="${#temporals.format(entry.createdAt, 'dd MMM yyyy, HH:mm')}"></span>
-            &nbsp;·&nbsp;
-            Edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
-        </p>
         <p th:if="${entry.mood != null}" class="mood-pill">
             <span th:switch="${entry.mood}">
                 <span th:case="'happy'">(❁´◡`❁) Happy</span>
@@ -778,20 +581,18 @@
                 <span th:case="'bored'">–_– Bored</span>
             </span>
         </p>
+
         <p class="preview" th:text="${#strings.abbreviate(entry.content, 150)}"></p>
-        <p th:if="${entry.content != null and #strings.length(entry.content) > 150}" class="read-more">
-            <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-            read more
-        </p>
+
         <div class="entry-actions">
-            <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="edit" onclick="event.stopPropagation()">
+            <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="edit-link">
                 <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
                 Edit
             </a>
-            <form class="delete-form" th:action="@{/entries/{id}/delete(id=${entry.id})}" method="post" onsubmit="return false;" th:attr="data-entry-id=${entry.id}">
-                <button class="delete" type="button" th:onclick="'confirmDelete(this, event)'">
+            <form class="delete-form" th:action="@{/entries/{id}/trash(id=${entry.id})}" method="post" onsubmit="return false;">
+                <button class="delete-link" type="button" onclick="confirmDelete(this)">
                     <svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-                    Delete
+                    Move to Trash
                 </button>
             </form>
         </div>
@@ -803,10 +604,10 @@
                 <svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
             </div>
             <h3>Let this thought go?</h3>
-            <p>This entry will be deleted permanently and cannot be recovered.</p>
+            <p>This entry will move to your Trash. You can restore it anytime before it's permanently removed.</p>
             <div class="modal-actions">
                 <button class="modal-btn cancel" onclick="closeDeleteModal()">Keep it</button>
-                <button class="modal-btn confirm" onclick="submitDelete()">Delete</button>
+                <button class="modal-btn confirm" onclick="submitDelete()">Move to Trash</button>
             </div>
         </div>
     </div>
@@ -821,9 +622,9 @@
         function themeVals() {
             const style = getComputedStyle(document.documentElement);
             return {
-                r: style.getPropertyValue('--cloud-r').trim() || '180',
-                g: style.getPropertyValue('--cloud-g').trim() || '140',
-                b: style.getPropertyValue('--cloud-b').trim() || '80',
+                r: style.getPropertyValue('--cloud-r').trim() || '200',
+                g: style.getPropertyValue('--cloud-g').trim() || '160',
+                b: style.getPropertyValue('--cloud-b').trim() || '90',
             };
         }
 
@@ -833,7 +634,7 @@
              [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
             ].forEach(([cx,cy,r2]) => {
                 const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
-                grad.addColorStop(0, `rgba(${r},${g},${b},0.22)`);
+                grad.addColorStop(0, `rgba(${r},${g},${b},0.24)`);
                 grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
                 ctx.fillStyle = grad;
                 ctx.beginPath();
@@ -852,7 +653,6 @@
             drawCloud(0, h, 140);
         }
 
-        // Falling petals / motes — themed, echoes chamber.html's sakura animation
         const particles = [];
         const PARTICLE_COUNT = 28;
         for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -893,7 +693,7 @@
                     ctx.ellipse(0, 0, p.size * 0.5, p.size * 0.9, 0, 0, Math.PI * 2);
                     ctx.fill();
                 } else {
-                    ctx.strokeStyle = `rgba(201,169,110,${p.opacity})`;
+                    ctx.strokeStyle = `rgba(212,180,120,${p.opacity})`;
                     ctx.lineWidth = 1;
                     const s = p.size * 0.6;
                     ctx.beginPath();
@@ -906,25 +706,16 @@
             });
         }
 
-        let rafId = null;
         function loop() {
             drawClouds();
             drawParticles();
-            rafId = requestAnimationFrame(loop);
+            requestAnimationFrame(loop);
         }
         loop();
 
-        // Redraw immediately on theme change (called by theme picker if present on this page)
-        window.addEventListener('storage', () => {
-            // no-op placeholder in case theme changes via another tab
-        });
-    </script>
-
-    <script>
         let formToDelete = null;
 
-        function confirmDelete(button, event) {
-            if (event) event.stopPropagation();
+        function confirmDelete(button) {
             formToDelete = button.closest('form');
             document.getElementById('deleteModal').classList.add('active');
         }
@@ -935,9 +726,7 @@
         }
 
         function submitDelete() {
-            if (formToDelete) {
-                formToDelete.submit();
-            }
+            if (formToDelete) formToDelete.submit();
         }
 
         document.getElementById('deleteModal').addEventListener('click', function(e) {
