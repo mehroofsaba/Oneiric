@@ -172,4 +172,18 @@ public class JournalEntryController {
         model.addAttribute("entries", journalEntryService.getFavoriteEntriesForUser(user));
         return "favorites";
     }
+    
+ // ── Empty entire trash ───────────────────────────────────────────────────
+    @PostMapping("/trash/empty")
+    public String emptyTrash(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        User user = userService.findByUsername(username).get();
+        journalEntryService.getTrashedEntriesForUser(user)
+            .forEach(journalEntryService::deleteEntry);
+
+        return "redirect:/entries/trash";
+    }
+    
 }

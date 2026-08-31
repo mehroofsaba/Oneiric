@@ -390,7 +390,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v15.5"/></svg>
                 Entries
             </a>
-            <a href="/favorites">
+            <a href="/entries/favorites">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 17.3l-6.16 3.6 1.64-6.99L2 9.24l7.19-.61L12 2l2.81 6.63 7.19.61-5.48 4.67 1.64 6.99z"/></svg>
                 Favorites
             </a>
@@ -426,7 +426,7 @@
                     Restore
                 </button>
             </form>
-            <form class="inline-form" th:action="@{/entries/{id}/purge(id=${entry.id})}" method="post" onsubmit="return false;">
+            <form class="inline-form" th:action="@{/entries/{id}/delete-permanent(id=${entry.id})}" method="post" onsubmit="return false;">
                 <button class="purge-link" type="button" th:onclick="'confirmPurge(this)'">
                     <svg viewBox="0 0 24 24"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
                     Delete Forever
@@ -467,7 +467,7 @@
             <p>All entries in your trash will be permanently erased. This cannot be undone.</p>
             <div class="modal-actions">
                 <button class="modal-btn cancel" onclick="closeEmptyModal()">Cancel</button>
-                <form th:action="@{/trash/empty}" method="post" style="display:inline;">
+                <form th:action="@{/entries/trash/empty}" method="post" style="display:inline;">
                     <button class="modal-btn confirm" type="submit">Empty Trash</button>
                 </form>
             </div>
