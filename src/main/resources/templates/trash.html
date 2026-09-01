@@ -93,6 +93,25 @@
         .corner-deco.bl { bottom: 0; left: 0; transform: scaleY(-1); }
         .corner-deco.br { bottom: 0; right: 0; transform: scale(-1); }
 
+        .hang-star {
+            position: fixed; top: 0;
+            color: var(--accent);
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+            display: flex; flex-direction: column; align-items: center;
+            animation: sway var(--dur) ease-in-out infinite var(--del);
+        }
+        .hang-star .line {
+            width: 1px; height: var(--len);
+            background: linear-gradient(180deg, transparent, var(--accent) 200%);
+            opacity: 0.4;
+        }
+        .hang-star .star { font-size: var(--sz); animation: twinkle var(--tdur) ease-in-out infinite var(--tdel); }
+
+        @keyframes sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+        @keyframes twinkle { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
         .corner-star {
             position: fixed; bottom: 30px; right: 30px;
             font-size: 2.5rem; color: var(--accent);
@@ -146,7 +165,6 @@
         .nav-links a svg { width: 1em; height: 1em; flex-shrink: 0; }
         .nav-links a:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
 
-        /* Notice bar */
         .trash-notice {
             position: relative;
             z-index: 2;
@@ -238,7 +256,6 @@
 
         form.inline-form { display: inline; }
 
-        /* Modal */
         .modal-overlay {
             display: none;
             position: fixed; inset: 0;
@@ -293,7 +310,6 @@
         }
         .modal-btn.confirm:hover { background-color: #c2868b; }
 
-        /* Empty trash button */
         .empty-trash-row {
             position: relative;
             z-index: 2;
@@ -319,7 +335,6 @@
         .empty-trash-btn svg { width: 0.95em; height: 0.95em; fill: none; stroke: currentColor; stroke-width: 1.8; }
         .empty-trash-btn:hover { border-color: #c2868b; color: #c2868b; }
 
-        /* ── Mobile ── */
         @media (max-width: 640px) {
             body { padding: 32px 18px; }
 
@@ -338,6 +353,7 @@
 
             .corner-deco { width: 100px; height: 100px; }
             .corner-star { font-size: 1.6rem; bottom: 16px; right: 16px; }
+            .hang-star { display: none; }
         }
     </style>
 </head>
@@ -373,6 +389,13 @@
             <path d="M115 55 L117 60 L122 62 L117 64 L115 69 L113 64 L108 62 L113 60Z"/>
         </svg>
     </div>
+
+    <div class="hang-star" style="left:8%; --dur:4s; --del:0s; --len:80px; --sz:1.2rem; --tdur:2s; --tdel:0s;"><div class="line"></div><div class="star">✦</div></div>
+    <div class="hang-star" style="left:15%; --dur:5s; --del:0.5s; --len:120px; --sz:0.9rem; --tdur:3s; --tdel:0.5s;"><div class="line"></div><div class="star">✧</div></div>
+    <div class="hang-star" style="left:22%; --dur:4.5s; --del:1s; --len:60px; --sz:1rem; --tdur:2.5s; --tdel:1s;"><div class="line"></div><div class="star">★</div></div>
+    <div class="hang-star" style="right:8%; --dur:4s; --del:0.3s; --len:90px; --sz:1.2rem; --tdur:2s; --tdel:0.3s;"><div class="line"></div><div class="star">✦</div></div>
+    <div class="hang-star" style="right:16%; --dur:5s; --del:0.8s; --len:110px; --sz:0.9rem; --tdur:3s; --tdel:0.8s;"><div class="line"></div><div class="star">✧</div></div>
+    <div class="hang-star" style="right:24%; --dur:4.5s; --del:1.2s; --len:65px; --sz:1rem; --tdur:2.5s; --tdel:1.2s;"><div class="line"></div><div class="star">★</div></div>
 
     <div class="corner-star">✦</div>
 
@@ -442,7 +465,6 @@
         </button>
     </div>
 
-    <!-- Single-entry purge modal -->
     <div class="modal-overlay" id="purgeModal">
         <div class="modal-box">
             <div class="modal-icon">
@@ -457,7 +479,6 @@
         </div>
     </div>
 
-    <!-- Empty-all modal -->
     <div class="modal-overlay" id="emptyModal">
         <div class="modal-box">
             <div class="modal-icon">
@@ -515,8 +536,62 @@
             drawCloud(0, h, 140);
         }
 
+        const particles = [];
+        const PARTICLE_COUNT = 28;
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                size: Math.random() * 6 + 2,
+                speedX: Math.random() * 0.4 - 0.2,
+                speedY: Math.random() * 0.5 + 0.2,
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.02,
+                opacity: Math.random() * 0.4 + 0.15,
+                sway: Math.random() * Math.PI * 2,
+            });
+        }
+
+        function drawParticles() {
+            const theme = document.documentElement.getAttribute('data-theme');
+            const isSakura = theme === 'sakura';
+
+            particles.forEach(p => {
+                p.sway += 0.007;
+                p.x += p.speedX * 0.4 + Math.sin(p.sway) * 0.25;
+                p.y += p.speedY * 0.35;
+                p.rotation += p.rotationSpeed * 0.5;
+                if (p.y > h + 15) { p.y = -15; p.x = Math.random() * w; }
+                if (p.x > w + 15) p.x = -15;
+                if (p.x < -15) p.x = w + 15;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation);
+                ctx.globalAlpha = p.opacity;
+
+                if (isSakura) {
+                    ctx.fillStyle = 'rgba(240,140,170,0.9)';
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, p.size * 0.5, p.size * 0.9, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.strokeStyle = `rgba(212,180,120,${p.opacity})`;
+                    ctx.lineWidth = 1;
+                    const s = p.size * 0.6;
+                    ctx.beginPath();
+                    ctx.moveTo(0, -s); ctx.lineTo(0, s);
+                    ctx.moveTo(-s, 0); ctx.lineTo(s, 0);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            });
+        }
+
         function loop() {
             drawClouds();
+            drawParticles();
             requestAnimationFrame(loop);
         }
         loop();
