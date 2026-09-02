@@ -56,20 +56,20 @@
         }
 
         [data-theme="sage"] {
-    --bg: #f6dfd7;
-    --bg-secondary: #eecbc7;
-    --bg-tertiary: #f1b2a9;
-    --text: #4a3a45;
-    --text-muted: #9c8399;
-    --text-subtle: #c4a8b3;
-    --accent: #9c8399;
-    --accent-hover: #83687f;
-    --accent-dim: rgba(156,131,153,0.08);
-    --border: #e6cfc9;
-    --border-accent: rgba(156,131,153,0.3);
-    --cloud-r: 156; --cloud-g: 131; --cloud-b: 153;
-    --star-color: #9c8399;
-}
+            --bg: #fbeae6;
+            --bg-secondary: #f6dfd7;
+            --bg-tertiary: #e8c2ba;
+            --text: #3d2f3a;
+            --text-muted: #8a6b7d;
+            --text-subtle: #c9a8b8;
+            --accent: #7c5c74;
+            --accent-hover: #5c4055;
+            --accent-dim: rgba(124,92,116,0.14);
+            --border: #e0c0c8;
+            --border-accent: rgba(124,92,116,0.35);
+            --cloud-r: 226; --cloud-g: 122; --cloud-b: 122;
+            --star-color: #7c5c74;
+        }
 
         [data-theme="noir"] {
             --bg: #000000;
@@ -510,7 +510,7 @@
         .theme-option[data-theme="default"] { background: linear-gradient(135deg, #0d0d0d, #c9a96e); }
         .theme-option[data-theme="sakura"] { background: linear-gradient(135deg, #fdf6f0, #e8829a); }
         .theme-option[data-theme="abyss"] { background: linear-gradient(135deg, #050d1a, #3a5f9e); }
-        .theme-option[data-theme="sage"] { background: linear-gradient(135deg, #f4f6f0, #7a9e6e); }
+        .theme-option[data-theme="sage"] { background: linear-gradient(135deg, #f6dfd7, #7c5c74); }
         .theme-option[data-theme="noir"] { background: linear-gradient(135deg, #000000, #ffffff); }
 
         .theme-option:hover { transform: scale(1.15); }
@@ -549,6 +549,23 @@
             display: inline-flex;
             align-items: center;
             min-height: 44px;
+        }
+
+        /* ===== SAGE THEME REFINEMENTS ===== */
+        [data-theme="sage"] .drawer {
+            background: linear-gradient(160deg, var(--bg-tertiary), var(--bg-secondary));
+        }
+
+        [data-theme="sage"] a.btn:not(.secondary) {
+            box-shadow: 0 0 24px rgba(124,92,116,0.35);
+        }
+
+        [data-theme="sage"] a.btn:not(.secondary):hover {
+            box-shadow: 0 6px 28px rgba(124,92,116,0.45);
+        }
+
+        [data-theme="sage"] .moon-deco {
+            opacity: 0.1;
         }
 
         /* ===== MOBILE / SMALL SCREEN ADJUSTMENTS ===== */
@@ -745,6 +762,7 @@
             ].forEach(([cx,cy,r2]) => {
                 const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
                 grad.addColorStop(0,`rgba(${r},${g},${b},${alpha})`);
+                grad.addColorStop(0.6,`rgba(${r},${g},${b},${alpha * 0.4})`);
                 grad.addColorStop(1,`rgba(${r},${g},${b},0)`);
                 ctx.fillStyle = grad;
                 ctx.beginPath();
@@ -937,8 +955,9 @@
         }
 
         function drawCloudScene() {
-            [[0,h,135,0.09],[w*.15,h,105,0.09],[w,h,135,0.09],[w*.85,h,105,0.09],
-             [0,0,120,0.12],[w*.12,0,90,0.12],[w,0,120,0.12],[w*.88,0,90,0.12]
+            [[0,h,190,0.20],[w*.16,h,150,0.18],[w,h,190,0.20],[w*.84,h,150,0.18],
+             [0,0,170,0.22],[w*.14,0,130,0.2],[w,0,170,0.22],[w*.86,0,130,0.2],
+             [w*.5,h*.06,110,0.1],[w*.5,h*.96,110,0.1]
             ].forEach(([x,y,s,a]) => drawCloud(x, y, s, a));
         }
 
