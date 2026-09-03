@@ -129,20 +129,20 @@
             position: relative;
         }
         
-        body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
+                  body::before {
+               content: "";
+               position: fixed;
+               inset: 0;
+               pointer-events: none;
+               z-index: 1;
 
-    background: radial-gradient(
-        ellipse at center,
-        rgba(255, 248, 244, 0.18) 0%,
-        rgba(255, 248, 244, 0.06) 38%,
-        transparent 68%
-    );
-}
+             background: radial-gradient(
+             ellipse at center,
+             rgba(255, 248, 244, 0.18) 0%,
+             rgba(255, 248, 244, 0.06) 38%,
+             transparent 68%
+            );
+       }
 
         /* ── Loader / entrance overlay ── */
         #loader {
@@ -224,11 +224,11 @@
             animation: float var(--fduration) ease-in-out infinite var(--fdelay);
         }
 
-        .moon-deco.symbol {
+           .moon-deco.symbol {
             color: var(--accent);
             font-family: Georgia, serif;
             line-height: 1;
-        }
+             }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(var(--rot)); }
@@ -247,9 +247,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 22px;
             text-align: center;
-            padding: 0 24px;
+            padding: 12 24px;
             margin-top: 32px;
             opacity: 0;
             transition: transform 0.3s ease-out;
@@ -283,7 +283,12 @@
             flex-shrink: 0;
         }
 
-        h1 { font-size: 3.5rem; letter-spacing: 0.15rem; color: var(--accent); font-weight: 600; }
+        h1 { 
+    font-size: 3.5rem; 
+    letter-spacing: 0.15rem; 
+    color: var(--text); 
+    font-weight: 600; 
+}
         p { font-size: 1.05rem; color: var(--text-muted); letter-spacing: 0.05rem; }
 
         .subtext {
@@ -317,29 +322,29 @@
                 background-color: var(--accent);
                 transform: translateY(-1px);
             }
-            a.btn.secondary:hover {
-                border-color: var(--gold);
-                color: var(--gold);
-                background-color: rgba(201, 169, 110, 0.06);
-                transform: translateY(-1px);
-            }
+             a.btn.secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background-color: var(--accent-dim);
+    transform: translateY(-1px);
+} 
         }
 
-        a.btn:active {
-            transform: translateY(0px) scale(0.97);
-            background-color: var(--gold-active);
-        }
+          a.btn:active {
+       transform: translateY(0px) scale(0.97);
+       background-color: var(--accent-hover);
+           }
 
         a.btn:focus-visible {
-            outline: 2px solid var(--gold-light);
-            outline-offset: 3px;
+       outline: 2px solid var(--accent);
+       outline-offset: 3px;
         }
 
-        a.btn.secondary {
-            background-color: transparent;
-            border: 1px solid var(--border-muted);
-            color: var(--btn-secondary-text);
-        }
+              a.btn.secondary {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+} 
 
         a.btn.secondary:active {
             transform: translateY(0px) scale(0.97);
@@ -411,9 +416,10 @@
 
     <!-- Loading / entrance overlay -->
     <div id="loader">
-        <svg viewBox="0 0 24 24" fill="#c9a96e">
-            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-        </svg>
+          <svg viewBox="0 0 24 24" fill="var(--accent)">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3
+             7 7 0 0 0 21 12.79Z"/>
+</svg>
     </div>
 
     <canvas id="bg"></canvas>
@@ -421,9 +427,13 @@
 
     <div class="moon-layer" id="moonLayer">
         <div class="moon-deco" style="top:8%; left:5%; --size:5rem; --fduration:7s; --fdelay:0s; --rot:-20deg;">
-            <svg viewBox="0 0 24 24" width="1em" height="1em" fill="#c9a96e">
-                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-            </svg>
+            <svg viewBox="0 0 24 24"
+     width="1em"
+     height="1em"
+     fill="var(--accent)">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3
+             7 7 0 0 0 21 12.79Z"/>
+</svg>
         </div>
         <div class="moon-deco symbol" style="top:15%; right:6%; --size:3.4rem; --fduration:9s; --fdelay:2s; --rot:15deg; opacity:0.4;">✦</div>
         <div class="moon-deco symbol" style="bottom:10%; left:8%; --size:3.6rem; --fduration:8s; --fdelay:1s; --rot:10deg;">◐</div>
@@ -466,7 +476,7 @@
                 <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.38" transform="rotate(230,145,46)"/>
                 <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.38" transform="rotate(290,145,46)"/>
                 <!-- center -->
-                <circle cx="145" cy="46" r="3.5" fill="#c9a96e" opacity="0.70"/>
+                <circle cx="145" cy="46" r="3.5" fill="var(--accent)" opacity="0.70"/>
 
                 <!-- mid flower on main stem -->
                 <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.35" transform="rotate(0,152,102)"/>
@@ -530,8 +540,9 @@
             return min + (sum / samples) * (max - min);
         }
 
-        const GOLD_TONES = ['#c9a96e', '#d4b483', '#b8935a', '#e2c99a', '#c2a878'];
-        const BRIGHT_TONES = ['#f5efe3', '#fff8e7', '#eadfc4'];
+        const style = getComputedStyle(document.documentElement);
+        const STAR_COLOR = style.getPropertyValue('--star-color').trim() || '#B8955A';
+        const STAR_BRIGHT = style.getPropertyValue('--text').trim() || '#4A3040';
 
         function drawCloud(x, y, size, alpha) {
             const style = getComputedStyle(document.documentElement);
@@ -645,13 +656,10 @@
             }
 
             const opacity = isHero ? rand(0.75, 1) : softRand(0.08, 0.55);
-            const color = isHero
-                ? BRIGHT_TONES[Math.floor(Math.random() * BRIGHT_TONES.length)]
-                : GOLD_TONES[Math.floor(Math.random() * GOLD_TONES.length)];
-
+            const color = isHero ? STAR_BRIGHT : STAR_COLOR;
             star.style.background = color;
             if (isHero) {
-                star.style.boxShadow = `0 0 ${size * 2}px rgba(245, 239, 227, 0.5)`;
+            	star.style.boxShadow = `0 0 ${size * 2}px rgba(184, 149, 90, 0.35)`;
             }
 
             star.style.cssText += `
