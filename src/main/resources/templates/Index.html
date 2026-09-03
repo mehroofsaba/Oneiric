@@ -18,19 +18,27 @@
     <style>
     
             :root {
-            --bg: #0d0d0d;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --text: #e8e0d0;
-            --text-muted: #9e9589;
-            --text-subtle: #555;
-            --accent: #c9a96e;
-            --accent-hover: #b8935a;
-            --accent-dim: rgba(201,169,110,0.08);
-            --border: #2e2e2e;
-            --border-accent: rgba(201,169,110,0.2);
-            --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
-        }
+    --bg: #0d0d0d;
+    --bg-secondary: #111111;
+    --bg-tertiary: #1a1a1a;
+    --text: #e8e0d0;
+    --text-muted: #9e9589;
+    --text-subtle: #555;
+    --accent: #c9a96e;
+    --accent-hover: #b8935a;
+    --accent-dim: rgba(201,169,110,0.08);
+    --border: #2e2e2e;
+    --border-accent: rgba(201,169,110,0.2);
+    --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
+
+    /* Non-themed extras used only by index.html markup */
+    --gold: #c9a96e;
+    --gold-hover: #b8935a;
+    --gold-active: #a8824c;
+    --gold-light: #e8d5ae;
+    --border-muted: #4a4438;
+    --btn-secondary-text: #c9bfae;
+}
 
         [data-theme="sakura"] {
             --bg: #fdf6f0;
@@ -62,21 +70,28 @@
             --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
         }
 
-            [data-theme="sage"] {
-            --bg: #fbeae6;
-            --bg-secondary: #f6dfd7;
-            --bg-tertiary: #e8c2ba;
-            --text: #3d2f3a;
-            --text-muted: #8a6b7d;
-            --text-subtle: #c9a8b8;
-            --accent: #7c5c74;
-            --accent-hover: #5c4055;
-            --accent-dim: rgba(124,92,116,0.14);
-            --border: #e0c0c8;
-            --border-accent: rgba(124,92,116,0.35);
-            --cloud-r: 226; --cloud-g: 122; --cloud-b: 122;
-            --star-color: #7c5c74;
-        } 
+ [data-theme="sage"] {
+    --bg: #F5E3DF;
+    --bg-secondary: #F0D9D4;
+    --bg-tertiary: #E3BEB8;
+
+    --text: #4A3040;
+    --text-muted: #806477;
+    --text-subtle: #B99BAA;
+
+    --accent: #B8955A;
+    --accent-hover: #A27F4B;
+    --accent-dim: rgba(184,149,90,0.12);
+
+    --border: #D9B9BD;
+    --border-accent: rgba(184,149,90,0.28);
+
+    --cloud-r: 210; 
+    --cloud-g: 120;
+    --cloud-b: 120;
+
+    --star-color: #B8955A;
+} 
         
         [data-theme="noir"] {
             --bg: #000000;
@@ -93,18 +108,6 @@
             --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
         }
     
-        :root {
-            --gold: #c9a96e;
-            --gold-hover: #b8935a;
-            --gold-active: #a8824c;
-            --gold-light: #e8d5ae;
-            --bg: #0d0d0d;
-            --text: #e8e0d0;
-            --text-muted: #9e9589;
-            --text-subtle: #b3a894;
-            --border-muted: #4a4438;
-            --btn-secondary-text: #c9bfae;
-        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -125,6 +128,21 @@
             overflow: hidden;
             position: relative;
         }
+        
+        body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+
+    background: radial-gradient(
+        ellipse at center,
+        rgba(255, 248, 244, 0.18) 0%,
+        rgba(255, 248, 244, 0.06) 38%,
+        transparent 68%
+    );
+}
 
         /* ── Loader / entrance overlay ── */
         #loader {
@@ -207,7 +225,7 @@
         }
 
         .moon-deco.symbol {
-            color: var(--gold);
+            color: var(--accent);
             font-family: Georgia, serif;
             line-height: 1;
         }
@@ -265,7 +283,7 @@
             flex-shrink: 0;
         }
 
-        h1 { font-size: 3.5rem; letter-spacing: 0.15rem; color: var(--gold); font-weight: 600; }
+        h1 { font-size: 3.5rem; letter-spacing: 0.15rem; color: var(--accent); font-weight: 600; }
         p { font-size: 1.05rem; color: var(--text-muted); letter-spacing: 0.05rem; }
 
         .subtext {
@@ -284,7 +302,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--gold);
+            background-color: var(--accent);
             color: var(--bg);
             border-radius: 6px;
             text-decoration: none;
@@ -296,7 +314,7 @@
 
         @media (hover: hover) {
             a.btn:hover {
-                background-color: var(--gold-hover);
+                background-color: var(--accent);
                 transform: translateY(-1px);
             }
             a.btn.secondary:hover {
@@ -417,74 +435,74 @@
         <div class="botanical-inner">
             <svg width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.18;">
                 <!-- main stem curving up from corner -->
-                <path d="M260,260 Q200,220 170,180 Q140,140 150,100 Q155,75 145,55" stroke="#c9a96e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <path d="M260,260 Q200,220 170,180 Q140,140 150,100 Q155,75 145,55" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
                 <!-- secondary stem left -->
-                <path d="M185,200 Q160,175 140,170 Q115,165 100,150" stroke="#c9a96e" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M185,200 Q160,175 140,170 Q115,165 100,150" stroke="var(--accent)" stroke-width="1" fill="none" stroke-linecap="round"/>
                 <!-- tertiary stem -->
-                <path d="M165,160 Q155,140 148,120" stroke="#c9a96e" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+                <path d="M165,160 Q155,140 148,120" stroke="var(--accent)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
 
                 <!-- small leaves along main stem -->
                 <!-- leaf 1 -->
-                <path d="M170,180 Q155,162 162,148 Q172,162 170,180Z" fill="#c9a96e" opacity="0.55"/>
+                <path d="M170,180 Q155,162 162,148 Q172,162 170,180Z" fill="var(--accent)" opacity="0.55"/>
                 <!-- leaf 2 -->
-                <path d="M158,148 Q142,138 148,122 Q158,134 158,148Z" fill="#c9a96e" opacity="0.45"/>
+                <path d="M158,148 Q142,138 148,122 Q158,134 158,148Z" fill="var(--accent)" opacity="0.45"/>
                 <!-- leaf 3 (other side) -->
-                <path d="M162,148 Q178,134 176,118 Q163,130 162,148Z" fill="#c9a96e" opacity="0.35"/>
+                <path d="M162,148 Q178,134 176,118 Q163,130 162,148Z" fill="var(--accent)" opacity="0.35"/>
                 <!-- leaf 4 small -->
-                <path d="M148,120 Q136,110 140,98 Q150,108 148,120Z" fill="#c9a96e" opacity="0.40"/>
+                <path d="M148,120 Q136,110 140,98 Q150,108 148,120Z" fill="var(--accent)" opacity="0.40"/>
                 <!-- leaf 5 tiny tip -->
-                <path d="M145,55 Q138,42 143,34 Q150,44 145,55Z" fill="#c9a96e" opacity="0.30"/>
+                <path d="M145,55 Q138,42 143,34 Q150,44 145,55Z" fill="var(--accent)" opacity="0.30"/>
 
                 <!-- leaves on secondary stem -->
-                <path d="M155,175 Q142,158 148,144 Q158,158 155,175Z" fill="#c9a96e" opacity="0.30"/>
-                <path d="M130,162 Q118,150 122,138 Q132,150 130,162Z" fill="#c9a96e" opacity="0.28"/>
+                <path d="M155,175 Q142,158 148,144 Q158,158 155,175Z" fill="var(--accent)" opacity="0.30"/>
+                <path d="M130,162 Q118,150 122,138 Q132,150 130,162Z" fill="var(--accent)" opacity="0.28"/>
 
                 <!-- small flower at tip of main stem -->
                 <!-- petals -->
-                <ellipse cx="145" cy="46" rx="4" ry="8" fill="#c9a96e" opacity="0.45" transform="rotate(-10,145,46)"/>
-                <ellipse cx="145" cy="46" rx="4" ry="8" fill="#c9a96e" opacity="0.40" transform="rotate(50,145,46)"/>
-                <ellipse cx="145" cy="46" rx="4" ry="8" fill="#c9a96e" opacity="0.40" transform="rotate(110,145,46)"/>
-                <ellipse cx="145" cy="46" rx="4" ry="8" fill="#c9a96e" opacity="0.40" transform="rotate(170,145,46)"/>
-                <ellipse cx="145" cy="46" rx="4" ry="8" fill="#c9a96e" opacity="0.38" transform="rotate(230,145,46)"/>
-                <ellipse cx="145" cy="46" rx="4" ry="8" fill="#c9a96e" opacity="0.38" transform="rotate(290,145,46)"/>
+                <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.45" transform="rotate(-10,145,46)"/>
+                <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.40" transform="rotate(50,145,46)"/>
+                <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.40" transform="rotate(110,145,46)"/>
+                <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.40" transform="rotate(170,145,46)"/>
+                <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.38" transform="rotate(230,145,46)"/>
+                <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.38" transform="rotate(290,145,46)"/>
                 <!-- center -->
                 <circle cx="145" cy="46" r="3.5" fill="#c9a96e" opacity="0.70"/>
 
                 <!-- mid flower on main stem -->
-                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="#c9a96e" opacity="0.35" transform="rotate(0,152,102)"/>
-                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="#c9a96e" opacity="0.32" transform="rotate(60,152,102)"/>
-                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="#c9a96e" opacity="0.32" transform="rotate(120,152,102)"/>
-                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="#c9a96e" opacity="0.30" transform="rotate(180,152,102)"/>
-                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="#c9a96e" opacity="0.30" transform="rotate(240,152,102)"/>
-                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="#c9a96e" opacity="0.30" transform="rotate(300,152,102)"/>
-                <circle cx="152" cy="102" r="2.8" fill="#c9a96e" opacity="0.55"/>
+                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.35" transform="rotate(0,152,102)"/>
+                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.32" transform="rotate(60,152,102)"/>
+                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.32" transform="rotate(120,152,102)"/>
+                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.30" transform="rotate(180,152,102)"/>
+                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.30" transform="rotate(240,152,102)"/>
+                <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.30" transform="rotate(300,152,102)"/>
+                <circle cx="152" cy="102" r="2.8" fill="var(--accent)" opacity="0.55"/>
 
                 <!-- tiny bud clusters along secondary stem -->
                 <!-- bud 1 -->
-                <ellipse cx="118" cy="154" rx="2.5" ry="5" fill="#c9a96e" opacity="0.30" transform="rotate(-30,118,154)"/>
-                <ellipse cx="118" cy="154" rx="2.5" ry="5" fill="#c9a96e" opacity="0.28" transform="rotate(30,118,154)"/>
-                <circle cx="118" cy="154" r="2" fill="#c9a96e" opacity="0.42"/>
+                <ellipse cx="118" cy="154" rx="2.5" ry="5" fill="var(--accent)" opacity="0.30" transform="rotate(-30,118,154)"/>
+                <ellipse cx="118" cy="154" rx="2.5" ry="5" fill="var(--accent)" opacity="0.28" transform="rotate(30,118,154)"/>
+                <circle cx="118" cy="154" r="2" fill="var(--accent)" opacity="0.42"/>
 
                 <!-- tiny stem berries / dots -->
-                <circle cx="140" cy="170" r="1.8" fill="#c9a96e" opacity="0.30"/>
-                <circle cx="136" cy="166" r="1.4" fill="#c9a96e" opacity="0.24"/>
-                <circle cx="132" cy="172" r="1.2" fill="#c9a96e" opacity="0.22"/>
+                <circle cx="140" cy="170" r="1.8" fill="var(--accent)" opacity="0.30"/>
+                <circle cx="136" cy="166" r="1.4" fill="var(--accent)" opacity="0.24"/>
+                <circle cx="132" cy="172" r="1.2" fill="var(--accent)" opacity="0.22"/>
 
                 <!-- branch from main stem mid-way -->
-                <path d="M168,162 Q185,148 196,138" stroke="#c9a96e" stroke-width="0.8" fill="none" stroke-linecap="round"/>
-                <path d="M196,138 Q188,128 192,118 Q200,128 196,138Z" fill="#c9a96e" opacity="0.28"/>
-                <circle cx="196" cy="118" r="2.2" fill="#c9a96e" opacity="0.38"/>
+                <path d="M168,162 Q185,148 196,138" stroke="var(--accent)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+                <path d="M196,138 Q188,128 192,118 Q200,128 196,138Z" fill="var(--accent)" opacity="0.28"/>
+                <circle cx="196" cy="118" r="2.2" fill="var(--accent)" opacity="0.38"/>
 
                 <!-- extra wispy branch lower right -->
-                <path d="M220,230 Q210,210 200,195" stroke="#c9a96e" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-                <path d="M200,195 Q190,185 194,174 Q202,184 200,195Z" fill="#c9a96e" opacity="0.22"/>
+                <path d="M220,230 Q210,210 200,195" stroke="var(--accent)" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+                <path d="M200,195 Q190,185 194,174 Q202,184 200,195Z" fill="var(--accent)" opacity="0.22"/>
             </svg>
         </div>
     </div>
 
     <div class="chamber" id="chamber">
         <div class="logo">
-            <svg viewBox="0 0 24 24" fill="#c9a96e">
+            <svg viewBox="0 0 24 24" fill="var(--accent)">
                 <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
             </svg>
             <h1>Oneiric</h1>
@@ -516,6 +534,10 @@
         const BRIGHT_TONES = ['#f5efe3', '#fff8e7', '#eadfc4'];
 
         function drawCloud(x, y, size, alpha) {
+            const style = getComputedStyle(document.documentElement);
+            const r = style.getPropertyValue('--cloud-r').trim() || '180';
+            const g = style.getPropertyValue('--cloud-g').trim() || '140';
+            const b = style.getPropertyValue('--cloud-b').trim() || '80';
             const circles = [
                 [0, 0, size],
                 [size*0.6, -size*0.2, size*0.75],
@@ -523,21 +545,25 @@
                 [size*0.2, -size*0.5, size*0.6],
                 [-size*0.2, -size*0.55, size*0.55],
             ];
-            circles.forEach(([cx, cy, r]) => {
-                const g = ctx.createRadialGradient(x+cx, y+cy, 0, x+cx, y+cy, r);
-                g.addColorStop(0, `rgba(180,140,80,${alpha})`);
-                g.addColorStop(1, `rgba(180,140,80,0)`);
-                ctx.fillStyle = g;
+            circles.forEach(([cx, cy, r2]) => {
+                const grad = ctx.createRadialGradient(x+cx, y+cy, 0, x+cx, y+cy, r2);
+                grad.addColorStop(0, `rgba(${r},${g},${b},${alpha})`);
+                grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+                ctx.fillStyle = grad;
                 ctx.beginPath();
-                ctx.arc(x+cx, y+cy, r, 0, Math.PI*2);
+                ctx.arc(x+cx, y+cy, r2, 0, Math.PI*2);
                 ctx.fill();
             });
         }
 
-        function drawSparkle(x, y, size, alpha, color = '201,169,110') {
+        function drawSparkle(x, y, size, alpha) {
+            const style = getComputedStyle(document.documentElement);
+            const r = style.getPropertyValue('--cloud-r').trim() || '201';
+            const g = style.getPropertyValue('--cloud-g').trim() || '169';
+            const b = style.getPropertyValue('--cloud-b').trim() || '110';
             ctx.save();
             ctx.globalAlpha = alpha;
-            ctx.strokeStyle = `rgba(${color},${alpha})`;
+            ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(x, y-size); ctx.lineTo(x, y+size);
@@ -547,7 +573,7 @@
             ctx.stroke();
             ctx.restore();
         }
-
+        
         function drawScene() {
             const w = canvas.width;
             const h = canvas.height;
