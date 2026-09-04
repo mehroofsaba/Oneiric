@@ -146,22 +146,22 @@ public class JournalEntryController {
     }
 
     // ── Toggle favorite (AJAX) ───────────────────────────────────────────────
+ 
     @PostMapping("/{id}/favorite")
-    @ResponseBody
-    public ResponseEntity<?> toggleFavorite(@PathVariable Long id, HttpSession session) {
+    public String toggleFavorite(@PathVariable Long id, HttpSession session,
+                                  @RequestHeader(value = "Referer", defaultValue = "/entries") String referer) {
         String username = (String) session.getAttribute("username");
-        if (username == null) return ResponseEntity.status(401).build();
+        if (username == null) return "redirect:/login";
 
         Optional<JournalEntry> entry = journalEntryService.getEntryById(id);
-        if (entry.isEmpty()) return ResponseEntity.notFound().build();
+        if (entry.isEmpty()) return "redirect:/entries";
 
-        if (!entry.get().getUser().getUsername().equals(username))
-            return ResponseEntity.status(403).build();
+        if (!entry.get().getUser().getUsername().equals(username)) return "redirect:/entries";
 
-        boolean isFavorite = journalEntryService.toggleFavorite(entry.get());
-        return ResponseEntity.ok(Map.of("favorite", isFavorite));
+        journalEntryService.toggleFavorite(entry.get());
+        return "redirect:" + referer;
     }
-
+    
     // ── Favorites page ───────────────────────────────────────────────────────
     @GetMapping("/favorites")
     public String favoritesPage(HttpSession session, Model model) {
