@@ -9,36 +9,33 @@
         const t = localStorage.getItem('oneiric-theme');
         if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
     })();
-</script>
+    </script>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Oneiric — a private space for your thoughts, feelings, memories, and dreams.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23c9a96e%22><path d=%22M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z%22/></svg>">
     <title>Oneiric — Your Secret Chamber</title>
     <style>
-    
-            :root {
-    --bg: #0d0d0d;
-    --bg-secondary: #111111;
-    --bg-tertiary: #1a1a1a;
-    --text: #e8e0d0;
-    --text-muted: #9e9589;
-    --text-subtle: #555;
-    --accent: #c9a96e;
-    --accent-hover: #b8935a;
-    --accent-dim: rgba(201,169,110,0.08);
-    --border: #2e2e2e;
-    --border-accent: rgba(201,169,110,0.2);
-    --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
+        :root {
+            --bg: #0d0d0d;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text: #e8e0d0;
+            --text-muted: #9e9589;
+            --text-subtle: #555;
+            --accent: #c9a96e;
+            --accent-hover: #b8935a;
+            --accent-dim: rgba(201,169,110,0.08);
+            --border: #2e2e2e;
+            --border-accent: rgba(201,169,110,0.2);
+            --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
 
-    /* Non-themed extras used only by index.html markup */
-    --gold: #c9a96e;
-    --gold-hover: #b8935a;
-    --gold-active: #a8824c;
-    --gold-light: #e8d5ae;
-    --border-muted: #4a4438;
-    --btn-secondary-text: #c9bfae;
-}
+            --gold: #c9a96e;
+            --gold-hover: #b8935a;
+            --gold-active: #a8824c;
+            --gold-light: #e8d5ae;
+            --border-muted: #4a4438;
+            --btn-secondary-text: #c9bfae;
+        }
 
         [data-theme="sakura"] {
             --bg: #fdf6f0;
@@ -62,36 +59,32 @@
             --text: #c8d8f0;
             --text-muted: #7090b8;
             --text-subtle: #3a5070;
-            --accent: #7eb8e8;
-            --accent-hover: #5a9fd4;
-            --accent-dim: rgba(126,184,232,0.08);
+            --accent: #c9a96e;
+            --accent-hover: #b8935a;
+            --accent-dim: rgba(201,169,110,0.12);
             --border: #1a2e48;
-            --border-accent: rgba(126,184,232,0.2);
+            --border-accent: rgba(201,169,110,0.25);
             --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
+            --star-color: #c9a96e;
         }
-
- [data-theme="sage"] {
-    --bg: #F5E3DF;
-    --bg-secondary: #F0D9D4;
-    --bg-tertiary: #E3BEB8;
-
-    --text: #4A3040;
-    --text-muted: #806477;
-    --text-subtle: #B99BAA;
-
-    --accent: #B8955A;
-    --accent-hover: #A27F4B;
-    --accent-dim: rgba(184,149,90,0.12);
-
-    --border: #D9B9BD;
-    --border-accent: rgba(184,149,90,0.28);
-
-    --cloud-r: 210; 
-    --cloud-g: 120;
-    --cloud-b: 120;
-
-    --star-color: #B8955A;
-} 
+        
+        [data-theme="sage"] {
+            --bg: #F5E3DF;
+            --bg-secondary: #F0D9D4;
+            --bg-tertiary: #E3BEB8;
+            --text: #4A3040;
+            --text-muted: #806477;
+            --text-subtle: #B99BAA;
+            --accent: #B8955A;
+            --accent-hover: #A27F4B;
+            --accent-dim: rgba(184,149,90,0.12);
+            --border: #D9B9BD;
+            --border-accent: rgba(184,149,90,0.28);
+            --cloud-r: 210; 
+            --cloud-g: 120;
+            --cloud-b: 120;
+            --star-color: #B8955A;
+        } 
         
         [data-theme="noir"] {
             --bg: #000000;
@@ -107,7 +100,6 @@
             --border-accent: rgba(255,255,255,0.15);
             --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
         }
-    
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -129,22 +121,21 @@
             position: relative;
         }
         
-                  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(255, 248, 244, 0.05) 0%,
+                rgba(255, 248, 244, 0.02) 38%,
+                transparent 68%
+            );
+        }
 
-    background: radial-gradient(
-        ellipse at center,
-        rgba(255, 248, 244, 0.05) 0%,   /* Reduced from 0.18 */
-        rgba(255, 248, 244, 0.02) 38%,   /* Reduced from 0.06 */
-        transparent 68%
-    );
-}
-
-        /* ── Loader / entrance overlay ── */
+        /* ── Dynamic Theme Preloader Overlay ── */
         #loader {
             position: fixed;
             inset: 0;
@@ -153,9 +144,10 @@
             justify-content: center;
             align-items: center;
             background-color: var(--bg);
-            transition: opacity 0.7s ease, visibility 0.7s ease;
             opacity: 1;
             visibility: visible;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        visibility 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #loader.hide {
@@ -164,20 +156,86 @@
             pointer-events: none;
         }
 
-        #loader svg {
-            width: 3rem;
-            height: 3rem;
-            animation: loaderPulse 1.4s ease-in-out infinite;
+        .loader-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 22px;
         }
 
-        @keyframes loaderPulse {
-            0%, 100% { opacity: 0.35; transform: scale(0.92); }
-            50% { opacity: 1; transform: scale(1.05); }
+        .moon-glow-wrapper {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .moon-glow {
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.25;
+            animation: glowPulse 2.4s ease-in-out infinite;
+        }
+
+        .loader-moon {
+            width: 44px;
+            height: 44px;
+            fill: var(--accent);
+            animation: moonPulse 2.4s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        .loader-title {
+            color: var(--text);
+            font-family: 'Georgia', serif;
+            font-size: 1.35rem;
+            letter-spacing: 0.45rem;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: titleFadeIn 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+        }
+
+        @keyframes moonPulse {
+            0%, 100% {
+                transform: scale(0.92);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.08);
+                opacity: 1;
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                transform: scale(0.85);
+                opacity: 0.15;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.45;
+            }
+        }
+
+        @keyframes titleFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            100% {
+                opacity: 0.9;
+                transform: translateY(0);
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            #loader { transition: opacity 0.2s linear; }
-            #loader svg { animation: none; opacity: 0.8; }
+            #loader { transition: opacity 0.3s linear; }
+            .loader-moon, .moon-glow, .loader-title { animation: none; opacity: 1; }
         }
 
         canvas {
@@ -185,7 +243,7 @@
             inset: 0;
             z-index: 0;
             pointer-events: none;
-            transition: transform 0.3s ease-out;
+            will-change: transform;
         }
 
         .stars {
@@ -193,7 +251,7 @@
             inset: 0;
             pointer-events: none;
             z-index: 1;
-            transition: transform 0.3s ease-out;
+            will-change: transform;
         }
 
         .star {
@@ -213,7 +271,7 @@
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            transition: transform 0.3s ease-out;
+            will-change: transform;
         }
 
         .moon-deco {
@@ -224,11 +282,15 @@
             animation: float var(--fduration) ease-in-out infinite var(--fdelay);
         }
 
-           .moon-deco.symbol {
+        .moon-deco svg {
+            filter: drop-shadow(0 0 8px var(--accent-dim));
+        }
+
+        .moon-deco.symbol {
             color: var(--accent);
             font-family: Georgia, serif;
             line-height: 1;
-             }
+        }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(var(--rot)); }
@@ -238,22 +300,22 @@
         @media (prefers-reduced-motion: reduce) {
             .star { animation: none; opacity: var(--opacity, 0.3); }
             .moon-deco { animation: none; }
-            canvas, .stars, .moon-layer, .botanical-corner { transition: none !important; transform: none !important; }
+            canvas, .stars, .moon-layer, .botanical-corner { transform: none !important; }
         }
 
         .chamber {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 28px; /* Increased from 22px for more height between elements */
-    text-align: center;
-    padding: 12px 24px;
-    margin-top: -10px; /* Reduced top margin to nudge "Oneiric" and header up noticeability */
-    opacity: 0;
-    transition: transform 0.3s ease-out;
-}
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+            text-align: center;
+            padding: 12px 24px;
+            margin-top: -10px;
+            opacity: 0;
+            will-change: transform;
+        }
 
         body.loaded .chamber {
             animation: riseIn 0.8s ease-out forwards;
@@ -270,12 +332,12 @@
         }
 
         .logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-    margin-bottom: 16px; /* Increased from 10px to space out from text below */
-}
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 16px;
+        }
 
         .logo svg {
             width: 3rem;
@@ -283,24 +345,22 @@
             flex-shrink: 0;
         }
 
-      h1 { 
-    font-size: 3.5rem; 
-    letter-spacing: 0.15rem; 
-    color: var(--accent); /* Matches the golden moon SVG */
-    font-weight: 600; 
-}
+        h1 { 
+            font-size: 3.5rem; 
+            letter-spacing: 0.15rem; 
+            color: var(--accent);
+            font-weight: 600; 
+        }
 
-       
         p { font-size: 1.05rem; color: var(--text-muted); letter-spacing: 0.05rem; }
 
-
-.subtext {
-    font-size: 0.85rem;
-    color: var(--text-muted); /* Changed from var(--text-subtle) to make it lighter & clearer */
-    letter-spacing: 0.03rem;
-    margin-top: -4px; /* Adjusted from -12px to increase vertical separation */
-    max-width: 520px;
-}
+        .subtext {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03rem;
+            margin-top: -4px;
+            max-width: 520px;
+        }
 
         .actions { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
 
@@ -325,29 +385,29 @@
                 background-color: var(--accent);
                 transform: translateY(-1px);
             }
-             a.btn.secondary:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background-color: var(--accent-dim);
-    transform: translateY(-1px);
-} 
+            a.btn.secondary:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+                background-color: var(--accent-dim);
+                transform: translateY(-1px);
+            } 
         }
 
-          a.btn:active {
-       transform: translateY(0px) scale(0.97);
-       background-color: var(--accent-hover);
-           }
+        a.btn:active {
+            transform: translateY(0px) scale(0.97);
+            background-color: var(--accent-hover);
+        }
 
         a.btn:focus-visible {
-       outline: 2px solid var(--accent);
-       outline-offset: 3px;
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
         }
 
-              a.btn.secondary {
-    background-color: rgba(255, 255, 255, 0.08);
-    border: 1px solid var(--border);
-    color: var(--accent) ; /* Changed from var(--text-muted) to a soft golden hue */
-}
+        a.btn.secondary {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+            color: var(--accent);
+        }
 
         a.btn.secondary:active {
             transform: translateY(0px) scale(0.97);
@@ -368,12 +428,12 @@
             pointer-events: none;
         }
 
-        /* ── Botanical corner deco ── */
+        /* ── Botanical bottom-right corner deco ── */
         .botanical-corner {
             position: fixed;
             pointer-events: none;
             z-index: 1;
-            transition: transform 0.3s ease-out;
+            will-change: transform;
         }
 
         .botanical-inner {
@@ -393,7 +453,6 @@
             display: block;
         }
 
-        /* bottom-right flowers */
         .botanical-br {
             bottom: 0;
             right: 0;
@@ -417,71 +476,66 @@
 </head>
 <body>
 
-    <!-- Loading / entrance overlay -->
+    <!-- Dynamic Preloader Overlay -->
     <div id="loader">
-          <svg viewBox="0 0 24 24" fill="var(--accent)">
-    <path d="M21 12.79A9 9 0 1 1 11.21 3
-             7 7 0 0 0 21 12.79Z"/>
-</svg>
+        <div class="loader-content">
+            <div class="moon-glow-wrapper">
+                <div class="moon-glow"></div>
+                <svg class="loader-moon" viewBox="0 0 24 24">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+                </svg>
+            </div>
+            <div class="loader-title">Oneiric</div>
+        </div>
     </div>
 
     <canvas id="bg"></canvas>
     <div class="stars" id="stars"></div>
 
+    <!-- Background Floating Decos Layer -->
     <div class="moon-layer" id="moonLayer">
-        <div class="moon-deco" style="top:8%; left:5%; --size:5rem; --fduration:7s; --fdelay:0s; --rot:-20deg;">
-            <svg viewBox="0 0 24 24"
-     width="1em"
-     height="1em"
-     fill="var(--accent)">
-    <path d="M21 12.79A9 9 0 1 1 11.21 3
-             7 7 0 0 0 21 12.79Z"/>
-</svg>
+        <!-- Top-Left Crescent Moon -->
+        <div class="moon-deco" style="top:7%; left:7%; --size:4.5rem; --fduration:7s; --fdelay:0s; --rot:-20deg;">
+            <svg viewBox="0 0 24 24" width="1em" height="1em" fill="var(--accent)">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+            </svg>
         </div>
-        <div class="moon-deco symbol" style="top:15%; right:6%; --size:3.4rem; --fduration:9s; --fdelay:2s; --rot:15deg; opacity:0.4;">✦</div>
-        <div class="moon-deco symbol" style="bottom:10%; left:8%; --size:3.6rem; --fduration:8s; --fdelay:1s; --rot:10deg;">◐</div>
-        <div class="moon-deco symbol" style="bottom:18%; right:5%; --size:1.8rem; --fduration:11s; --fdelay:3s; --rot:-10deg;">✧</div>
+        
+        <!-- Bottom-Left Floating Star (Now with float animation and star symbol) -->
+        <div class="moon-deco symbol" style="bottom:10%; left:6%; --size:2.8rem; --fduration:8s; --fdelay:1s; --rot:-15deg; opacity:0.35;">✦</div>
+
+        <!-- Top-Right Star -->
+        <div class="moon-deco symbol" style="top:6%; right:6%; --size:2.8rem; --fduration:9s; --fdelay:2s; --rot:15deg; opacity:0.35;">✦</div>
+        
+        <!-- Bottom-Right Small Star Accent -->
+        <div class="moon-deco symbol" style="bottom:16%; right:6%; --size:1.8rem; --fduration:11s; --fdelay:3s; --rot:-10deg; opacity:0.3;">✧</div>
     </div>
 
     <!-- Botanical bottom-right corner -->
     <div class="botanical-corner botanical-br" id="botanicalCorner">
         <div class="botanical-inner">
             <svg width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.18;">
-                <!-- main stem curving up from corner -->
                 <path d="M260,260 Q200,220 170,180 Q140,140 150,100 Q155,75 145,55" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-                <!-- secondary stem left -->
                 <path d="M185,200 Q160,175 140,170 Q115,165 100,150" stroke="var(--accent)" stroke-width="1" fill="none" stroke-linecap="round"/>
-                <!-- tertiary stem -->
                 <path d="M165,160 Q155,140 148,120" stroke="var(--accent)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
 
-                <!-- small leaves along main stem -->
-                <!-- leaf 1 -->
                 <path d="M170,180 Q155,162 162,148 Q172,162 170,180Z" fill="var(--accent)" opacity="0.55"/>
-                <!-- leaf 2 -->
                 <path d="M158,148 Q142,138 148,122 Q158,134 158,148Z" fill="var(--accent)" opacity="0.45"/>
-                <!-- leaf 3 (other side) -->
                 <path d="M162,148 Q178,134 176,118 Q163,130 162,148Z" fill="var(--accent)" opacity="0.35"/>
-                <!-- leaf 4 small -->
                 <path d="M148,120 Q136,110 140,98 Q150,108 148,120Z" fill="var(--accent)" opacity="0.40"/>
-                <!-- leaf 5 tiny tip -->
                 <path d="M145,55 Q138,42 143,34 Q150,44 145,55Z" fill="var(--accent)" opacity="0.30"/>
 
-                <!-- leaves on secondary stem -->
                 <path d="M155,175 Q142,158 148,144 Q158,158 155,175Z" fill="var(--accent)" opacity="0.30"/>
                 <path d="M130,162 Q118,150 122,138 Q132,150 130,162Z" fill="var(--accent)" opacity="0.28"/>
 
-                <!-- small flower at tip of main stem -->
-                <!-- petals -->
                 <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.45" transform="rotate(-10,145,46)"/>
                 <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.40" transform="rotate(50,145,46)"/>
                 <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.40" transform="rotate(110,145,46)"/>
                 <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.40" transform="rotate(170,145,46)"/>
                 <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.38" transform="rotate(230,145,46)"/>
                 <ellipse cx="145" cy="46" rx="4" ry="8" fill="var(--accent)" opacity="0.38" transform="rotate(290,145,46)"/>
-                <!-- center -->
                 <circle cx="145" cy="46" r="3.5" fill="var(--accent)" opacity="0.70"/>
 
-                <!-- mid flower on main stem -->
                 <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.35" transform="rotate(0,152,102)"/>
                 <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.32" transform="rotate(60,152,102)"/>
                 <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.32" transform="rotate(120,152,102)"/>
@@ -490,23 +544,18 @@
                 <ellipse cx="152" cy="102" rx="3.5" ry="7" fill="var(--accent)" opacity="0.30" transform="rotate(300,152,102)"/>
                 <circle cx="152" cy="102" r="2.8" fill="var(--accent)" opacity="0.55"/>
 
-                <!-- tiny bud clusters along secondary stem -->
-                <!-- bud 1 -->
                 <ellipse cx="118" cy="154" rx="2.5" ry="5" fill="var(--accent)" opacity="0.30" transform="rotate(-30,118,154)"/>
                 <ellipse cx="118" cy="154" rx="2.5" ry="5" fill="var(--accent)" opacity="0.28" transform="rotate(30,118,154)"/>
                 <circle cx="118" cy="154" r="2" fill="var(--accent)" opacity="0.42"/>
 
-                <!-- tiny stem berries / dots -->
                 <circle cx="140" cy="170" r="1.8" fill="var(--accent)" opacity="0.30"/>
                 <circle cx="136" cy="166" r="1.4" fill="var(--accent)" opacity="0.24"/>
                 <circle cx="132" cy="172" r="1.2" fill="var(--accent)" opacity="0.22"/>
 
-                <!-- branch from main stem mid-way -->
                 <path d="M168,162 Q185,148 196,138" stroke="var(--accent)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
                 <path d="M196,138 Q188,128 192,118 Q200,128 196,138Z" fill="var(--accent)" opacity="0.28"/>
                 <circle cx="196" cy="118" r="2.2" fill="var(--accent)" opacity="0.38"/>
 
-                <!-- extra wispy branch lower right -->
                 <path d="M220,230 Q210,210 200,195" stroke="var(--accent)" stroke-width="0.7" fill="none" stroke-linecap="round"/>
                 <path d="M200,195 Q190,185 194,174 Q202,184 200,195Z" fill="var(--accent)" opacity="0.22"/>
             </svg>
@@ -534,7 +583,6 @@
         const canvas = document.getElementById('bg');
         const ctx = canvas.getContext('2d');
 
-        // ---------- Randomness helpers ----------
         function rand(min, max) { return Math.random() * (max - min) + min; }
 
         function softRand(min, max, samples = 3) {
@@ -602,7 +650,6 @@
             drawCloud(w, 0, 120, 0.13);
             drawCloud(w*0.88, 0, 90, 0.13);
 
-            // original random sparkles
             const sparkleCount = Math.floor(rand(11, 15));
             for (let i = 0; i < sparkleCount; i++) {
                 const x = rand(0, w);
@@ -622,7 +669,6 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // ---------- Twinkling stars (Layer 1) ----------
         const starsContainer = document.getElementById('stars');
         const STAR_COUNT = 55;
 
@@ -675,7 +721,6 @@
             starsContainer.appendChild(star);
         }
 
-        // ---------- Parallax depth on mouse move ----------
         const moonLayer = document.getElementById('moonLayer');
         const chamber = document.getElementById('chamber');
         const botanicalCorner = document.getElementById('botanicalCorner');
@@ -694,26 +739,28 @@
                 currentX += (targetX - currentX) * 0.05;
                 currentY += (targetY - currentY) * 0.05;
 
-                canvas.style.transform = `translate(${currentX * 4}px, ${currentY * 4}px)`;
-                document.getElementById('stars').style.transform = `translate(${currentX * 4}px, ${currentY * 4}px)`;
-                moonLayer.style.transform = `translate(${currentX * 14}px, ${currentY * 14}px)`;
-                chamber.style.transform = `translate(${currentX * -3}px, ${currentY * -3}px)`;
+                // Multi-tiered depth layers
+                canvas.style.transform = `translate(${currentX * 3}px, ${currentY * 3}px)`;
+                starsContainer.style.transform = `translate(${currentX * 6}px, ${currentY * 6}px)`;
                 botanicalCorner.style.transform = `translate(${currentX * 10}px, ${currentY * 10}px)`;
+                moonLayer.style.transform = `translate(${currentX * 14}px, ${currentY * 14}px)`;
+                chamber.style.transform = `translate(${currentX * -2}px, ${currentY * -2}px)`;
 
                 requestAnimationFrame(animateParallax);
             }
 
-            requestAnimationFrame(animateParallax);
+            animateParallax();
         }
 
-        // ---------- Loading / entrance sequence ----------
+        // ---------- Preloader Transition ----------
         const loader = document.getElementById('loader');
-        const MIN_LOADER_TIME = 800; // ms — feels intentional, not just a flicker
+        const MIN_LOADER_TIME = 1600;
         const startTime = performance.now();
 
         window.addEventListener('load', () => {
             const elapsed = performance.now() - startTime;
             const remaining = Math.max(0, MIN_LOADER_TIME - elapsed);
+            
             setTimeout(() => {
                 loader.classList.add('hide');
                 document.body.classList.add('loaded');
