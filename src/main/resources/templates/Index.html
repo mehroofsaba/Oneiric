@@ -130,19 +130,19 @@
         }
         
                   body::before {
-               content: "";
-               position: fixed;
-               inset: 0;
-               pointer-events: none;
-               z-index: 1;
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
 
-             background: radial-gradient(
-             ellipse at center,
-             rgba(255, 248, 244, 0.18) 0%,
-             rgba(255, 248, 244, 0.06) 38%,
-             transparent 68%
-            );
-       }
+    background: radial-gradient(
+        ellipse at center,
+        rgba(255, 248, 244, 0.05) 0%,   /* Reduced from 0.18 */
+        rgba(255, 248, 244, 0.02) 38%,   /* Reduced from 0.06 */
+        transparent 68%
+    );
+}
 
         /* ── Loader / entrance overlay ── */
         #loader {
@@ -242,18 +242,18 @@
         }
 
         .chamber {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 22px;
-            text-align: center;
-            padding: 12 24px;
-            margin-top: 32px;
-            opacity: 0;
-            transition: transform 0.3s ease-out;
-        }
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px; /* Increased from 22px for more height between elements */
+    text-align: center;
+    padding: 12px 24px;
+    margin-top: -10px; /* Reduced top margin to nudge "Oneiric" and header up noticeability */
+    opacity: 0;
+    transition: transform 0.3s ease-out;
+}
 
         body.loaded .chamber {
             animation: riseIn 0.8s ease-out forwards;
@@ -270,12 +270,12 @@
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 18px;
-            margin-bottom: 10px;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 16px; /* Increased from 10px to space out from text below */
+}
 
         .logo svg {
             width: 3rem;
@@ -283,21 +283,24 @@
             flex-shrink: 0;
         }
 
-        h1 { 
+      h1 { 
     font-size: 3.5rem; 
     letter-spacing: 0.15rem; 
-    color: var(--text); 
+    color: var(--accent); /* Matches the golden moon SVG */
     font-weight: 600; 
 }
+
+       
         p { font-size: 1.05rem; color: var(--text-muted); letter-spacing: 0.05rem; }
 
-        .subtext {
-            font-size: 0.9rem;
-            color: var(--text-subtle);
-            letter-spacing: 0.02rem;
-            margin-top: -12px;
-            max-width: 520px;
-        }
+
+.subtext {
+    font-size: 0.85rem;
+    color: var(--text-muted); /* Changed from var(--text-subtle) to make it lighter & clearer */
+    letter-spacing: 0.03rem;
+    margin-top: -4px; /* Adjusted from -12px to increase vertical separation */
+    max-width: 520px;
+}
 
         .actions { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
 
@@ -343,8 +346,8 @@
               a.btn.secondary {
     background-color: rgba(255, 255, 255, 0.08);
     border: 1px solid var(--border);
-    color: var(--text-muted);
-} 
+    color: var(--accent) ; /* Changed from var(--text-muted) to a soft golden hue */
+}
 
         a.btn.secondary:active {
             transform: translateY(0px) scale(0.97);

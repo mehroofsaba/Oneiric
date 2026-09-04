@@ -1,76 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        (function() {
-            const t = localStorage.getItem('oneiric-theme');
-            if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
-        })();
+    (function() {
+        const t = localStorage.getItem('oneiric-theme');
+        if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
+    })();
     </script>
     <title>Oneiric — Edit</title>
     <style>
-    .border-deco {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-}
 
-.border-moon {
-    position: fixed;
-    font-size: 2.2rem;
-    opacity: 0.12;
-    color: var(--accent);
-    pointer-events: none;
-    z-index: 0;
-    animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(-8deg); }
-    50% { transform: translateY(-10px) rotate(5deg); }
-}
-
-.border-star {
-    position: fixed;
-    color: var(--accent);
-    opacity: 0.18;
-    pointer-events: none;
-    z-index: 0;
-    animation: twinkle 4s ease-in-out infinite;
-}
-    
         :root {
             --bg: #0d0d0d;
             --bg-secondary: #111111;
             --bg-tertiary: #1a1a1a;
             --text: #e8e0d0;
             --text-muted: #9e9589;
-            --text-subtle: #555;
-            --accent: #c9a96e;
-            --accent-hover: #b8935a;
-            --accent-dim: rgba(201,169,110,0.08);
+            --text-subtle: #6e6858;
+            --accent: #d4b478;
+            --accent-hover: #c29a5c;
+            --accent-dim: rgba(212,180,120,0.12);
+            --accent-glow: rgba(212,180,120,0.22);
             --border: #2e2e2e;
-            --border-accent: rgba(201,169,110,0.2);
-            --cloud-r: 180; --cloud-g: 140; --cloud-b: 80;
+            --border-accent: rgba(212,180,120,0.28);
+            --cloud-r: 200; --cloud-g: 160; --cloud-b: 90;
             --danger: #c97070;
             --danger-hover: #d98a8a;
         }
 
-   [data-theme="sakura"] {
-            --bg: #fdf6f0;
-            --bg-secondary: #fff0f3;
-            --bg-tertiary: #ffe4ec;
-            --text: #4a3040;
-            --text-muted: #9e7080;
-            --text-subtle: #c4a0b0;
-            --accent: #e8829a;
-            --accent-hover: #d4607a;
+        [data-theme="sakura"] {
+            --bg: #fdf6f0; --bg-secondary: #fff0f3; --bg-tertiary: #ffe4ec;
+            --text: #4a3040; --text-muted: #9e7080; --text-subtle: #c4a0b0;
+            --accent: #e8829a; --accent-hover: #d4607a;
             --accent-dim: rgba(232,130,154,0.08);
-            --border: #f0c0d0;
-            --border-accent: rgba(232,130,154,0.3);
+            --accent-glow: rgba(232,130,154,0.18);
+            --border: #f0c0d0; --border-accent: rgba(232,130,154,0.3);
             --cloud-r: 232; --cloud-g: 130; --cloud-b: 154;
             --star-color: #e8829a;
         }
@@ -80,56 +46,51 @@
             --bg-secondary: #0a1628;
             --bg-tertiary: #0f1e35;
             --text: #c8d8f0;
-            --text-muted: #7090b8;
-            --text-subtle: #3a5070;
-            --accent: #c9a96e;
-            --accent-hover: #b8935a;
-            --accent-dim: rgba(201,169,110,0.12);
+            --text-muted: #8098c0;
+            --text-subtle: #4a6088;
+            --accent: #d4b56a;
+            --accent-hover: #c9a253;
+            --accent-dim: rgba(212,181,106,0.12);
+            --accent-glow: rgba(212,181,106,0.22);
             --border: #1a2e48;
-            --border-accent: rgba(201,169,110,0.25);
-            --cloud-r: 60; --cloud-g: 100; --cloud-b: 180;
-            --star-color: #c9a96e;
+            --border-accent: rgba(212,181,106,0.25);
+            --cloud-r: 212; --cloud-g: 181; --cloud-b: 106;
+            --star-color: #d4b56a;
         }
 
-          [data-theme="sage"] {
-    --bg: #F5E3DF;
-    --bg-secondary: #F0D9D4;
-    --bg-tertiary: #E3BEB8;
-
-    --text: #4A3040;
-    --text-muted: #806477;
-    --text-subtle: #B99BAA;
-
-    --accent: #B8955A;
-    --accent-hover: #A27F4B;
-    --accent-dim: rgba(184,149,90,0.12);
-
-    --border: #D9B9BD;
-    --border-accent: rgba(184,149,90,0.28);
-
-    --cloud-r: 210; 
-    --cloud-g: 120;
-    --cloud-b: 120;
-
-    --star-color: #B8955A;
-} 
+        [data-theme="sage"] {
+            --bg: #F5E3DF;
+            --bg-secondary: #F0D9D4;
+            --bg-tertiary: #E3BEB8;
+            --text: #4A3040;
+            --text-muted: #806477;
+            --text-subtle: #B99BAA;
+            --accent: #B8955A;
+            --accent-hover: #A27F4B;
+            --accent-dim: rgba(184,149,90,0.12);
+            --accent-glow: rgba(184,149,90,0.22);
+            --border: #D9B9BD;
+            --border-accent: rgba(184,149,90,0.28);
+            --cloud-r: 210; --cloud-g: 120; --cloud-b: 120;
+            --star-color: #B8955A;
+        }
 
         [data-theme="noir"] {
             --bg: #000000;
             --bg-secondary: #0a0a0a;
             --bg-tertiary: #141414;
             --text: #ffffff;
-            --text-muted: #888888;
-            --text-subtle: #444444;
-            --accent: #ffffff;
-            --accent-hover: #cccccc;
-            --accent-dim: rgba(255,255,255,0.05);
-            --border: #222222;
-            --border-accent: rgba(255,255,255,0.15);
-            --cloud-r: 200; --cloud-g: 200; --cloud-b: 200;
-            --star-color: #ffffff;
+            --text-muted: #b8b8b8;
+            --text-subtle: #666666;
+            --accent: #f2f2f2;
+            --accent-hover: #d6d6d6;
+            --accent-dim: rgba(210,210,210,0.07);
+            --accent-glow: rgba(210,210,210,0.18);
+            --border: #242424;
+            --border-accent: rgba(210,210,210,0.22);
+            --cloud-r: 190; --cloud-g: 190; --cloud-b: 195;
+            --star-color: #d8d8dc;
         }
-   
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -138,103 +99,157 @@
             color: var(--text);
             font-family: 'Georgia', serif;
             min-height: 100vh;
-            padding: 60px 40px;
+            padding: 40px;
             position: relative;
             overflow-x: hidden;
             transition: background-color 0.4s ease, color 0.4s ease;
+            animation: pageFadeIn 0.6s ease-out;
         }
 
-        /* Corner decorations */
-        .corner {
+        @keyframes pageFadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+        /* ── Corner decorations ── */
+        .corner-deco {
             position: fixed;
-            color: var(--accent);
-            opacity: 0.15;
-            pointer-events: none;
             z-index: 0;
-            line-height: 1;
+            pointer-events: none;
+            opacity: 0.28;
+            color: var(--accent);
+            animation: gentleDrift 6s ease-in-out infinite;
         }
 
-        .corner-tl { top: 16px; left: 16px; }
-        .corner-tr { top: 16px; right: 16px; transform: scaleX(-1); }
-        .corner-bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
-        .corner-br { bottom: 16px; right: 16px; transform: scale(-1); }
+        .corner-deco svg { display: block; overflow: visible; }
+        .corner-tl { top: 20px; left: 20px; width: 110px; }
+        .corner-tr { top: 20px; right: 20px; width: 160px; }
+        .corner-bl { bottom: 20px; left: 20px; width: 160px; }
+        .corner-br { bottom: 20px; right: 20px; width: 120px; }
 
-        .border-top, .border-bottom {
-            position: fixed;
-            left: 48px; right: 48px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
-            pointer-events: none; z-index: 0;
+        .vine { stroke: var(--accent); stroke-width: 1.3; fill: none; stroke-linecap: round; }
+        .bud  { fill: var(--accent); opacity: 0.75; }
+        .book-deco { stroke: var(--accent); stroke-width: 1.1; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+        @keyframes gentleDrift {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
         }
-
-        .border-top { top: 48px; }
-        .border-bottom { bottom: 48px; }
-
-        .border-left, .border-right {
-            position: fixed;
-            top: 48px; bottom: 48px;
-            width: 1px;
-            background: linear-gradient(180deg, transparent, var(--border-accent), transparent);
-            pointer-events: none; z-index: 0;
-        }
-
-        .border-left { left: 48px; }
-        .border-right { right: 48px; }
 
         .deco-star {
             position: fixed;
             color: var(--accent);
-            opacity: 0.2;
             pointer-events: none;
             z-index: 0;
             font-size: var(--sz);
+            opacity: var(--base-op, 0.22);
             animation: twinkle var(--dur) ease-in-out infinite var(--del);
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0.1; }
-            50% { opacity: 0.35; }
+            0%, 100% { opacity: calc(var(--base-op, 0.22) * 0.4); transform: scale(0.85); }
+            50% { opacity: calc(var(--base-op, 0.22) * 1.6); transform: scale(1.15); }
         }
 
+        .border-top, .border-bottom {
+            position: fixed; left: 48px; right: 48px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-accent), var(--accent-hover), var(--border-accent), transparent);
+            opacity: 0.6; pointer-events: none; z-index: 0;
+        }
+        .border-top { top: 48px; }
+        .border-bottom { bottom: 48px; }
+
+        .border-left, .border-right {
+            position: fixed; top: 48px; bottom: 48px; width: 1px;
+            background: linear-gradient(180deg, transparent, var(--border-accent), var(--accent-hover), var(--border-accent), transparent);
+            opacity: 0.6; pointer-events: none; z-index: 0;
+        }
+        .border-left { left: 48px; }
+        .border-right { right: 48px; }
+
+        /* ── Header ── */
         .header {
             position: relative;
             z-index: 1;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
+            margin-bottom: 10px;
             flex-wrap: wrap;
-            row-gap: 14px;
+            row-gap: 12px;
         }
 
-        h1 { color: var(--accent); font-size: 1.8rem; letter-spacing: 0.15rem; }
+        h1 {
+            color: var(--accent);
+            font-size: 1.7rem;
+            letter-spacing: 0.15rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            text-shadow: 0 0 18px var(--accent-glow);
+        }
 
+        h1 svg { width: 0.9em; height: 0.9em; fill: var(--accent); }
+
+        .nav-links { display: flex; gap: 8px; opacity: 0.8; transition: opacity 0.2s; }
+        .nav-links:hover { opacity: 1; }
+
+        .nav-links a {
+            display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+            padding: 6px 16px; border-radius: 16px; text-decoration: none;
+            font-family: 'Georgia', serif; font-size: 0.76rem;
+            border: 1px solid transparent; transition: all 0.2s ease;
+            min-width: 92px; box-sizing: border-box; text-align: center;
+        }
+
+        .nav-links a.chamber-link {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+            border-color: var(--border);
+        }
+        .nav-links a.chamber-link:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+        .nav-links a.btn {
+            background-color: var(--bg-tertiary);
+            color: var(--text-muted);
+            border-color: var(--border);
+        }
+        .nav-links a.btn:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+        /* ── Meta row ── */
+        .meta-row {
+            position: relative; z-index: 1;
+            max-width: 700px; margin: 0 auto 20px;
+            display: flex; justify-content: flex-start;
+            align-items: center; flex-wrap: wrap; gap: 8px;
+        }
+
+        .last-edited {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-subtle);
+            font-size: 0.78rem;
+            letter-spacing: 0.03rem;
+        }
+        .last-edited svg { width: 0.9em; height: 0.9em; fill: none; stroke: currentColor; stroke-width: 1.8; flex-shrink: 0; }
+
+        /* ── Editor ── */
         .editor {
             position: relative;
             z-index: 1;
             max-width: 700px;
+            width: 100%;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 22px;
+            gap: 14px;
         }
 
-        .last-edited {
-            position: relative;
-            z-index: 1;
-            max-width: 700px;
-            margin: 0 auto 18px;
-            text-align: left;
-            color: var(--text-subtle);
-            font-size: 0.78rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .last-edited svg { width: 0.9em; height: 0.9em; fill: none; stroke: currentColor; stroke-width: 1.8; flex-shrink: 0; }
-
-        .field-group { display: flex; flex-direction: column; gap: 8px; }
+        .field-group { display: flex; flex-direction: column; gap: 4px; }
 
         .field-label {
             font-size: 0.72rem;
@@ -245,7 +260,7 @@
 
         input[type="text"] {
             width: 100%;
-            padding: 10px 0 14px;
+            padding: 12px 0;
             background: transparent;
             border: none;
             border-bottom: 1px solid var(--border);
@@ -253,227 +268,293 @@
             font-family: 'Georgia', serif;
             font-size: 1.4rem;
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+            caret-color: var(--accent);
         }
 
-        input[type="text"]:focus { border-bottom-color: var(--accent); }
+        input[type="text"]::placeholder { color: var(--text-muted); }
 
-        /* Mood selector — matches Write page chips */
-        .mood-group { display: flex; flex-direction: column; gap: 10px; }
-
-        .mood-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .mood-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .mood-chip {
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            background: var(--bg-tertiary);
-            color: var(--text-muted);
-            font-family: 'Georgia', serif;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-
-        .mood-chip:hover {
-            border-color: var(--accent);
+        input[type="text"]:focus {
+            border-bottom-color: var(--accent);
             color: var(--accent);
+            box-shadow: 0 2px 0 -1px var(--accent-glow), 0 6px 18px -8px var(--accent-glow);
         }
 
-        .mood-chip.selected {
-            background: var(--accent-dim);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
+           /* ── Mood ── */
+.mood-group-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.03rem;
+}
 
-        /* Toolbar — matches Write page */
-        .editor-frame {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: border-color 0.2s;
-        }
+.mood-scroll-wrap {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
 
-        .editor-frame:focus-within { border-color: var(--accent); }
+.mood-scroll-wrap::-webkit-scrollbar {
+    display: none;
+}
 
+.mood-scroll-wrap::after {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 40px;
+    background: linear-gradient(to right, transparent, var(--bg));
+    pointer-events: none;
+    border-radius: 0 16px 16px 0;
+}
+
+@media (max-width: 640px) {
+    .mood-scroll-wrap::after { display: block; }
+    .mood-row {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        width: max-content;
+        padding-bottom: 4px;
+        gap: 6px;
+    }
+    .mood-label { flex-shrink: 0; }
+}
+
+.mood-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+    gap: 6px;
+    padding: 2px 0 4px;
+    width: 100%;
+}
+
+.mood-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 10px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    font-family: 'Georgia', serif;
+    font-size: 0.74rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    color: var(--text-muted);
+}
+
+.mood-label:hover { border-color: var(--accent); }
+.mood-label input[type="radio"] { display: none; }
+
+.mood-label:has(input:checked) {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, var(--accent-dim), var(--accent-glow));
+    box-shadow: 0 0 0 2px var(--accent-dim), 0 0 18px var(--accent-glow);
+}
+
+.mood-label:has(input:checked) .face,
+.mood-label:has(input:checked) .mood-text { color: var(--accent) !important; }
+
+.mood-label.happy .face,    .mood-label.happy .mood-text    { color: #c47a20; }
+.mood-label.calm .face,     .mood-label.calm .mood-text     { color: #3a9e88; }
+.mood-label.sad .face,      .mood-label.sad .mood-text      { color: #4a88c8; }
+.mood-label.anxious .face,  .mood-label.anxious .mood-text  { color: #9060c0; }
+.mood-label.angry .face,    .mood-label.angry .mood-text    { color: #c84040; }
+.mood-label.lonely .face,   .mood-label.lonely .mood-text   { color: #5060a8; }
+.mood-label.excited .face,  .mood-label.excited .mood-text  { color: #c07820; }
+.mood-label.confused .face, .mood-label.confused .mood-text { color: #888840; }
+.mood-label.neutral .face,  .mood-label.neutral .mood-text  { color: #707070; }
+.mood-label.bored .face,    .mood-label.bored .mood-text    { color: #7858a0; }
+        /* ── Toolbar ── */
         .toolbar {
             display: flex;
             align-items: center;
-            gap: 4px;
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border);
+            gap: 2px;
+            padding: 6px 6px;
             background: var(--bg-secondary);
+            border: 1px solid var(--border-accent);
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
         }
 
         .toolbar button {
-            all: unset;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            border-radius: 4px;
+            position: relative;
+            width: 30px; height: 30px;
+            display: flex; align-items: center; justify-content: center;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
             color: var(--text-muted);
             cursor: pointer;
-            font-family: 'Georgia', serif;
-            font-size: 0.95rem;
             transition: all 0.2s ease;
         }
 
-        .toolbar button:hover { color: var(--accent); background: var(--accent-dim); }
-        .toolbar button svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .toolbar .divider { width: 1px; height: 18px; background: var(--border); margin: 0 6px; }
-        .toolbar .spacer { flex: 1; }
+        .toolbar button svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .toolbar button:hover { color: var(--accent); background: var(--accent-dim); border-color: var(--border-accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+        .toolbar button[title]::after {
+            content: attr(title);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-3px);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 0.68rem;
+            font-family: 'Georgia', serif;
+            padding: 4px 8px;
+            border-radius: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            z-index: 10;
+        }
+        .toolbar button[title]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .toolbar .divider-line { width: 1px; height: 16px; background: var(--border); margin: 0 4px; }
+
+        .toolbar .attach-btn { margin-left: auto; opacity: 0.5; }
+        .toolbar .attach-btn:hover { opacity: 1; }
+
+        /* ── Writing area ── */
+        .write-wrap {
+            position: relative;
+            border: 1px solid var(--border-accent);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            padding: 20px 20px 0;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: var(--bg-secondary);
+        }
+
+        .write-wrap:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-dim), 0 0 30px var(--accent-glow);
+        }
 
         textarea {
             width: 100%;
-            min-height: 260px;
-            padding: 20px;
+            min-height: 300px;
+            padding: 0 0 16px;
             background: transparent;
             border: none;
             color: var(--text);
             font-family: 'Georgia', serif;
             font-size: 1rem;
-            line-height: 1.8;
+            line-height: 1.85;
             outline: none;
             resize: vertical;
+            caret-color: var(--accent);
         }
 
-        .editor-footer {
+        textarea::placeholder { color: var(--text-muted); }
+
+        .write-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 14px;
+            padding: 8px 0 12px;
             border-top: 1px solid var(--border);
-            background: var(--bg-secondary);
-            font-size: 0.78rem;
-            color: var(--text-subtle);
+            font-size: 0.75rem;
         }
 
-        .editor-footer .status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .autosave { display: flex; align-items: center; gap: 6px; color: var(--text-muted); transition: color 0.3s; }
+        .autosave.is-dirty { color: var(--accent); }
+        .autosave .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.7; animation: pulseDot 2s ease-in-out infinite; box-shadow: 0 0 8px var(--accent-glow); }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 0.3; transform: scale(0.9); }
+            50% { opacity: 0.9; transform: scale(1.1); }
         }
 
-        .editor-footer .status .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            opacity: 0.7;
-        }
+        .counter { letter-spacing: 0.02rem; color: var(--text-muted); }
+        .counter.near-limit { color: var(--accent); }
 
-        .form-actions {
+        /* ── Action buttons ── */
+        .actions-row {
             display: flex;
             justify-content: space-between;
+            gap: 14px;
             align-items: center;
-            gap: 12px;
+            margin-top: 4px;
             flex-wrap: wrap;
         }
 
-        .left-actions, .right-actions {
-            display: flex;
-            gap: 10px;
+        .left-actions, .right-actions { display: flex; gap: 12px; }
+
+        button[type="button"].delete-entry {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: transparent;
+            border: 1px solid var(--border-accent);
+            color: var(--danger);
+            border-radius: 6px;
+            font-family: 'Georgia', serif;
+            font-size: 0.84rem;
+            letter-spacing: 0.02rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        button.primary {
-            padding: 9px 22px;
-            background-color: var(--accent);
+        button[type="button"].delete-entry:hover {
+            background: rgba(201,112,112,0.08);
+            border-color: var(--danger);
+            transform: translateY(-1px);
+        }
+
+        button[type="button"].delete-entry svg { width: 0.95em; height: 0.95em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+        a.discard-btn {
+            padding: 10px 22px;
+            background: transparent;
+            border: 1px solid var(--border-accent);
+            color: var(--text-subtle);
+            border-radius: 6px;
+            font-family: 'Georgia', serif;
+            font-size: 0.84rem;
+            letter-spacing: 0.03rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        a.discard-btn:hover {
+            border-color: var(--text-muted);
+            color: var(--text);
+            transform: translateY(-1px);
+        }
+
+        button[type="submit"] {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
             color: var(--bg);
             border: none;
             border-radius: 6px;
             font-family: 'Georgia', serif;
-            font-size: 0.88rem;
-            cursor: pointer;
-            letter-spacing: 0.03rem;
-            transition: background-color 0.2s;
-        }
-
-        button.primary:hover { background-color: var(--accent-hover); }
-
-        a.discard, button.delete-entry {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 9px 18px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-muted);
-            font-family: 'Georgia', serif;
-            font-size: 0.85rem;
-            text-decoration: none;
+            font-size: 0.84rem;
+            font-weight: 500;
+            letter-spacing: 0.06rem;
             cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 2px 10px var(--accent-glow);
         }
 
-        a.discard:hover {
-            border-color: var(--text-muted);
-            color: var(--text);
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--accent-glow);
         }
 
-        button.delete-entry {
-            color: var(--danger);
-            border-color: transparent;
-            padding: 9px 14px;
-        }
-
-        button.delete-entry:hover {
-            background: rgba(201,112,112,0.08);
-            border-color: var(--danger);
-        }
-
-        a.discard svg, button.delete-entry svg { width: 0.95em; height: 0.95em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-
-        .nav-links { display: flex; gap: 16px; }
-
-        .nav-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 24px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-family: 'Georgia', serif;
-            font-size: 0.9rem;
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
-            min-width: 140px;
-        }
-
-        .nav-links a.chamber-link {
-            background-color: var(--bg-tertiary);
-            color: var(--text-muted);
-        }
-
-        .nav-links a.chamber-link:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-            box-shadow: 0 0 12px var(--accent-dim);
-        }
-
-        .nav-links a.btn {
-            background-color: var(--accent);
-            color: var(--bg);
-        }
-
-        .nav-links a.btn:hover {
-            background-color: var(--accent-hover);
-            box-shadow: 0 0 12px var(--accent-dim);
-        }
-
-        /* Delete confirmation modal — matches Entries page */
+        /* ── Delete confirmation modal ── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -487,14 +568,14 @@
         .modal-overlay.active { display: flex; }
 
         .modal-box {
-            background-color: var(--bg-secondary);
+            background-color: var(--bg-tertiary);
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 32px;
             max-width: 380px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 0 40px var(--accent-dim);
+            box-shadow: 0 0 40px var(--accent-glow);
         }
 
         .modal-box .modal-icon {
@@ -519,7 +600,7 @@
         }
 
         .modal-btn.cancel {
-            background-color: var(--bg-tertiary);
+            background-color: var(--bg-secondary);
             color: var(--text-muted);
             border: 1px solid transparent;
             transition: all 0.2s ease;
@@ -536,190 +617,213 @@
 
         .modal-btn.confirm:hover { background-color: var(--danger-hover); }
 
-        /* ── Mobile fixes: header wrapping + tighter spacing ── */
-        @media (max-width: 640px) {
-            body { padding: 32px 20px; }
+        /* ── Updated Mobile Responsive Styles ── */
+@media (max-width: 640px) {
+    body { 
+        padding: 24px 20px; 
+    }
 
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 14px;
-                margin-bottom: 28px;
-            }
+    /* Force true horizontal centering for form elements */
+    .editor,
+    .meta-row,
+    .draft-banner {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        width: 100%;
+    }
 
-            .nav-links {
-                width: 100%;
-                gap: 10px;
-            }
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
 
-            .nav-links a {
-                flex: 1 1 0;
-                min-width: 0;
-                padding: 10px 12px;
-                font-size: 0.85rem;
-            }
+    .nav-links {
+        width: 100%;
+        gap: 8px;
+        opacity: 1;
+    }
 
-            .border-top, .border-bottom { left: 20px; right: 20px; }
-            .border-left, .border-right { top: 20px; bottom: 20px; }
-            .border-top { top: 20px; }
-            .border-bottom { bottom: 20px; }
-            .border-left { left: 20px; }
-            .border-right { right: 20px; }
+    .nav-links a {
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 8px 10px;
+        font-size: 0.74rem;
+    }
 
-            .form-actions { flex-direction: column-reverse; align-items: stretch; }
-            .left-actions, .right-actions { width: 100%; }
-            .right-actions { flex-direction: column-reverse; }
-            .left-actions button.delete-entry { width: 100%; justify-content: center; }
-            .right-actions a.discard, .right-actions button.primary { width: 100%; justify-content: center; text-align: center; }
-        }
+    /* Equalized framing lines to fix left/right offset */
+    .border-top, .border-bottom { left: 16px; right: 16px; }
+    .border-left, .border-right { top: 16px; bottom: 16px; }
+    .border-top { top: 16px; }
+    .border-bottom { bottom: 16px; }
+    .border-left { left: 16px; }
+    .border-right { right: 16px; }
+
+    .corner-tl { top: 6px; left: 6px; width: 60px; }
+    .corner-tr { top: 6px; right: 6px; width: 80px; }
+    .corner-bl { bottom: 6px; left: 6px; width: 80px; }
+    .corner-br { bottom: 6px; right: 6px; width: 60px; }
+
+    textarea {
+        min-height: 260px;
+    }
+}
     </style>
 </head>
 <body>
 
-    <!-- Celestial background -->
-    <canvas id="bg" style="position:fixed; inset:0; z-index:0; pointer-events:none;"></canvas>
+    <canvas id="bg"></canvas>
 
-    <!-- Floating stars -->
-    <div id="floatStars" style="position:fixed; inset:0; z-index:0; pointer-events:none;"></div>
-
-    <!-- Swirl decorations -->
-       <svg style="position:fixed; bottom:0; left:0; width:220px; height:220px; z-index:0; pointer-events:none; opacity:0.1;" viewBox="0 0 220 220">
-        <!-- Swirl -->
-        <path d="M20 180 C40 140, 80 160, 60 120 C40 80, 80 60, 100 80 C120 100, 100 130, 130 110 C160 90, 170 50, 150 30" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
-        <path d="M10 160 C30 130, 50 145, 40 110 C30 75, 60 55, 80 70" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.6"/>
-        <!-- Book -->
-        <rect x="60" y="170" width="80" height="50" rx="3" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
-        <line x1="100" y1="170" x2="100" y2="220" stroke="var(--accent)" stroke-width="1"/>
-        <line x1="70" y1="178" x2="95" y2="178" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
-        <line x1="70" y1="185" x2="95" y2="185" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
-        <line x1="70" y1="192" x2="95" y2="192" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
-        <line x1="105" y1="178" x2="130" y2="178" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
-        <line x1="105" y1="185" x2="130" y2="185" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
-        <line x1="105" y1="192" x2="130" y2="192" stroke="var(--accent)" stroke-width="0.8" opacity="0.7"/>
-        <!-- Pen -->
-        <line x1="135" y1="215" x2="155" y2="195" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
-        <polygon points="155,195 160,190 158,198" fill="var(--accent)" opacity="0.8"/>
-    </svg>
-        <svg style="position:fixed; top:0; right:0; width:220px; height:220px; z-index:0; pointer-events:none; opacity:0.1; transform:rotate(180deg);" viewBox="0 0 220 220">
-        <path d="M20 180 C40 140, 80 160, 60 120 C40 80, 80 60, 100 80 C120 100, 100 130, 130 110 C160 90, 170 50, 150 30" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
-        <path d="M10 160 C30 130, 50 145, 40 110 C30 75, 60 55, 80 70" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.6"/>
-        <!-- Stars bottom left (appears top right due to rotation) -->
-        <text x="30" y="50" font-size="18" fill="var(--accent)" opacity="0.9">✦</text>
-        <text x="55" y="30" font-size="12" fill="var(--accent)" opacity="0.7">✧</text>
-        <text x="15" y="75" font-size="10" fill="var(--accent)" opacity="0.6">★</text>
-        <text x="70" y="55" font-size="8" fill="var(--accent)" opacity="0.5">✦</text>
-    </svg>
-
-    <!-- Crescent moon top left -->
-    <svg style="position:fixed; top:20px; left:20px; width:120px; height:120px; z-index:0; pointer-events:none; opacity:0.1;" viewBox="0 0 120 120">
-        <path d="M60 20 A35 35 0 1 0 60 90 A25 25 0 1 1 60 20Z" fill="var(--accent)"/>
-        <!-- Stars around moon -->
-        <text x="85" y="30" font-size="14" fill="var(--accent)">✦</text>
-        <text x="95" y="55" font-size="9" fill="var(--accent)" opacity="0.8">✧</text>
-        <text x="78" y="75" font-size="11" fill="var(--accent)" opacity="0.7">★</text>
-        <text x="20" y="25" font-size="10" fill="var(--accent)" opacity="0.6">✧</text>
-        <text x="10" y="50" font-size="8" fill="var(--accent)" opacity="0.5">✦</text>
-    </svg>
-
-    <!-- Extra stars bottom left -->
-    <svg style="position:fixed; bottom:20px; left:20px; width:100px; height:100px; z-index:0; pointer-events:none; opacity:0.12;" viewBox="0 0 100 100">
-        <text x="10" y="40" font-size="20" fill="var(--accent)">✦</text>
-        <text x="40" y="25" font-size="14" fill="var(--accent)" opacity="0.8">✧</text>
-        <text x="60" y="50" font-size="10" fill="var(--accent)" opacity="0.6">★</text>
-        <text x="25" y="65" font-size="12" fill="var(--accent)" opacity="0.7">✦</text>
-        <text x="5" y="75" font-size="8" fill="var(--accent)" opacity="0.5">✧</text>
-    </svg>
-
-    <!-- Extra stars top right -->
-    <svg style="position:fixed; top:20px; right:20px; width:100px; height:100px; z-index:0; pointer-events:none; opacity:0.12;" viewBox="0 0 100 100">
-        <text x="60" y="40" font-size="20" fill="var(--accent)">✦</text>
-        <text x="30" y="25" font-size="14" fill="var(--accent)" opacity="0.8">✧</text>
-        <text x="10" y="50" font-size="10" fill="var(--accent)" opacity="0.6">★</text>
-        <text x="50" y="65" font-size="12" fill="var(--accent)" opacity="0.7">✦</text>
-        <text x="80" y="75" font-size="8" fill="var(--accent)" opacity="0.5">✧</text>
-    </svg>
-
-    <!-- Frame decoration -->
     <div class="border-top"></div>
     <div class="border-bottom"></div>
     <div class="border-left"></div>
     <div class="border-right"></div>
 
-    <div class="corner corner-tl">✦ · · ·<br>·<br>·</div>
-    <div class="corner corner-tr">✦ · · ·<br>·<br>·</div>
-    <div class="corner corner-bl">·<br>·<br>✦ · · ·</div>
-    <div class="corner corner-br">·<br>·<br>✦ · · ·</div>
+    <div class="corner-deco corner-tl">
+        <svg viewBox="0 0 90 90" fill="none">
+            <path class="bud" d="M14 10 L17 17 L24 18 L17 21 L18 28 L14 23 L8 27 L11 20 L4 16 L12 16 Z" opacity="0.55"/>
+            <path class="bud" d="M42 6 L44 11 L49 12 L44 14 L45 19 L42 15 L37 18 L39 13 L34 10 L40 10 Z" opacity="0.35"/>
+        </svg>
+    </div>
 
-    <div class="deco-star" style="top:60px; left:80px; --sz:0.7rem; --dur:3s; --del:0s;">✧</div>
-    <div class="deco-star" style="top:60px; right:80px; --sz:0.6rem; --dur:4s; --del:1s;">✦</div>
-    <div class="deco-star" style="bottom:60px; left:80px; --sz:0.6rem; --dur:3.5s; --del:0.5s;">✧</div>
-    <div class="deco-star" style="bottom:60px; right:80px; --sz:0.7rem; --dur:4s; --del:2s;">✦</div>
+    <div class="corner-deco corner-tr">
+        <svg viewBox="0 0 160 140" fill="none">
+            <path class="vine" d="M158 2 C130 4 100 14 80 34 C64 50 54 70 50 92 C48 104 48 116 50 126"/>
+            <path class="vine" d="M158 2 C138 8 120 18 106 32 C96 42 90 52 88 62 C86 72 90 80 100 82 C110 84 116 76 112 68 C108 60 98 60 96 68"/>
+            <path class="vine" d="M120 8 C104 16 92 28 84 42 C78 52 76 62 78 70 C80 78 88 82 94 78 C100 74 98 66 92 66" opacity="0.7"/>
+            <circle class="bud" cx="94" cy="78" r="2.5"/>
+            <circle class="bud" cx="100" cy="82" r="2"/>
+            <circle class="bud" cx="50" cy="126" r="2.5" opacity="0.6"/>
+            <path class="vine" d="M70 20 C60 26 52 34 46 44" opacity="0.5"/>
+            <circle class="bud" cx="46" cy="44" r="1.8" opacity="0.5"/>
+        </svg>
+    </div>
+
+    <div class="corner-deco corner-bl">
+        <svg viewBox="0 0 160 140" fill="none">
+            <path class="vine" d="M2 138 C30 136 60 126 80 106 C96 90 106 70 110 48 C112 36 112 24 110 14"/>
+            <path class="vine" d="M2 138 C22 132 40 122 54 108 C64 98 70 88 72 78 C74 68 70 60 60 58 C50 56 44 64 48 72 C52 80 62 80 64 72"/>
+            <path class="vine" d="M40 132 C56 124 68 112 76 98 C82 88 84 78 82 70 C80 62 72 58 66 62 C60 66 62 74 68 74" opacity="0.7"/>
+            <circle class="bud" cx="66" cy="62" r="2.5"/>
+            <circle class="bud" cx="60" cy="58" r="2"/>
+            <circle class="bud" cx="110" cy="14" r="2.5" opacity="0.6"/>
+            <path class="vine" d="M90 120 C100 114 108 106 114 96" opacity="0.5"/>
+            <circle class="bud" cx="114" cy="96" r="1.8" opacity="0.5"/>
+        </svg>
+    </div>
+
+    <div class="corner-deco corner-br">
+        <svg viewBox="0 0 110 80" fill="none">
+            <path class="book-deco" d="M55 20 C48 14 36 12 26 14 L26 60 C36 58 48 60 55 66"/>
+            <path class="book-deco" d="M55 20 C62 14 74 12 84 14 L84 60 C74 58 62 60 55 66"/>
+            <path class="book-deco" d="M55 20 L55 66" opacity="0.5"/>
+            <path class="book-deco" d="M32 24 L48 22" opacity="0.5"/>
+            <path class="book-deco" d="M32 32 L48 30" opacity="0.5"/>
+            <path class="book-deco" d="M32 40 L46 38" opacity="0.5"/>
+            <path class="book-deco" d="M62 22 L78 24" opacity="0.5"/>
+            <path class="book-deco" d="M62 30 L78 32" opacity="0.5"/>
+            <path class="book-deco" d="M64 38 L78 40" opacity="0.5"/>
+        </svg>
+    </div>
+
+    <div class="deco-star" style="top:64px;  left:110px;  --sz:0.55rem; --dur:3s;   --del:0s;   --base-op:0.22;">✧</div>
+    <div class="deco-star" style="top:96px;  left:70px;   --sz:0.4rem;  --dur:4.2s; --del:0.8s; --base-op:0.16;">·</div>
+    <div class="deco-star" style="top:28px;  left:150px;  --sz:0.65rem; --dur:3.6s; --del:1.4s; --base-op:0.22;">✦</div>
+    <div class="deco-star" style="top:60px;  right:130px; --sz:0.5rem;  --dur:3.4s; --del:0.4s; --base-op:0.18;">✧</div>
+    <div class="deco-star" style="top:110px; right:80px;  --sz:0.45rem; --dur:4.6s; --del:1.8s; --base-op:0.16;">·</div>
+    <div class="deco-star" style="bottom:70px;  left:130px;  --sz:0.5rem;  --dur:3.8s; --del:0.6s; --base-op:0.18;">✦</div>
+    <div class="deco-star" style="bottom:110px; left:80px;   --sz:0.4rem;  --dur:4.4s; --del:1.2s; --base-op:0.14;">·</div>
+    <div class="deco-star" style="bottom:100px; right:140px; --sz:0.6rem;  --dur:3.2s; --del:0.2s; --base-op:0.22;">✧</div>
+    <div class="deco-star" style="bottom:60px;  right:90px;  --sz:0.4rem;  --dur:5s;   --del:2s;   --base-op:0.14;">·</div>
+    <div class="deco-star" style="top:50%; left:52px;  --sz:0.5rem; --dur:5s; --del:1s; --base-op:0.16;">·</div>
+    <div class="deco-star" style="top:50%; right:52px; --sz:0.5rem; --dur:5s; --del:2s; --base-op:0.16;">·</div>
 
     <div class="header">
         <h1>
-            <svg viewBox="0 0 24 24" width="0.85em" height="0.85em" fill="var(--accent)" style="vertical-align:middle; margin-right:8px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>Edit
+            <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            Edit
         </h1>
         <div class="nav-links">
             <a href="/chamber" class="chamber-link">
-                <svg viewBox="0 0 24 24" width="1em" height="1em" fill="var(--accent)" style="vertical-align:middle; margin-right:4px;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg> Chamber
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="flex-shrink:0;"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                Chamber
             </a>
-            <a href="/entries" class="btn">✦ Entries</a>
+            <a href="/entries" class="btn">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/></svg>
+                Entries
+            </a>
         </div>
     </div>
 
-    <p class="last-edited">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        Last edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
-    </p>
+    <div class="meta-row">
+        <span class="last-edited">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            Last edited: <span th:text="${#temporals.format(entry.updatedAt, 'dd MMM yyyy, HH:mm')}"></span>
+        </span>
+    </div>
 
     <form class="editor" id="editForm" th:action="@{/entries/{id}/edit(id=${entry.id})}" method="post">
 
         <div class="field-group">
-            <p class="field-label">Title</p>
             <input type="text" name="title" id="titleInput" th:value="${entry.title}" required />
         </div>
 
-        <!-- Mood selector -->
-        <div class="mood-group">
-            <p class="mood-label">Mood:</p>
-            <div class="mood-options" id="moodOptions">
-                <button type="button" class="mood-chip" data-mood="happy">(❁´◡`❁) Happy</button>
-                <button type="button" class="mood-chip" data-mood="calm">^_^ Calm</button>
-                <button type="button" class="mood-chip" data-mood="sad">＞︿＜ Sad</button>
-                <button type="button" class="mood-chip" data-mood="anxious">＞﹏＜ Anxious</button>
-                <button type="button" class="mood-chip" data-mood="angry">(╬▔皿▔)╯ Angry</button>
-                <button type="button" class="mood-chip" data-mood="lonely">( ﾉ ﾟｰﾟ)ﾉ Lonely</button>
-                <button type="button" class="mood-chip" data-mood="excited">(≧∀≦)ゞ Excited</button>
-                <button type="button" class="mood-chip" data-mood="confused">*-* Confused</button>
-                <button type="button" class="mood-chip" data-mood="neutral">^_____^ Neutral</button>
-                <button type="button" class="mood-chip" data-mood="bored">–_– Bored</button>
-            </div>
-            <input type="hidden" name="mood" id="moodInput" th:value="${entry.mood}"/>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span class="mood-group-label">Mood:</span>
         </div>
 
-        <!-- Formatting toolbar + textarea -->
-        <div class="editor-frame">
+        <div class="mood-scroll-wrap">
+            <div class="mood-row" id="moodOptions">
+                <label class="mood-label happy" data-mood="happy"><span class="face">(❁´◡`❁)</span> <span class="mood-text">Happy</span></label>
+                <label class="mood-label calm" data-mood="calm"><span class="face">^_^</span> <span class="mood-text">Calm</span></label>
+                <label class="mood-label sad" data-mood="sad"><span class="face">＞︿＜</span> <span class="mood-text">Sad</span></label>
+                <label class="mood-label anxious" data-mood="anxious"><span class="face">＞﹏＜</span> <span class="mood-text">Anxious</span></label>
+                <label class="mood-label angry" data-mood="angry"><span class="face">(╬▔皿▔)╯</span> <span class="mood-text">Angry</span></label>
+                <label class="mood-label lonely" data-mood="lonely"><span class="face">( ﾉ ﾟｰﾟ)ﾉ</span> <span class="mood-text">Lonely</span></label>
+                <label class="mood-label excited" data-mood="excited"><span class="face">(≧∀≦)ゞ</span> <span class="mood-text">Excited</span></label>
+                <label class="mood-label confused" data-mood="confused"><span class="face">*-*</span> <span class="mood-text">Confused</span></label>
+                <label class="mood-label neutral" data-mood="neutral"><span class="face">^_____^</span> <span class="mood-text">Neutral</span></label>
+                <label class="mood-label bored" data-mood="bored"><span class="face">–_–</span> <span class="mood-text">Bored</span></label>
+            </div>
+        </div>
+        <input type="hidden" name="mood" id="moodInput" th:value="${entry.mood}"/>
+
+        <div>
             <div class="toolbar">
-                <button type="button" title="Bold" onclick="wrapSelection('**','**')"><strong>B</strong></button>
-                <button type="button" title="Italic" onclick="wrapSelection('_','_')"><em>I</em></button>
-                <button type="button" title="Quote" onclick="wrapSelection('&laquo; ','')">&laquo;</button>
-                <button type="button" title="List" onclick="wrapSelection('- ','')">
-                    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1"/><circle cx="3" cy="12" r="1"/><circle cx="3" cy="18" r="1"/></svg>
+                <button type="button" title="Bold (Ctrl+B)" onclick="wrapSelection('**','**')">
+                    <svg viewBox="0 0 24 24"><path d="M6 4h7a4 4 0 0 1 0 8H6z"/><path d="M6 12h8a4 4 0 0 1 0 8H6z"/></svg>
                 </button>
-                <button type="button" title="Divider" onclick="wrapSelection('\n---\n','')">—</button>
-                <div class="spacer"></div>
-                <button type="button" title="Insert image">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <button type="button" title="Italic (Ctrl+I)" onclick="wrapSelection('_','_')">
+                    <svg viewBox="0 0 24 24"><line x1="10" y1="4" x2="18" y2="4"/><line x1="6" y1="20" x2="14" y2="20"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
+                </button>
+                <button type="button" title="Quote" onclick="wrapSelection('\n> ','')">
+                    <svg viewBox="0 0 24 24"><path d="M7 8c-2 1-3 3-3 5.5S6 18 8 18"/><path d="M15 8c-2 1-3 3-3 5.5s2 4.5 4 4.5"/></svg>
+                </button>
+                <button type="button" title="List" onclick="wrapSelection('\n- ','')">
+                    <svg viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>
+                </button>
+                <button type="button" title="Divider" onclick="insertText('\n---\n')">
+                    <svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/></svg>
+                </button>
+                <div class="divider-line"></div>
+                <button type="button" class="attach-btn" title="Add image (coming soon)">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-4 4-3-3-4 4"/></svg>
                 </button>
             </div>
-            <textarea name="content" id="contentInput" th:text="${entry.content}"></textarea>
-            <div class="editor-footer">
-                <span class="status"><span class="dot"></span> <span id="statusText">Editing</span></span>
-                <span id="charCount">0 / 10,000</span>
+
+            <div class="write-wrap">
+                <textarea name="content" id="contentInput" th:text="${entry.content}"></textarea>
+                <div class="write-footer">
+                    <span class="autosave" id="autosaveWrap">
+                        <span class="dot"></span>
+                        <span id="statusText">Editing</span>
+                    </span>
+                    <span class="counter" id="charCount">0 / 10,000</span>
+                </div>
             </div>
         </div>
 
-        <div class="form-actions">
+        <div class="actions-row">
             <div class="left-actions">
                 <button type="button" class="delete-entry" onclick="openDeleteModal()">
                     <svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
@@ -727,16 +831,12 @@
                 </button>
             </div>
             <div class="right-actions">
-                <a href="/entries" class="discard">
-                    <svg viewBox="0 0 24 24"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
-                    Discard
-                </a>
-                <button type="submit" class="primary">Save Changes</button>
+                <a href="/entries" class="discard-btn">Discard</a>
+                <button type="submit">Save Changes</button>
             </div>
         </div>
     </form>
 
-    <!-- Delete confirmation modal -->
     <div class="modal-overlay" id="deleteModal">
         <div class="modal-box">
             <div class="modal-icon">
@@ -751,7 +851,6 @@
         </div>
     </div>
 
-    <!-- Hidden delete form -->
     <form id="deleteForm" th:action="@{/entries/{id}/delete(id=${entry.id})}" method="post" style="display:none;"></form>
 
     <script>
@@ -761,136 +860,149 @@
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            drawBg();
+            drawScene();
         }
 
-        function getCSSVar(name) {
-            return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        function getCloudRGB() {
+            const s = getComputedStyle(document.documentElement);
+            return {
+                r: s.getPropertyValue('--cloud-r').trim() || '200',
+                g: s.getPropertyValue('--cloud-g').trim() || '160',
+                b: s.getPropertyValue('--cloud-b').trim() || '90',
+            };
         }
 
-        function drawBg() {
-            const w = canvas.width, h = canvas.height;
-            ctx.clearRect(0, 0, w, h);
-
-            const r = getCSSVar('--cloud-r') || '180';
-            const g = getCSSVar('--cloud-g') || '140';
-            const b = getCSSVar('--cloud-b') || '80';
-
-            function drawCloud(x, y, size) {
-                [[0,0,size],[size*.6,-size*.2,size*.75],[-size*.5,-size*.1,size*.7],
-                 [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
-                ].forEach(([cx,cy,r2]) => {
-                    const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
-                    grad.addColorStop(0,`rgba(${r},${g},${b},0.15)`);
-                    grad.addColorStop(1,`rgba(${r},${g},${b},0)`);
-                    ctx.fillStyle = grad;
-                    ctx.beginPath();
-                    ctx.arc(x+cx,y+cy,r2,0,Math.PI*2);
-                    ctx.fill();
-                });
-            }
-
-            // Corners only
-            drawCloud(0, 0, 140);
-            drawCloud(w, 0, 140);
-            drawCloud(0, h, 140);
-            drawCloud(w, h, 140);
-
-            // Sparkles
-            const accent = getCSSVar('--accent') || '#c9a96e';
-            function drawSparkle(x, y, size, alpha) {
-                ctx.save();
-                ctx.globalAlpha = alpha;
-                ctx.strokeStyle = accent;
-                ctx.lineWidth = 1;
+        function drawCloud(x, y, size, alpha) {
+            const { r, g, b } = getCloudRGB();
+            [[0,0,size],[size*.6,-size*.2,size*.75],[-size*.5,-size*.1,size*.7],
+             [size*.2,-size*.5,size*.6],[-size*.2,-size*.55,size*.55]
+            ].forEach(([cx, cy, r2]) => {
+                const grad = ctx.createRadialGradient(x+cx,y+cy,0,x+cx,y+cy,r2);
+                grad.addColorStop(0, `rgba(${r},${g},${b},${alpha})`);
+                grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+                ctx.fillStyle = grad;
                 ctx.beginPath();
-                ctx.moveTo(x, y-size); ctx.lineTo(x, y+size);
-                ctx.moveTo(x-size, y); ctx.lineTo(x+size, y);
-                ctx.moveTo(x-size*.6, y-size*.6); ctx.lineTo(x+size*.6, y+size*.6);
-                ctx.moveTo(x+size*.6, y-size*.6); ctx.lineTo(x-size*.6, y+size*.6);
-                ctx.stroke();
+                ctx.arc(x+cx,y+cy,r2,0,Math.PI*2);
+                ctx.fill();
+            });
+        }
+
+        function drawSparkle(x, y, size, alpha) {
+            const { r, g, b } = getCloudRGB();
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x,y-size); ctx.lineTo(x,y+size);
+            ctx.moveTo(x-size,y); ctx.lineTo(x+size,y);
+            ctx.moveTo(x-size*.6,y-size*.6); ctx.lineTo(x+size*.6,y+size*.6);
+            ctx.moveTo(x+size*.6,y-size*.6); ctx.lineTo(x-size*.6,y+size*.6);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        const petals = Array.from({ length: 35 }, () => ({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            size: Math.random() * 7 + 3,
+            speedX: Math.random() * .6 - .3,
+            speedY: Math.random() * .8 + .3,
+            rotation: Math.random() * Math.PI * 2,
+            rotationSpeed: (Math.random() - .5) * .03,
+            opacity: Math.random() * .5 + .2,
+            sway: Math.random() * Math.PI * 2,
+        }));
+
+        function drawSakuraScene() {
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0,0,w,h);
+            petals.forEach(p => {
+                p.sway += .008;
+                p.x += p.speedX*.4 + Math.sin(p.sway)*.3;
+                p.y += p.speedY*.4;
+                p.rotation += p.rotationSpeed*.5;
+                if (p.y > h+20) { p.y = -10; p.x = Math.random()*w; }
+                ctx.save();
+                ctx.translate(p.x,p.y); ctx.rotate(p.rotation);
+                ctx.globalAlpha = p.opacity*.7;
+                ctx.fillStyle = 'rgba(240,140,170,0.9)';
+                ctx.beginPath();
+                ctx.ellipse(0,0,p.size*.5,p.size*.9,0,0,Math.PI*2);
+                ctx.fill();
                 ctx.restore();
-            }
-
-            [[w*.08,h*.08,4],[w*.92,h*.08,4],[w*.08,h*.92,4],[w*.92,h*.92,4],
-             [w*.15,h*.2,3],[w*.85,h*.18,3],[w*.12,h*.75,3],[w*.88,h*.8,3]
-            ].forEach(([x,y,s]) => drawSparkle(x, y, s, 0.5));
+            });
         }
 
-        // Floating twinkling stars
-        const floatContainer = document.getElementById('floatStars');
-        for (let i = 0; i < 40; i++) {
-            const star = document.createElement('div');
-            const size = Math.random() * 2 + 1;
-            const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#c9a96e';
-            star.style.cssText = `
-                position:absolute;
-                width:${size}px; height:${size}px;
-                border-radius:50%;
-                background:${accent};
-                top:${Math.random()*100}%; left:${Math.random()*100}%;
-                opacity:0;
-                animation: twinkleEdit ${Math.random()*4+2}s ease-in-out infinite ${Math.random()*5}s;
-            `;
-            floatContainer.appendChild(star);
+        function drawStaticScene() {
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0,0,w,h);
+            [[0,h,140,.13],[w*.15,h,110,.13],[w,h,140,.13],[w*.85,h,110,.13],
+             [0,0,125,.16],[w*.12,0,95,.16],[w,0,125,.16],[w*.88,0,95,.16]
+            ].forEach(([x,y,s,a]) => drawCloud(x,y,s,a));
+            [[w*.1,h*.2,5],[w*.9,h*.15,4],[w*.05,h*.7,6],[w*.95,h*.75,5],
+             [w*.2,h*.05,4],[w*.8,h*.08,6],[w*.15,h*.92,5],[w*.85,h*.9,4],
+             [w*.5,h*.03,3],[w*.3,h*.97,4],[w*.7,h*.95,5],[w*.02,h*.45,4],
+             [w*.98,h*.5,5],[w*.25,h*.12,3],[w*.75,h*.88,4]
+            ].forEach(([x,y,s]) => drawSparkle(x,y,s,.7));
         }
 
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes twinkleEdit {
-                0%, 100% { opacity: 0; transform: scale(0.8); }
-                50% { opacity: 0.4; transform: scale(1.2); }
+        let sakuraFrame = null;
+        function drawScene() {
+            if (sakuraFrame) { cancelAnimationFrame(sakuraFrame); sakuraFrame = null; }
+            const theme = document.documentElement.getAttribute('data-theme');
+            if (theme === 'sakura') {
+                (function loop() { drawSakuraScene(); sakuraFrame = requestAnimationFrame(loop); })();
+            } else {
+                drawStaticScene();
             }
-        `;
-        document.head.appendChild(style);
+        }
 
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Also add --cloud-r/g/b to themes that are missing it
-        const themeCloudColors = {
-            'default': '180,140,80',
-            'sakura': '232,130,154',
-            'abyss': '60,100,180',
-            'sage': '122,158,110',
-            'noir': '200,200,200'
-        };
+        const savedTheme = localStorage.getItem('oneiric-theme') || 'default';
+        if (savedTheme === 'default') document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.setAttribute('data-theme', savedTheme);
+        drawScene();
     </script>
 
     <script>
         // ── Mood selector wiring ──
         const moodInput = document.getElementById('moodInput');
-        const moodButtons = document.querySelectorAll('.mood-chip');
+        const moodLabels = document.querySelectorAll('.mood-label');
 
         function setMood(mood) {
             moodInput.value = mood;
-            moodButtons.forEach(btn => {
-                btn.classList.toggle('selected', btn.dataset.mood === mood);
+            moodLabels.forEach(el => {
+                el.classList.toggle('selected', el.dataset.mood === mood);
             });
         }
 
-        moodButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (moodInput.value === btn.dataset.mood) {
-                    setMood(''); // toggle off
+        moodLabels.forEach(el => {
+            el.addEventListener('click', () => {
+                if (moodInput.value === el.dataset.mood) {
+                    setMood('');
                 } else {
-                    setMood(btn.dataset.mood);
+                    setMood(el.dataset.mood);
                 }
+                markDirty();
             });
         });
 
-        // Pre-select mood from server-rendered value
         if (moodInput.value) setMood(moodInput.value);
 
-        // ── Character counter ──
+        // ── Character counter + dirty state ──
         const contentInput = document.getElementById('contentInput');
         const charCount = document.getElementById('charCount');
         const statusText = document.getElementById('statusText');
+        const autosaveWrap = document.getElementById('autosaveWrap');
         const MAX_CHARS = 10000;
 
         function updateCharCount() {
             const len = contentInput.value.length;
-            charCount.textContent = `${len} / ${MAX_CHARS}`;
+            charCount.textContent = `${len.toLocaleString()} / ${MAX_CHARS.toLocaleString()}`;
+            charCount.classList.toggle('near-limit', len > MAX_CHARS * 0.9);
         }
         updateCharCount();
 
@@ -899,6 +1011,7 @@
             if (!dirty) {
                 dirty = true;
                 statusText.textContent = 'Unsaved changes';
+                autosaveWrap.classList.add('is-dirty');
             }
             updateCharCount();
         }
@@ -910,19 +1023,42 @@
             dirty = false;
         });
 
-        // ── Basic formatting helpers ──
+        // ── Formatting helpers ──
         function wrapSelection(before, after) {
-            const start = contentInput.selectionStart;
-            const end = contentInput.selectionEnd;
-            const val = contentInput.value;
-            const selected = val.substring(start, end);
-            const newVal = val.substring(0, start) + before + selected + after + val.substring(end);
-            contentInput.value = newVal;
+            const s = contentInput.selectionStart;
+            const e = contentInput.selectionEnd;
+            const v = contentInput.value;
+            const sel = v.substring(s, e);
+            contentInput.value = v.substring(0,s) + before + sel + after + v.substring(e);
             contentInput.focus();
-            contentInput.selectionStart = start + before.length;
-            contentInput.selectionEnd = start + before.length + selected.length;
+            contentInput.selectionStart = s + before.length;
+            contentInput.selectionEnd   = s + before.length + sel.length;
             markDirty();
         }
+
+        function insertText(text) {
+            const s = contentInput.selectionStart;
+            const v = contentInput.value;
+            contentInput.value = v.substring(0,s) + text + v.substring(s);
+            contentInput.focus();
+            const pos = s + text.length;
+            contentInput.selectionStart = contentInput.selectionEnd = pos;
+            markDirty();
+        }
+
+        document.addEventListener('keydown', function(e) {
+            const meta = e.ctrlKey || e.metaKey;
+            if (meta && e.key.toLowerCase() === 'b' && document.activeElement === contentInput) {
+                e.preventDefault(); wrapSelection('**','**');
+            }
+            if (meta && e.key.toLowerCase() === 'i' && document.activeElement === contentInput) {
+                e.preventDefault(); wrapSelection('_','_');
+            }
+            if (meta && e.key.toLowerCase() === 's') {
+                e.preventDefault();
+                document.getElementById('editForm').requestSubmit();
+            }
+        });
 
         // ── Delete modal ──
         function openDeleteModal() {
