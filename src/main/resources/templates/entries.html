@@ -434,7 +434,36 @@
             color: #fff;
         }
         .modal-btn.confirm:hover { background-color: #c2868b; }
+        
+        /* ── Dream Fade Page Transition ── */
+        body {
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                        filter 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                        transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: opacity, filter, transform;
+        }
 
+        /* Initial state when entering a new page */
+        body.dream-enter {
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(12px);
+        }
+
+        /* Active entrance animation */
+        body.dream-entering {
+            opacity: 1;
+            filter: blur(0px);
+            transform: translateY(0);
+        }
+
+        /* Dissolving exit state */
+        body.dream-exiting {
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(-12px);
+            pointer-events: none;
+        }
         /* ── Full Mobile Responsiveness Fixes ── */
         @media (max-width: 640px) {
             body { 
@@ -853,6 +882,43 @@
         document.getElementById('deleteModal').addEventListener('click', function(e) {
             if (e.target === this) closeDeleteModal();
         });
+        
+     // ── Dream Fade Transition Logic ──
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup entrance state
+            document.body.classList.add('dream-enter');
+
+            // Trigger smooth dissolve-in on load
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    document.body.classList.add('dream-entering');
+                });
+            });
+
+            // Intercept navigation links
+            const navTargets = document.querySelectorAll('a.edit-link, .nav-links a, a.clear-link');
+            navTargets.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetUrl = link.getAttribute('href');
+
+                    if (!targetUrl || targetUrl.startsWith('#') || link.getAttribute('target') === '_blank') {
+                        return;
+                    }
+
+                    e.preventDefault();
+
+                    // Start Dream Fade Exit (dissolve + subtle upward float)
+                    document.body.classList.remove('dream-entering');
+                    document.body.classList.add('dream-exiting');
+
+                    // Navigate smoothly midway through the dissolve (~550ms)
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 400);
+                });
+            });
+        });
+        
     </script>
 
 </body>

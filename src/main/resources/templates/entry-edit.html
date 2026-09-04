@@ -617,6 +617,58 @@
 
         .modal-btn.confirm:hover { background-color: var(--danger-hover); }
 
+/* ── Dream Fade + Particle Transition ── */
+        body {
+            transition: opacity 0.65s cubic-bezier(0.25, 1, 0.5, 1),
+                        filter 0.65s cubic-bezier(0.25, 1, 0.5, 1),
+                        transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: opacity, filter, transform;
+        }
+
+        body.dream-enter {
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(12px);
+        }
+
+        body.dream-entering {
+            opacity: 1;
+            filter: blur(0px);
+            transform: translateY(0);
+        }
+
+        body.dream-exiting {
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(-12px);
+            pointer-events: none;
+        }
+
+        /* Sparkle Element Styling */
+        .exit-sparkle {
+            position: absolute;
+            color: var(--accent);
+            pointer-events: none;
+            font-size: 0.85rem;
+            opacity: 0;
+            animation: sparkleFloat 0.6s ease-out forwards;
+        }
+
+        @keyframes sparkleFloat {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, 0) scale(0.3) rotate(0deg);
+            }
+            50% {
+                opacity: 0.9;
+                transform: translate(-50%, -15px) scale(1.2) rotate(45deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -30px) scale(0.5) rotate(90deg);
+            }
+        }
+
         /* ── Updated Mobile Responsive Styles ── */
 @media (max-width: 640px) {
     body { 
@@ -671,7 +723,7 @@
     </style>
 </head>
 <body>
-
+<div id="transitionParticles" style="position:fixed; inset:0; pointer-events:none; z-index:9999;"></div>
     <canvas id="bg"></canvas>
 
     <div class="border-top"></div>
@@ -1073,6 +1125,58 @@
         document.getElementById('deleteModal').addEventListener('click', function(e) {
             if (e.target === this) closeDeleteModal();
         });
+        
+     // ── Dream Fade + Subtle Sparkles Logic ──
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('dream-enter');
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    document.body.classList.add('dream-entering');
+                });
+            });
+
+            function triggerSparkles() {
+                const container = document.getElementById('transitionParticles');
+                if (!container) return;
+                
+                const symbols = ['✦', '✧', '★', '·'];
+                const count = 8; // Subtle particle count to prevent clutter
+
+                for (let i = 0; i < count; i++) {
+                    const el = document.createElement('span');
+                    el.className = 'exit-sparkle';
+                    el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                    el.style.left = `${15 + Math.random() * 70}%`;
+                    el.style.top = `${20 + Math.random() * 60}%`;
+                    el.style.animationDelay = `${i * 0.04}s`;
+                    container.appendChild(el);
+                }
+            }
+
+            const navTargets = document.querySelectorAll('a.edit-link, .nav-links a, a.clear-link');
+            navTargets.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetUrl = link.getAttribute('href');
+
+                    if (!targetUrl || targetUrl.startsWith('#') || link.getAttribute('target') === '_blank') {
+                        return;
+                    }
+
+                    e.preventDefault();
+
+                    // Trigger dissolve & sparkles
+                    document.body.classList.remove('dream-entering');
+                    document.body.classList.add('dream-exiting');
+                    triggerSparkles();
+
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 580);
+                });
+            });
+        });
+        
     </script>
 
 </body>
