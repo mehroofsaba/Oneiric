@@ -575,7 +575,34 @@
             opacity: 0.1;
         }
         
-        
+        /* ===== DREAM FADE PAGE TRANSITION ===== */
+body {
+    transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                filter 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: opacity, filter, transform;
+}
+
+/* Page entrance state */
+body.dream-enter {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(8px);
+}
+
+body.dream-entering {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+}
+
+/* Page exit state */
+body.dream-exiting {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(-8px);
+    pointer-events: none;
+}
 
         /* ===== MOBILE / SMALL SCREEN ADJUSTMENTS ===== */
         @media (max-width: 600px) {
@@ -1072,6 +1099,50 @@
             `;
             drawerStarContainer.appendChild(s);
         }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Initial page enter state
+            document.body.classList.add('dream-enter');
+
+            // 2. Trigger enter transition
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    document.body.classList.add('dream-entering');
+                });
+            });
+
+            // 3. Attach exit transition to internal links
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+
+                    // Skip anchor links, JS triggers, or external links
+                    if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.target === '_blank') {
+                        return;
+                    }
+
+                    e.preventDefault();
+
+                    // Trigger exit transition
+                    document.body.classList.remove('dream-entering');
+                    document.body.classList.add('dream-exiting');
+
+                    // Navigate right as fade completes
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 500);
+                });
+            });
+        });
+
+        // Reset transition states when using browser back/forward buttons (Mobile BFCache fix)
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                document.body.classList.remove('dream-exiting');
+                document.body.classList.add('dream-entering');
+            }
+        });
+        
     </script>
 
 </body>

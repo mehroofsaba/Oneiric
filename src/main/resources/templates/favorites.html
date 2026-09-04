@@ -295,6 +295,35 @@
         a.edit-link svg { width: 0.95em; height: 0.95em; fill: none; stroke: currentColor; stroke-width: 1.8; }
         a.edit-link:hover { color: var(--accent); }
 
+/* ===== DREAM FADE PAGE TRANSITION ===== */
+body {
+    transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                filter 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: opacity, filter, transform;
+}
+
+/* Entrance state */
+body.dream-enter {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(8px);
+}
+
+body.dream-entering {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+}
+
+/* Exit state */
+body.dream-exiting {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(-8px);
+    pointer-events: none;
+}
+
         /* ── Mobile ── */
         @media (max-width: 640px) {
             body { padding: 32px 18px; }
@@ -581,6 +610,49 @@
                 btn.title = data.favorite ? 'Remove from favorites' : 'Add to favorites';
             });
         }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Initial page entrance setup
+            document.body.classList.add('dream-enter');
+
+            // 2. Play page entry fade
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    document.body.classList.add('dream-entering');
+                });
+            });
+
+            // 3. Attach exit transition to all navigation links
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+
+                    // Skip anchors, JavaScript links, or external targets
+                    if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.target === '_blank') {
+                        return;
+                    }
+
+                    e.preventDefault();
+
+                    // Trigger exit animation
+                    document.body.classList.remove('dream-entering');
+                    document.body.classList.add('dream-exiting');
+
+                    // Navigate when transition finishes
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 550);
+                });
+            });
+        });
+
+        // Handle mobile back/forward browser cache (BFCache)
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                document.body.classList.remove('dream-exiting');
+                document.body.classList.add('dream-entering');
+            }
+        });
         
     </script>
 

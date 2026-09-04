@@ -882,41 +882,48 @@
         document.getElementById('deleteModal').addEventListener('click', function(e) {
             if (e.target === this) closeDeleteModal();
         });
-        
-     // ── Dream Fade Transition Logic ──
+           
         document.addEventListener('DOMContentLoaded', () => {
-            // Setup entrance state
+            // 1. Initial page enter state
             document.body.classList.add('dream-enter');
 
-            // Trigger smooth dissolve-in on load
+            // 2. Trigger enter transition
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     document.body.classList.add('dream-entering');
                 });
             });
 
-            // Intercept navigation links
-            const navTargets = document.querySelectorAll('a.edit-link, .nav-links a, a.clear-link');
-            navTargets.forEach(link => {
+            // 3. Attach exit transition to internal links
+            document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', (e) => {
-                    const targetUrl = link.getAttribute('href');
+                    const href = link.getAttribute('href');
 
-                    if (!targetUrl || targetUrl.startsWith('#') || link.getAttribute('target') === '_blank') {
+                    // Skip anchor links, JS triggers, or external links
+                    if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.target === '_blank') {
                         return;
                     }
 
                     e.preventDefault();
 
-                    // Start Dream Fade Exit (dissolve + subtle upward float)
+                    // Trigger exit transition
                     document.body.classList.remove('dream-entering');
                     document.body.classList.add('dream-exiting');
 
-                    // Navigate smoothly midway through the dissolve (~550ms)
+                    // Navigate right as fade completes
                     setTimeout(() => {
-                        window.location.href = targetUrl;
-                    }, 400);
+                        window.location.href = href;
+                    }, 500);
                 });
             });
+        });
+
+        // Reset transition states when using browser back/forward buttons (Mobile BFCache fix)
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                document.body.classList.remove('dream-exiting');
+                document.body.classList.add('dream-entering');
+            }
         });
         
     </script>
