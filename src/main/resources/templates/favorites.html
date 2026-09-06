@@ -605,10 +605,47 @@ body.dream-exiting {
             })
             .then(res => res.json())
             .then(data => {
-                btn.classList.toggle('is-fav', data.favorite);
-                btn.querySelector('svg').style.fill = data.favorite ? 'var(--accent)' : 'none';
-                btn.title = data.favorite ? 'Remove from favorites' : 'Add to favorites';
+                if (data.favorite) {
+                    // Still favorited — just update the button state
+                    btn.classList.add('is-fav');
+                    btn.querySelector('svg').style.fill = 'var(--accent)';
+                    btn.title = 'Remove from favorites';
+                } else {
+                    // No longer favorited — smoothly remove the card from this page
+                    const card = btn.closest('.entry-card');
+                    card.style.transition = 'opacity 0.35s ease, transform 0.35s ease, max-height 0.4s ease, margin 0.4s ease, padding 0.4s ease';
+                    card.style.overflow = 'hidden';
+                    card.style.maxHeight = card.scrollHeight + 'px';
+
+                    requestAnimationFrame(() => {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(-8px) scale(0.98)';
+                        card.style.maxHeight = '0px';
+                        card.style.marginBottom = '0px';
+                        card.style.paddingTop = '0px';
+                        card.style.paddingBottom = '0px';
+                    });
+
+                    card.addEventListener('transitionend', () => {
+                        card.remove();
+                        checkEmptyState();
+                    }, { once: true });
+                }
             });
+        }
+
+        function checkEmptyState() {
+            const remainingCards = document.querySelectorAll('.entry-card');
+            if (remainingCards.length === 0 && !document.querySelector('.empty')) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'empty';
+                emptyDiv.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.3"><path d="M12 17.3l-6.16 3.6 1.64-6.99L2 9.24l7.19-.61L12 2l2.81 6.63 7.19.61-5.48 4.67 1.64 6.99z"/></svg>
+                    <p>No favorites yet.</p>
+                    <span class="empty-sub">Star the entries you want to find again quickly.</span>
+                `;
+                document.querySelector('.header').insertAdjacentElement('afterend', emptyDiv);
+            }
         }
         
         document.addEventListener('DOMContentLoaded', () => {
