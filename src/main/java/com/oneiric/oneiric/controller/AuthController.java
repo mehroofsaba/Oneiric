@@ -1,6 +1,7 @@
 package com.oneiric.oneiric.controller;
 
 import com.oneiric.oneiric.service.UserService;
+import com.oneiric.oneiric.service.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 import com.oneiric.oneiric.service.JournalEntryService;
 import com.oneiric.oneiric.model.User;
+
 @Controller
 public class AuthController {
 
@@ -17,6 +19,8 @@ public class AuthController {
     private UserService userService;
     @Autowired
     private JournalEntryService journalEntryService;
+    @Autowired
+    private StatsService statsService;
 
     @GetMapping("/register")
     public String showRegisterPage() {
@@ -48,7 +52,7 @@ public class AuthController {
     public String showLoginPage() {
         return "login";
     }
-    
+
     @PostMapping("/login")
     public String handleLogin(
             @RequestParam String username,
@@ -74,25 +78,32 @@ public class AuthController {
         model.addAttribute("username", user.getUsername());
         return "redirect:/chamber";
     }
+
     @GetMapping("/chamber")
     public String showChamber(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
         User user = userService.findByUsername(username).get();
-        long entryCount = journalEntryService.getEntriesForUser(user).size();
+        var entries = journalEntryService.getEntriesForUser(user);
+
+        long entryCount = entries.size();
+        int currentStreak = statsService.calculateStreak(entries);
+        String mostUsedMood = statsService.calculateMostUsedMood(entries);
 
         model.addAttribute("username", username);
         model.addAttribute("entryCount", entryCount);
+        model.addAttribute("currentStreak", currentStreak);
+        model.addAttribute("mostUsedMood", mostUsedMood);
         return "chamber";
     }
-    
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
     }
-    
+
     @GetMapping("/account")
     public String showAccount(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");

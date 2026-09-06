@@ -4,7 +4,6 @@ import com.oneiric.oneiric.model.JournalEntry;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ public class StatsService {
 
         Set<LocalDate> entryDates = entries.stream()
             .filter(e -> e.getDeletedAt() == null)
-            .map(e -> e.getCreatedAt().atZone(ZoneId.systemDefault()).toLocalDate())
+            .map(e -> e.getCreatedAt().toLocalDate())
             .collect(Collectors.toSet());
 
         if (entryDates.isEmpty()) return 0;
