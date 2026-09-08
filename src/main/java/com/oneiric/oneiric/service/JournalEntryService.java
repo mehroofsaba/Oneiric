@@ -84,4 +84,19 @@ public class JournalEntryService {
     public long countEntriesForUser(User user) {
         return journalEntryRepository.findByUserAndDeletedAtIsNullOrderByCreatedAtDesc(user).size();
     }
+    
+ // ── Extract first image URL from markdown-style content ──
+    public String extractFirstImageUrl(String content) {
+        if (content == null) return null;
+        java.util.regex.Matcher m = java.util.regex.Pattern
+            .compile("!\\[[^\\]]*\\]\\(([^)]+)\\)")
+            .matcher(content);
+        return m.find() ? m.group(1) : null;
+    }
+
+    // ── Strip all image markdown syntax from content for preview text ──
+    public String stripImages(String content) {
+        if (content == null) return "";
+        return content.replaceAll("!\\[[^\\]]*\\]\\([^)]+\\)", "").trim();
+    }
 }

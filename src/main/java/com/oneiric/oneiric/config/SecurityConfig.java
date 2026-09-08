@@ -28,6 +28,7 @@ public class SecurityConfig {
                     "/entries", "/entries/**",
                     "/trash", "/trash/**",
                     "/favorites", "/favorites/**",
+                    "/api/**", "/uploads/**",
                     "/css/**", "/js/**", "/images/**", "/assets/**", "/favicon.ico"
                 ).permitAll()
                 .anyRequest().authenticated()
