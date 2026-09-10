@@ -85,18 +85,69 @@ public class JournalEntryService {
         return journalEntryRepository.findByUserAndDeletedAtIsNullOrderByCreatedAtDesc(user).size();
     }
     
- // ── Extract first image URL from markdown-style content ──
-    public String extractFirstImageUrl(String content) {
-        if (content == null) return null;
-        java.util.regex.Matcher m = java.util.regex.Pattern
-            .compile("!\\[[^\\]]*\\]\\(([^)]+)\\)")
-            .matcher(content);
-        return m.find() ? m.group(1) : null;
-    }
+    private static final java.util.regex.Pattern IMAGE_PATTERN =
+    	    java.util.regex.Pattern.compile("!\\[[^\\]]*\\]\\(([^)]+)\\)");
 
-    // ── Strip all image markdown syntax from content for preview text ──
-    public String stripImages(String content) {
-        if (content == null) return "";
-        return content.replaceAll("!\\[[^\\]]*\\]\\([^)]+\\)", "").trim();
-    }
+    	public String extractFirstImageUrl(String content) {
+    	    if (content == null) return null;
+    	    var matcher = IMAGE_PATTERN.matcher(content);
+    	    if (matcher.find()) {
+    	        return matcher.group(1);
+    	    }
+    	    return null;
+    	}
+
+    	public String stripImages(String content) {
+    	    if (content == null) return "";
+    	    return IMAGE_PATTERN.matcher(content).replaceAll("").trim();
+    	}
+    	// ── Current writing streak (consecutive days with at least one entry, ending today or yesterday) ──
+    	public int getCurrentStreak(User user) {
+    	    List<JournalEntry> entries = journalEntryRepository.findByUserAndDeletedAtIsNullOrderByCreatedAtDesc(user);
+    	    if (entries.isEmpty()) return 0;
+
+    	    // Collect distinct calendar dates the user wrote on
+    	    java.util.Set<java.time.LocalDate> writeDates = new java.util.TreeSet<>(java.util.Collections.reverseOrder());
+    	    for (JournalEntry e : entries) {
+    	        writeDates.add(e.getCreatedAt().toLocalDate());
+    	    }
+
+    	    java.time.LocalDate today = java.time.LocalDate.now();
+    	    java.time.LocalDate cursor = today;
+
+    	    // Streak only counts if the most recent entry was today or yesterday
+    	    if (!writeDates.contains(today) && !writeDates.contains(today.minusDays(1))) {
+    	        return 0;
+    	    }
+
+    	    // If nothing written today yet, start counting from yesterday
+    	    if (!writeDates.contains(cursor)) {
+    	        cursor = cursor.minusDays(1);
+    	    }
+
+    	    int streak = 0;
+    	    while (writeDates.contains(cursor)) {
+    	        streak++;
+    	        cursor = cursor.minusDays(1);
+    	    }
+    	    return streak;
+    	}
+
+    	// ── Most frequently used mood among active entries ──
+    	public String getMostUsedMood(User user) {
+    	    List<JournalEntry> entries = journalEntryRepository.findByUserAndDeletedAtIsNullOrderByCreatedAtDesc(user);
+    	    java.util.Map<String, Integer> moodCounts = new java.util.HashMap<>();
+
+    	    for (JournalEntry e : entries) {
+    	        if (e.getMood() != null && !e.getMood().isBlank()) {
+    	            moodCounts.merge(e.getMood(), 1, Integer::sum);
+    	        }
+    	    }
+
+    	    return moodCounts.entrySet().stream()
+    	        .max(java.util.Map.Entry.comparingByValue())
+    	        .map(java.util.Map.Entry::getKey)
+    	        .orElse(null);
+    	}
+    	
 }

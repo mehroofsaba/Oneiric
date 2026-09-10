@@ -80,21 +80,21 @@ public class AuthController {
     }
 
     @GetMapping("/chamber")
-    public String showChamber(HttpSession session, Model model) {
+    public String chamberPage(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
         User user = userService.findByUsername(username).get();
-        var entries = journalEntryService.getEntriesForUser(user);
 
-        long entryCount = entries.size();
-        int currentStreak = statsService.calculateStreak(entries);
-        String mostUsedMood = statsService.calculateMostUsedMood(entries);
+        long entryCount = journalEntryService.countEntriesForUser(user);
+        int currentStreak = journalEntryService.getCurrentStreak(user);
+        String mostUsedMood = journalEntryService.getMostUsedMood(user);
 
         model.addAttribute("username", username);
         model.addAttribute("entryCount", entryCount);
         model.addAttribute("currentStreak", currentStreak);
         model.addAttribute("mostUsedMood", mostUsedMood);
+
         return "chamber";
     }
 
