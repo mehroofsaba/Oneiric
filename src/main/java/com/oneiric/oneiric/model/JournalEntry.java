@@ -2,6 +2,9 @@ package com.oneiric.oneiric.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "journal_entries")
@@ -17,6 +20,9 @@ public class JournalEntry {
     private String content;
 
     private String mood;
+
+    @Column(columnDefinition = "TEXT")
+    private String tags;
 
     @Column(nullable = false)
     private boolean favorite = false;
@@ -57,6 +63,23 @@ public class JournalEntry {
 
     public String getMood() { return mood; }
     public void setMood(String mood) { this.mood = mood; }
+
+    public String getTags() { return tags; }
+    public void setTags(String tags) { this.tags = tags; }
+
+    /**
+     * Returns tags as a clean list, e.g. "gratitude, work,family" -> ["gratitude", "work", "family"].
+     * Empty/blank segments are dropped. Never returns null.
+     */
+    public List<String> getTagList() {
+        if (tags == null || tags.isBlank()) {
+            return List.of();
+        }
+        return Arrays.stream(tags.split(","))
+                .map(String::trim)
+                .filter(t -> !t.isEmpty())
+                .collect(Collectors.toList());
+    }
 
     public boolean isFavorite() { return favorite; }
     public void setFavorite(boolean favorite) { this.favorite = favorite; }
