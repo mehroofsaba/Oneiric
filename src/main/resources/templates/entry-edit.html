@@ -329,6 +329,20 @@
     padding: 2px 0 4px;
     width: 100%;
 }
+.tags-input-wrap {
+    position: relative;
+}
+
+input[type="text"].tags-input {
+    font-size: 0.9rem;
+    padding: 10px 0;
+}
+
+.tags-hint {
+    font-size: 0.72rem;
+    color: var(--text-subtle);
+    margin-top: 4px;
+}
 
 .mood-label {
     display: flex;
@@ -838,8 +852,15 @@
                 <label class="mood-label bored" data-mood="bored"><span class="face">–_–</span> <span class="mood-text">Bored</span></label>
             </div>
         </div>
+        
         <input type="hidden" name="mood" id="moodInput" th:value="${entry.mood}"/>
-
+<div class="field-group">
+    <span class="mood-group-label">Tags:</span>
+    <div class="tags-input-wrap">
+        <input type="text" name="tags" id="tagsInput" class="tags-input" th:value="${entry.tags}" placeholder="gratitude, work, family" />
+    </div>
+    <p class="tags-hint">Separate tags with commas</p>
+</div>
         <div>
             <div class="toolbar">
                 <button type="button" title="Bold (Ctrl+B)" onclick="wrapSelection('**','**')">
@@ -1071,6 +1092,7 @@
 
         contentInput.addEventListener('input', markDirty);
         document.getElementById('titleInput').addEventListener('input', markDirty);
+        document.getElementById('tagsInput').addEventListener('input', markDirty);
 
         document.getElementById('editForm').addEventListener('submit', () => {
             dirty = false;

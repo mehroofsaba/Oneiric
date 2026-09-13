@@ -367,6 +367,21 @@
     width: 100%;
 }
 
+.tags-input-wrap {
+    position: relative;
+}
+
+input[type="text"].tags-input {
+    font-size: 0.9rem;
+    padding: 10px 0;
+}
+
+.tags-hint {
+    font-size: 0.72rem;
+    color: var(--text-subtle);
+    margin-top: 4px;
+}
+
 .mood-label {
     display: flex;
     align-items: center;
@@ -849,7 +864,13 @@ body.dream-exiting {
                 <label class="mood-label bored"><input type="radio" name="mood" value="bored"><span class="face">–_–</span> <span class="mood-text">Bored</span></label>
             </div>
         </div>
-
+<div class="field-group">
+    <span class="mood-group-label">Tags:</span>
+    <div class="tags-input-wrap">
+        <input type="text" name="tags" id="tagsInput" class="tags-input" placeholder="gratitude, work, family" />
+    </div>
+    <p class="tags-hint">Separate tags with commas</p>
+</div>
         <div>
             <div class="toolbar">
                 <button type="button" data-tooltip="Bold (Ctrl+B)" onclick="wrapSelection('**','**')">
