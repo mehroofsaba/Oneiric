@@ -199,5 +199,6 @@ public class JournalEntryController {
 
         return "redirect:/entries/trash";
     }
+    
 
 }

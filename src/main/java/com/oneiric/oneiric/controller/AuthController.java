@@ -94,6 +94,7 @@ public class AuthController {
         model.addAttribute("entryCount", entryCount);
         model.addAttribute("currentStreak", currentStreak);
         model.addAttribute("mostUsedMood", mostUsedMood);
+        
 
         return "chamber";
     }
