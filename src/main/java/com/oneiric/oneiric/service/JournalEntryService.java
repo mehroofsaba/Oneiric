@@ -178,4 +178,10 @@ public class JournalEntryService {
                 .map(java.util.Map.Entry::getKey)
                 .orElse(null);
     }
+ // ── "On This Day" — entries written on this same month+day in past years ──
+    public List<JournalEntry> getOnThisDayEntries(User user) {
+        java.time.LocalDate today = java.time.LocalDate.now();
+        return journalEntryRepository.findOnThisDay(
+            user, today.getMonthValue(), today.getDayOfMonth(), today.getYear());
+    }
 }

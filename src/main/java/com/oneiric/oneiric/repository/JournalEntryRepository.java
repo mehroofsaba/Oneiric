@@ -41,4 +41,12 @@ public interface JournalEntryRepository extends JpaRepository<JournalEntry, Long
     // Distinct tags across a user's active entries, for building a tag filter dropdown
     @Query("SELECT e.tags FROM JournalEntry e WHERE e.user = :user AND e.deletedAt IS NULL AND e.tags IS NOT NULL AND e.tags <> ''")
     List<String> findAllTagStringsForUser(@Param("user") User user);
+    
+    @Query("SELECT e FROM JournalEntry e WHERE e.user = :user AND e.deletedAt IS NULL " +
+    	       "AND FUNCTION('MONTH', e.createdAt) = :month AND FUNCTION('DAY', e.createdAt) = :day " +
+    	       "AND FUNCTION('YEAR', e.createdAt) <> :year ORDER BY e.createdAt DESC")
+    	List<JournalEntry> findOnThisDay(@Param("user") User user,
+    	                                   @Param("month") int month,
+    	                                   @Param("day") int day,
+    	                                   @Param("year") int year);
 }
