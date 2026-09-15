@@ -435,6 +435,71 @@
         .stat-pill .mood-face { font-family: 'Georgia', serif; }
 
         .actions { display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap; justify-content: center; width: 100%; }
+        
+        .on-this-day {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    margin-top: 14px;
+    padding: 18px 20px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-accent);
+    border-radius: 12px;
+    text-align: left;
+}
+
+.otd-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+    font-size: 0.78rem;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.otd-header svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; flex-shrink: 0; }
+
+.otd-entry + .otd-entry {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.otd-years-ago {
+    color: var(--text-subtle);
+    font-size: 0.76rem;
+    margin-bottom: 4px;
+}
+
+.otd-title {
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.otd-snippet {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.otd-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.2s;
+}
+
+.otd-link:hover { color: var(--accent-hover); }
+
+@media (max-width: 600px) {
+    .on-this-day { padding: 14px 16px; }
+}
 
         a.btn {
             padding: 13px 28px;
@@ -922,6 +987,23 @@
                 most felt
             </span>
         </div>
+        
+        <!-- On This Day card -->
+<div class="on-this-day" th:if="${!#lists.isEmpty(onThisDayEntries)}">
+    <div class="otd-header">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        On this day
+    </div>
+    <div th:each="entry : ${onThisDayEntries}" class="otd-entry">
+        <p class="otd-years-ago">
+            <span th:text="${currentYear - #temporals.year(entry.createdAt)}"></span>
+            year<span th:if="${currentYear - #temporals.year(entry.createdAt) != 1}">s</span> ago, you wrote
+        </p>
+        <p class="otd-title" th:text="${entry.title}"></p>
+        <p class="otd-snippet" th:text="${#strings.abbreviate(entry.content, 100)}"></p>
+        <a th:href="@{/entries/{id}/edit(id=${entry.id})}" class="otd-link">Read the full entry →</a>
+    </div>
+</div>
 
         <div class="actions">
             <a href="/entries/new" class="btn">

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 import com.oneiric.oneiric.service.JournalEntryService;
 import com.oneiric.oneiric.model.User;
-
+import com.oneiric.oneiric.model.JournalEntry;
+import java.util.List;
 @Controller
 public class AuthController {
 
@@ -89,6 +90,10 @@ public class AuthController {
         long entryCount = journalEntryService.countEntriesForUser(user);
         int currentStreak = journalEntryService.getCurrentStreak(user);
         String mostUsedMood = journalEntryService.getMostUsedMood(user);
+        
+        List<JournalEntry> onThisDayEntries = journalEntryService.getOnThisDayEntries(user);
+        model.addAttribute("onThisDayEntries", onThisDayEntries);
+        model.addAttribute("currentYear", java.time.LocalDate.now().getYear());
 
         model.addAttribute("username", username);
         model.addAttribute("entryCount", entryCount);
