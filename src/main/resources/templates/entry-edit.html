@@ -631,32 +631,19 @@ input[type="text"].tags-input {
 
         .modal-btn.confirm:hover { background-color: var(--danger-hover); }
 
-/* ── Dream Fade + Particle Transition ── */
-        body {
-            transition: opacity 0.65s cubic-bezier(0.25, 1, 0.5, 1),
-                        filter 0.65s cubic-bezier(0.25, 1, 0.5, 1),
-                        transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: opacity, filter, transform;
-        }
+/* ===== DREAM FADE PAGE TRANSITION ===== */
+.page-fade {
+    transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                filter 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: opacity, filter, transform;
+    position: relative;
+    z-index: 1;
+}
 
-        body.dream-enter {
-            opacity: 0;
-            filter: blur(8px);
-            transform: translateY(12px);
-        }
-
-        body.dream-entering {
-            opacity: 1;
-            filter: blur(0px);
-            transform: translateY(0);
-        }
-
-        body.dream-exiting {
-            opacity: 0;
-            filter: blur(8px);
-            transform: translateY(-12px);
-            pointer-events: none;
-        }
+.page-fade.dream-enter { opacity: 0; filter: blur(6px); transform: translateY(8px); }
+.page-fade.dream-entering { opacity: 1; filter: blur(0px); transform: translateY(0); }
+.page-fade.dream-exiting { opacity: 0; filter: blur(6px); transform: translateY(-8px); pointer-events: none; }
 
         /* Sparkle Element Styling */
         .exit-sparkle {
@@ -1207,16 +1194,37 @@ input[type="text"].tags-input {
             if (e.target === this) closeDeleteModal();
         });
         
-     // ── Dream Fade + Subtle Sparkles Logic ──
         document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('dream-enter');
+            const pageFade = document.getElementById('pageFade');
+            pageFade.classList.add('dream-enter');
 
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    document.body.classList.add('dream-entering');
+                    pageFade.classList.add('dream-entering');
                 });
             });
 
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.target === '_blank') {
+                        return;
+                    }
+                    e.preventDefault();
+                    pageFade.classList.remove('dream-entering');
+                    pageFade.classList.add('dream-exiting');
+                    setTimeout(() => { window.location.href = href; }, 550);
+                });
+            });
+        });
+
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                const pageFade = document.getElementById('pageFade');
+                pageFade.classList.remove('dream-exiting');
+                pageFade.classList.add('dream-entering');
+            }
+        });
             function triggerSparkles() {
                 const container = document.getElementById('transitionParticles');
                 if (!container) return;
