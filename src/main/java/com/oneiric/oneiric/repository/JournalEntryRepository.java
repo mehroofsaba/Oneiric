@@ -49,4 +49,5 @@ public interface JournalEntryRepository extends JpaRepository<JournalEntry, Long
     	                                   @Param("month") int month,
     	                                   @Param("day") int day,
     	                                   @Param("year") int year);
+    List<JournalEntry> findByUserAndDeletedAtIsNullAndCreatedAtAfterOrderByCreatedAtAsc(User user, LocalDateTime after);
 }

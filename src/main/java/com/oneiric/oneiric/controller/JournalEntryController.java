@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.List;
 
 @Controller
 @RequestMapping("/entries")
@@ -199,6 +200,16 @@ public class JournalEntryController {
 
         return "redirect:/entries/trash";
     }
-    
+    @GetMapping("/mood-history")
+    public String moodHistoryPage(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
+
+        User user = userService.findByUsername(username).get();
+        List<JournalEntry> history = journalEntryService.getMoodHistory(user, 30);
+
+        model.addAttribute("moodEntries", history);
+        return "mood-history";
+    }
 
 }

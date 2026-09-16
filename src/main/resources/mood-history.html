@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (function() {
+        const t = localStorage.getItem('oneiric-theme');
+        if (t && t !== 'default') document.documentElement.setAttribute('data-theme', t);
+    })();
+    </script>
+    <title>Oneiric — Mood History</title>
+    <style>
+        :root {
+            --bg: #0d0d0d;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text: #e8e0d0;
+            --text-muted: #9e9589;
+            --text-subtle: #6e6558;
+            --accent: #c9a96e;
+            --accent-hover: #b8935a;
+            --accent-dim: rgba(201,169,110,0.08);
+            --border: #2e2e2e;
+            --border-accent: rgba(201,169,110,0.2);
+            --accent-glow: rgba(201,169,110,0.15);
+        }
+        [data-theme="sakura"] {
+            --bg: #fdf6f0; --bg-secondary: #fff0f3; --bg-tertiary: #ffe4ec;
+            --text: #4a3040; --text-muted: #9e7080; --text-subtle: #c4a0b0;
+            --accent: #e8829a; --accent-hover: #d4607a;
+            --accent-dim: rgba(232,130,154,0.08); --border: #f0c0d0;
+            --border-accent: rgba(232,130,154,0.3); --accent-glow: rgba(232,130,154,0.15);
+        }
+        [data-theme="abyss"] {
+            --bg: #050d1a; --bg-secondary: #0a1628; --bg-tertiary: #0f1e35;
+            --text: #c8d8f0; --text-muted: #7090b8; --text-subtle: #3a5070;
+            --accent: #c9a96e; --accent-hover: #b8935a;
+            --accent-dim: rgba(201,169,110,0.12); --border: #1a2e48;
+            --border-accent: rgba(201,169,110,0.25); --accent-glow: rgba(201,169,110,0.15);
+        }
+        [data-theme="sage"] {
+            --bg: #F5E3DF; --bg-secondary: #F0D9D4; --bg-tertiary: #E3BEB8;
+            --text: #4A3040; --text-muted: #806477; --text-subtle: #B99BAA;
+            --accent: #B8955A; --accent-hover: #A27F4B;
+            --accent-dim: rgba(184,149,90,0.12); --border: #D9B9BD;
+            --border-accent: rgba(184,149,90,0.28); --accent-glow: rgba(184,149,90,0.15);
+        }
+        [data-theme="noir"] {
+            --bg: #000000; --bg-secondary: #0a0a0a; --bg-tertiary: #141414;
+            --text: #ffffff; --text-muted: #b8b8b8; --text-subtle: #666666;
+            --accent: #f2f2f2; --accent-hover: #d6d6d6;
+            --accent-dim: rgba(210,210,210,0.07); --border: #242424;
+            --border-accent: rgba(210,210,210,0.22); --accent-glow: rgba(210,210,210,0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            padding: 60px 40px;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            row-gap: 14px;
+        }
+
+        h1 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            letter-spacing: 0.15rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h1 svg { width: 0.85em; height: 0.85em; fill: none; stroke: var(--accent); stroke-width: 1.8; }
+
+        .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+        .nav-links a {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 9px 20px; border-radius: 20px; text-decoration: none;
+            font-family: 'Georgia', serif; font-size: 0.85rem;
+            background: var(--bg-tertiary); color: var(--text-muted);
+            border: 1px solid var(--border); transition: all 0.2s;
+        }
+        .nav-links a:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+
+        .content-wrap { max-width: 800px; margin: 0 auto; }
+
+        .empty {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 80px;
+        }
+        .empty svg { width: 42px; height: 42px; fill: none; stroke: var(--accent); stroke-width: 1.3; opacity: 0.6; margin-bottom: 14px; }
+
+        .mood-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 24px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-accent);
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .mood-dot-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: 36px;
+        }
+
+        .mood-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid var(--border-accent);
+            transition: transform 0.2s;
+            cursor: default;
+        }
+        .mood-dot:hover { transform: scale(1.3); }
+
+        .mood-date-label {
+            font-size: 0.6rem;
+            color: var(--text-subtle);
+            text-align: center;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+        .entry-list-title {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 16px;
+            letter-spacing: 0.05rem;
+        }
+
+        .mood-entry-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .mood-entry-row .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+        .mood-entry-row .info { flex: 1; min-width: 0; }
+        .mood-entry-row .title { color: var(--text); font-size: 0.9rem; }
+        .mood-entry-row .date { color: var(--text-subtle); font-size: 0.75rem; }
+
+        @media (max-width: 600px) {
+            body { padding: 30px 18px; }
+            .header { flex-direction: column; align-items: flex-start; }
+            .mood-strip { padding: 16px; gap: 6px; }
+            .mood-dot-wrap { width: 28px; }
+            .mood-dot { width: 16px; height: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>
+            <svg viewBox="0 0 24 24"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+            Mood History
+        </h1>
+        <div class="nav-links">
+            <a href="/chamber">Chamber</a>
+            <a href="/entries">Entries</a>
+        </div>
+    </div>
+
+    <div class="content-wrap">
+
+        <div th:if="${#lists.isEmpty(moodEntries)}" class="empty">
+            <svg viewBox="0 0 24 24"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+            <p>No mood data yet for the last 30 days.</p>
+        </div>
+
+        <div th:if="${!#lists.isEmpty(moodEntries)}">
+
+            <div class="legend">
+                <div class="legend-item"><span class="legend-dot" style="background:#d9b06a;"></span> Happy</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#3a9e88;"></span> Calm</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#4a88c8;"></span> Sad</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#9060c0;"></span> Anxious</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#c84040;"></span> Angry</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#5060a8;"></span> Lonely</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#e0b56e;"></span> Excited</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#a99a72;"></span> Confused</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#837a6c;"></span> Neutral</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#948a76;"></span> Bored</div>
+            </div>
+
+            <div class="mood-strip">
+                <div class="mood-dot-wrap" th:each="entry : ${moodEntries}">
+                    <div class="mood-dot" th:styleappend="'background:' + ${
+                        entry.mood == 'happy' ? '#d9b06a' :
+                        (entry.mood == 'calm' ? '#3a9e88' :
+                        (entry.mood == 'sad' ? '#4a88c8' :
+                        (entry.mood == 'anxious' ? '#9060c0' :
+                        (entry.mood == 'angry' ? '#c84040' :
+                        (entry.mood == 'lonely' ? '#5060a8' :
+                        (entry.mood == 'excited' ? '#e0b56e' :
+                        (entry.mood == 'confused' ? '#a99a72' :
+                        (entry.mood == 'neutral' ? '#837a6c' :
+                        (entry.mood == 'bored' ? '#948a76' : '#666'))))))))) 
+                    } + ';'"
+                    th:title="${entry.mood + ' — ' + #temporals.format(entry.createdAt, 'dd MMM')}">
+                    </div>
+                    <span class="mood-date-label" th:text="${#temporals.format(entry.createdAt, 'dd/MM')}"></span>
+                </div>
+            </div>
+
+            <div class="entry-list-title">Recent moods</div>
+
+            <div class="mood-entry-row" th:each="entry : ${moodEntries}">
+                <div class="dot" th:styleappend="'background:' + ${
+                    entry.mood == 'happy' ? '#d9b06a' :
+                    (entry.mood == 'calm' ? '#3a9e88' :
+                    (entry.mood == 'sad' ? '#4a88c8' :
+                    (entry.mood == 'anxious' ? '#9060c0' :
+                    (entry.mood == 'angry' ? '#c84040' :
+                    (entry.mood == 'lonely' ? '#5060a8' :
+                    (entry.mood == 'excited' ? '#e0b56e' :
+                    (entry.mood == 'confused' ? '#a99a72' :
+                    (entry.mood == 'neutral' ? '#837a6c' :
+                    (entry.mood == 'bored' ? '#948a76' : '#666'))))))))) 
+                } + ';'"></div>
+                <div class="info">
+                    <div class="title" th:text="${entry.title}"></div>
+                    <div class="date" th:text="${#temporals.format(entry.createdAt, 'dd MMM yyyy') + ' — ' + entry.mood}"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

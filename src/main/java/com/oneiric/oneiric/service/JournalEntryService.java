@@ -184,4 +184,26 @@ public class JournalEntryService {
         return journalEntryRepository.findOnThisDay(
             user, today.getMonthValue(), today.getDayOfMonth(), today.getYear());
     }
+ // ── Mood history for the last N days (for timeline chart) ──
+    public List<JournalEntry> getMoodHistory(User user, int days) {
+        LocalDateTime cutoff = LocalDateTime.now().minusDays(days);
+        return journalEntryRepository.findByUserAndDeletedAtIsNullOrderByCreatedAtDesc(user)
+                .stream()
+                .filter(e -> e.getCreatedAt().isAfter(cutoff))
+                .filter(e -> e.getMood() != null && !e.getMood().isBlank())
+                .collect(Collectors.toList());
+    }
+
+    // ── Maps a mood string to a numeric score for charting (1 = low, 5 = high) ──
+    public int moodToScore(String mood) {
+        if (mood == null) return 3;
+        return switch (mood) {
+            case "happy", "excited" -> 5;
+            case "calm" -> 4;
+            case "neutral", "confused" -> 3;
+            case "bored", "lonely" -> 2;
+            case "sad", "anxious", "angry" -> 1;
+            default -> 3;
+        };
+    }
 }
