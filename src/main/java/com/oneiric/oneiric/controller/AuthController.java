@@ -148,5 +148,17 @@ public class AuthController {
         model.addAttribute("success", "Password updated successfully.");
         return "account";
     }
+    @GetMapping("/mood-history")
+    public String showMoodHistory(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) return "redirect:/login";
 
+        User user = userService.findByUsername(username).get();
+        
+        // Fetch mood history and render template
+        model.addAttribute("moodEntries", journalEntryService.getMoodHistory(user, 30));
+        model.addAttribute("username", username);
+
+        return "mood"; // Ensures it loads src/main/resources/templates/mood.html
+    }
 }

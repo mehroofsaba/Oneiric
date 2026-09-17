@@ -34,7 +34,9 @@ public class JournalEntryController {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
-        User user = userService.findByUsername(username).get();
+        Optional<User> userOpt = userService.findByUsername(username);
+        if (userOpt.isEmpty()) return "redirect:/login";
+        User user = userOpt.get();
 
         boolean hasFilters = (query != null && !query.trim().isEmpty())
                 || (tag != null && !tag.trim().isEmpty())
@@ -71,8 +73,10 @@ public class JournalEntryController {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
-        User user = userService.findByUsername(username).get();
-        journalEntryService.createEntry(title, content, mood, tags, user);
+        Optional<User> userOpt = userService.findByUsername(username);
+        if (userOpt.isEmpty()) return "redirect:/login";
+
+        journalEntryService.createEntry(title, content, mood, tags, userOpt.get());
         return "redirect:/entries";
     }
 
@@ -126,8 +130,10 @@ public class JournalEntryController {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
-        User user = userService.findByUsername(username).get();
-        model.addAttribute("entries", journalEntryService.getTrashedEntriesForUser(user));
+        Optional<User> userOpt = userService.findByUsername(username);
+        if (userOpt.isEmpty()) return "redirect:/login";
+
+        model.addAttribute("entries", journalEntryService.getTrashedEntriesForUser(userOpt.get()));
         return "trash";
     }
 
@@ -183,8 +189,10 @@ public class JournalEntryController {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
-        User user = userService.findByUsername(username).get();
-        model.addAttribute("entries", journalEntryService.getFavoriteEntriesForUser(user));
+        Optional<User> userOpt = userService.findByUsername(username);
+        if (userOpt.isEmpty()) return "redirect:/login";
+
+        model.addAttribute("entries", journalEntryService.getFavoriteEntriesForUser(userOpt.get()));
         return "favorites";
     }
 
@@ -194,22 +202,29 @@ public class JournalEntryController {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
-        User user = userService.findByUsername(username).get();
-        journalEntryService.getTrashedEntriesForUser(user)
+        Optional<User> userOpt = userService.findByUsername(username);
+        if (userOpt.isEmpty()) return "redirect:/login";
+
+        journalEntryService.getTrashedEntriesForUser(userOpt.get())
             .forEach(journalEntryService::deleteEntry);
 
         return "redirect:/entries/trash";
     }
+
+   
+ // ── Mood History Page ───────────────────────────────────────────────────
     @GetMapping("/mood-history")
     public String moodHistoryPage(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
         if (username == null) return "redirect:/login";
 
-        User user = userService.findByUsername(username).get();
+        Optional<User> userOpt = userService.findByUsername(username);
+        if (userOpt.isEmpty()) return "redirect:/login";
 
-        List<JournalEntry> history = journalEntryService.getMoodHistory(user, 30);
+        // Fetch user's mood entries
+        List<JournalEntry> history = journalEntryService.getMoodHistory(userOpt.get(), 30);
         model.addAttribute("moodEntries", history);
-       
+
         return "mood-history";
     }
 }
