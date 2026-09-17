@@ -206,10 +206,10 @@ public class JournalEntryController {
         if (username == null) return "redirect:/login";
 
         User user = userService.findByUsername(username).get();
-        List<JournalEntry> history = journalEntryService.getMoodHistory(user, 30);
 
+        List<JournalEntry> history = journalEntryService.getMoodHistory(user, 30);
         model.addAttribute("moodEntries", history);
+       
         return "mood-history";
     }
-
 }

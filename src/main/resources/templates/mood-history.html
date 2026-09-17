@@ -223,46 +223,60 @@
                 <div class="legend-item"><span class="legend-dot" style="background:#948a76;"></span> Bored</div>
             </div>
 
-            <div class="mood-strip">
-                <div class="mood-dot-wrap" th:each="entry : ${moodEntries}">
-                    <div class="mood-dot" th:styleappend="'background:' + ${
-                        entry.mood == 'happy' ? '#d9b06a' :
-                        (entry.mood == 'calm' ? '#3a9e88' :
-                        (entry.mood == 'sad' ? '#4a88c8' :
-                        (entry.mood == 'anxious' ? '#9060c0' :
-                        (entry.mood == 'angry' ? '#c84040' :
-                        (entry.mood == 'lonely' ? '#5060a8' :
-                        (entry.mood == 'excited' ? '#e0b56e' :
-                        (entry.mood == 'confused' ? '#a99a72' :
-                        (entry.mood == 'neutral' ? '#837a6c' :
-                        (entry.mood == 'bored' ? '#948a76' : '#666'))))))))) 
-                    } + ';'"
-                    th:title="${entry.mood + ' — ' + #temporals.format(entry.createdAt, 'dd MMM')}">
-                    </div>
-                    <span class="mood-date-label" th:text="${#temporals.format(entry.createdAt, 'dd/MM')}"></span>
-                </div>
-            </div>
+   <div class="mood-strip">
+    <div class="mood-dot-wrap" th:each="entry : ${moodEntries}">
+        <div class="mood-dot" th:with="c=${
+                entry.mood == 'happy' ? '#d9b06a' :
+                (entry.mood == 'calm' ? '#3a9e88' :
+                (entry.mood == 'sad' ? '#4a88c8' :
+                (entry.mood == 'anxious' ? '#9060c0' :
+                (entry.mood == 'angry' ? '#c84040' :
+                (entry.mood == 'lonely' ? '#5060a8' :
+                (entry.mood == 'excited' ? '#e0b56e' :
+                (entry.mood == 'confused' ? '#a99a72' :
+                (entry.mood == 'neutral' ? '#837a6c' :
+                (entry.mood == 'bored' ? '#948a76' : '#555'))))))))) 
+            }" th:style="'background:' + ${c} + ';'"
+            th:title="${(entry.mood != null ? entry.mood : 'no mood') + ' — ' + #temporals.format(entry.createdAt, 'dd MMM')}">
+        </div>
+        <span class="mood-date-label" th:text="${#temporals.format(entry.createdAt, 'dd/MM')}"></span>
+    </div>
+</div>
 
-            <div class="entry-list-title">Recent moods</div>
+<div class="entry-list-title">Recent moods</div>
 
-            <div class="mood-entry-row" th:each="entry : ${moodEntries}">
-                <div class="dot" th:styleappend="'background:' + ${
-                    entry.mood == 'happy' ? '#d9b06a' :
-                    (entry.mood == 'calm' ? '#3a9e88' :
-                    (entry.mood == 'sad' ? '#4a88c8' :
-                    (entry.mood == 'anxious' ? '#9060c0' :
-                    (entry.mood == 'angry' ? '#c84040' :
-                    (entry.mood == 'lonely' ? '#5060a8' :
-                    (entry.mood == 'excited' ? '#e0b56e' :
-                    (entry.mood == 'confused' ? '#a99a72' :
-                    (entry.mood == 'neutral' ? '#837a6c' :
-                    (entry.mood == 'bored' ? '#948a76' : '#666'))))))))) 
-                } + ';'"></div>
-                <div class="info">
-                    <div class="title" th:text="${entry.title}"></div>
-                    <div class="date" th:text="${#temporals.format(entry.createdAt, 'dd MMM yyyy') + ' — ' + entry.mood}"></div>
-                </div>
-            </div>
+<div class="mood-entry-row" th:each="entry : ${moodEntries}">
+    <div class="dot" th:with="c=${
+            entry.mood == 'happy' ? '#d9b06a' :
+            (entry.mood == 'calm' ? '#3a9e88' :
+            (entry.mood == 'sad' ? '#4a88c8' :
+            (entry.mood == 'anxious' ? '#9060c0' :
+            (entry.mood == 'angry' ? '#c84040' :
+            (entry.mood == 'lonely' ? '#5060a8' :
+            (entry.mood == 'excited' ? '#e0b56e' :
+            (entry.mood == 'confused' ? '#a99a72' :
+            (entry.mood == 'neutral' ? '#837a6c' :
+            (entry.mood == 'bored' ? '#948a76' : '#555')))))))))
+        }" th:style="'background:' + ${c} + ';'"></div>
+    <div class="info">
+        <div class="title" th:text="${entry.title != null and !entry.title.isEmpty() ? entry.title : '(untitled)'}"></div>
+        <div class="date">
+            <span th:text="${#temporals.format(entry.createdAt, 'dd MMM yyyy')}"></span>
+            <span th:if="${entry.mood != null}" th:switch="${entry.mood}">
+                <th:block th:case="'happy'"> — (❁´◡`❁) Happy</th:block>
+                <th:block th:case="'calm'"> — ^_^ Calm</th:block>
+                <th:block th:case="'sad'"> — ＞︿＜ Sad</th:block>
+                <th:block th:case="'anxious'"> — ＞﹏＜ Anxious</th:block>
+                <th:block th:case="'angry'"> — (╬▔皿▔)╯ Angry</th:block>
+                <th:block th:case="'lonely'"> — ( ﾉ ﾟｰﾟ)ﾉ Lonely</th:block>
+                <th:block th:case="'excited'"> — (≧∀≦)ゞ Excited</th:block>
+                <th:block th:case="'confused'"> — *-* Confused</th:block>
+                <th:block th:case="'neutral'"> — ^_____^ Neutral</th:block>
+                <th:block th:case="'bored'"> — –_– Bored</th:block>
+            </span>
+        </div>
+    </div>
+</div>
 
         </div>
     </div>
