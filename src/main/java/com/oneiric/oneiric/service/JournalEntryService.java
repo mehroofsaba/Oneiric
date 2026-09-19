@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 
 @Service
 public class JournalEntryService {
@@ -38,7 +40,7 @@ public class JournalEntryService {
     public JournalEntry createEntry(String title, String content, String mood, String tags, User user) {
         JournalEntry entry = new JournalEntry();
         entry.setTitle(title);
-        entry.setContent(content);
+        entry.setContent(sanitizeContent(content));
         entry.setMood(mood);
         entry.setTags(tags);
         entry.setUser(user);
@@ -50,14 +52,11 @@ public class JournalEntryService {
     }
 
     // ── Updated: updateEntry now accepts mood + tags too ──
-    public JournalEntry updateEntry(JournalEntry entry, String title, String content, String mood, String tags) {
+    public JournalEntry updateEntry(JournalEntry entry, String title, String content) {
         entry.setTitle(title);
-        entry.setContent(content);
-        entry.setMood(mood);
-        entry.setTags(tags);
+        entry.setContent(sanitizeContent(content));
         return journalEntryRepository.save(entry);
     }
-
     // Hard delete — permanent, only called from trash page
     public void deleteEntry(JournalEntry entry) {
         journalEntryRepository.delete(entry);
@@ -119,13 +118,12 @@ public class JournalEntryService {
     private static final java.util.regex.Pattern IMAGE_PATTERN =
             java.util.regex.Pattern.compile("!\\[[^\\]]*\\]\\(([^)]+)\\)");
 
+ // ── Extract first <img src="..."> from rich HTML content, for thumbnail preview ──
     public String extractFirstImageUrl(String content) {
         if (content == null) return null;
-        var matcher = IMAGE_PATTERN.matcher(content);
-        if (matcher.find()) {
-            return matcher.group(1);
-        }
-        return null;
+        org.jsoup.nodes.Document doc = Jsoup.parseBodyFragment(content);
+        org.jsoup.nodes.Element img = doc.select("img").first();
+        return img != null ? img.attr("src") : null;
     }
 
     public String stripImages(String content) {
@@ -205,5 +203,21 @@ public class JournalEntryService {
             case "sad", "anxious", "angry" -> 1;
             default -> 3;
         };
+    }
+    
+    public String sanitizeContent(String html) {
+        if (html == null) return "";
+        Safelist safelist = Safelist.relaxed()
+            .addTags("u", "hr")
+            .removeTags("h1", "h2", "h5", "h6", "table", "thead", "tbody", "tr", "th", "td")
+            .addAttributes("img", "src", "alt")
+            .addAttributes(":all", "style"); // keep it minimal; remove if you don't need inline styles
+        return Jsoup.clean(html, safelist);
+    }
+
+    // ── Strip all HTML tags for plain-text previews (entries list, search, etc) ──
+    public String stripHtml(String html) {
+        if (html == null) return "";
+        return Jsoup.parse(html).text();
     }
 }
